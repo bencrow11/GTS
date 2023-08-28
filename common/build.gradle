@@ -1,0 +1,35 @@
+dependencies {
+    // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
+    // Do NOT use other classes from fabric loader
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+
+    modImplementation("ca.landonjw.gooeylibs:api:${rootProject.gooeylibs_version}")
+    modApi("curse.maven:cobblemon-687131:${rootProject.cobblemon_file_version}")
+    modApi("curse.maven:architectury-api-419699:${rootProject.architectury_file_version}")
+    modApi("net.impactdev.impactor.api:economy:${rootProject.impactor_version}") {
+        transitive = false
+    }
+    modApi("net.impactdev.impactor.api:core:${rootProject.impactor_version}") {
+        transitive = false
+    }
+    api("net.kyori:adventure-api:${rootProject.kyori_version}")
+
+}
+
+architectury {
+    common("fabric", "forge")
+}
+
+publishing {
+    publications {
+        mavenCommon(MavenPublication) {
+            artifactId = rootProject.archives_base_name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+    }
+}
