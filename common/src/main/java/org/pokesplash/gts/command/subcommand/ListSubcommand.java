@@ -9,9 +9,9 @@ import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.util.Subcommand;
 import org.pokesplash.gts.util.Utils;
 
-public class ExampleSubcommand extends Subcommand {
+public class ListSubcommand extends Subcommand {
 
-	public ExampleSubcommand() {
+	public ListSubcommand() {
 		super("This is the subcommand usage.");
 	}
 
