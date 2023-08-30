@@ -25,19 +25,21 @@ public abstract class Utils {
 	 */
 	public static boolean writeFileAsync(String filePath, String filename, String data) {
 		try {
-			Path path = Paths.get(filePath + filename);
+			String pathString = new File("").getAbsolutePath() + filePath;
+
+			Path path = Paths.get(pathString + filename);
+
 
 			// If the path doesn't exist, create it.
-			if (!Files.exists(Paths.get(filePath))) {
-				Files.createDirectory(Path.of(filePath));
+			if (!Files.exists(Paths.get(pathString))) {
+				Files.createDirectory(Path.of(pathString));
 			}
 
 
 			// Write the data to file.
 			AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.WRITE,
-					StandardOpenOption.CREATE,
-					StandardOpenOption.TRUNCATE_EXISTING);
-			ByteBuffer buffer = ByteBuffer.allocate(1024);
+					StandardOpenOption.CREATE);
+			ByteBuffer buffer = ByteBuffer.allocate(10240);
 			buffer.put(data.getBytes());
 			buffer.flip();
 

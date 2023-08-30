@@ -139,11 +139,7 @@ public class ListingsProvider {
 
 		Gson gson = Utils.newGson();
 
-		System.out.println("before gson");
-
 		String data = gson.toJson(this);
-
-		System.out.println(data);
 
 		return Utils.writeFileAsync("/config/gts/", "listings.json", data);
 	}

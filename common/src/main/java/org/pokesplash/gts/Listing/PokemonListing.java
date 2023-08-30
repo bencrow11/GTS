@@ -1,6 +1,9 @@
 package org.pokesplash.gts.Listing;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import org.pokesplash.gts.util.Utils;
 
 import java.util.UUID;
 
@@ -20,7 +23,7 @@ public class PokemonListing {
 	// The time the listing ends.
 	private final long endTime;
 	// The Pokemon that is being listed.
-	private final Pokemon pokemon;
+	private final JsonObject pokemon;
 
 	/**
 	 * Constructor to create a new listing.
@@ -36,7 +39,7 @@ public class PokemonListing {
 		this.sellerName = sellerName;
 		this.price = price;
 		this.endTime = endTime;
-		this.pokemon = pokemon;
+		this.pokemon = pokemon.saveToJSON(new JsonObject());
 	}
 
 	public UUID getId() {
@@ -60,6 +63,6 @@ public class PokemonListing {
 	}
 
 	public Pokemon getPokemon() {
-		return pokemon;
+		return new Pokemon().loadFromJSON(pokemon);
 	}
 }
