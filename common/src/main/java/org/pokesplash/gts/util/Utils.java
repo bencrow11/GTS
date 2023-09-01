@@ -19,8 +19,6 @@ import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 public abstract class Utils {
-	// Base path for the mods folder.
-
 	/**
 	 * Method to write some data to file.
 	 * @param filePath the directory to write the file to
@@ -31,7 +29,7 @@ public abstract class Utils {
 	public static CompletableFuture<Boolean> writeFileAsync(String filePath, String filename, String data) {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-		Path path = Paths.get(filePath, filename);
+		Path path = Paths.get(new File("").getAbsolutePath() + filePath, filename);
 		File file = path.toFile();
 
 		// If the path doesn't exist, create it.
@@ -84,7 +82,7 @@ public abstract class Utils {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 
-		Path path = Paths.get(filePath, filename);
+		Path path = Paths.get(new File("").getAbsolutePath() + filePath, filename);
 		File file = path.toFile();
 
 		if (!file.exists()) {
@@ -128,7 +126,7 @@ public abstract class Utils {
 	 * @return the directory as a File.
 	 */
 	public static File checkForDirectory(String path) {
-		File dir = new File(path);
+		File dir = new File(new File("").getAbsolutePath() + path);
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}

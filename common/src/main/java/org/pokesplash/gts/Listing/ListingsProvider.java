@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -14,24 +13,24 @@ import java.util.concurrent.CompletableFuture;
  */
 public class ListingsProvider {
 	// All active pokemon listings.
-	private HashMap<UUID, PokemonListing> pokemonListings;
+	private List<PokemonListing> pokemonListings;
 	// All active item listings.
-	private HashMap<UUID, ItemListing> itemListings;
+	private List<ItemListing> itemListings;
 
 	/**
 	 * Constructor to create a new list for both hashmaps.
 	 */
 	public ListingsProvider() {
-		pokemonListings = new HashMap<>();
-		itemListings = new HashMap<>();
+		pokemonListings = new ArrayList<>();
+		itemListings = new ArrayList<>();
 	}
 
 	/**
 	 * Method to get all pokemon listings, as a collection.
 	 * @return Pokemon listings in a collection.
 	 */
-	public Collection<PokemonListing> getPokemonListings() {
-		return pokemonListings.values();
+	public List<PokemonListing> getPokemonListings() {
+		return pokemonListings;
 	}
 
 	/**
@@ -39,10 +38,10 @@ public class ListingsProvider {
 	 * @param uuid the uuid to get the pokemon listings for.
 	 * @return Arraylist of pokemon listings from the specified player.
 	 */
-	public ArrayList<PokemonListing> getPokemonListingsByPlayer(UUID uuid) {
+	public List<PokemonListing> getPokemonListingsByPlayer(UUID uuid) {
 		ArrayList<PokemonListing> playerListings = new ArrayList<>();
 
-		for (PokemonListing pokemonListing : pokemonListings.values()) {
+		for (PokemonListing pokemonListing : pokemonListings) {
 			if (pokemonListing.getSellerUuid().equals(uuid)) {
 				playerListings.add(pokemonListing);
 			}
@@ -57,25 +56,26 @@ public class ListingsProvider {
 	 * @throws IllegalArgumentException If the listing already exists.
 	 */
 	public boolean addPokemonListing(PokemonListing listing) throws IllegalArgumentException {
-		if (pokemonListings.containsKey(listing.getId())) {
+
+		if (hasPokemonListing(listing.getId(), pokemonListings)) {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
-		pokemonListings.put(listing.getId(), listing);
+		pokemonListings.add(listing);
 		return writeToFile();
 	}
 
 	/**
 	 * Method to remove a pokemon listing (expired or bought)
-	 * @param listingId The listing id that should be removed.
+	 * @param listing The listing that should be removed.
 	 * @return true if the listing was successfully removed.
 	 * @throws IllegalArgumentException if the listing doesn't exist.
 	 */
-	public boolean removePokemonListing(UUID listingId) throws IllegalArgumentException {
-		if (!pokemonListings.containsKey(listingId)) {
-			throw new IllegalArgumentException("No listing with the UUID " + listingId + " exists.");
+	public boolean removePokemonListing(PokemonListing listing) throws IllegalArgumentException {
+		if (hasPokemonListing(listing.getId(), pokemonListings)) {
+			throw new IllegalArgumentException("No listing with the UUID " + listing.getId() + " exists.");
 		}
 
-		pokemonListings.remove(listingId);
+		pokemonListings.remove(listing);
 		return writeToFile();
 	}
 
@@ -83,8 +83,8 @@ public class ListingsProvider {
 	 * Method to get all item listings, as a collection.
 	 * @return item listings in a collection.
 	 */
-	public Collection<ItemListing> getItemListings() {
-		return itemListings.values();
+	public List<ItemListing> getItemListings() {
+		return itemListings;
 	}
 
 	/**
@@ -92,10 +92,10 @@ public class ListingsProvider {
 	 * @param uuid the uuid to get the item listings for.
 	 * @return Arraylist of item listings from the specified player.
 	 */
-	public ArrayList<ItemListing> getItemListingsByPlayer(UUID uuid) {
+	public List<ItemListing> getItemListingsByPlayer(UUID uuid) {
 		ArrayList<ItemListing> playerListings = new ArrayList<>();
 
-		for (ItemListing item : itemListings.values()) {
+		for (ItemListing item : itemListings) {
 			if (item.getSellerUuid().equals(uuid)) {
 				playerListings.add(item);
 			}
@@ -110,26 +110,44 @@ public class ListingsProvider {
 	 * @throws IllegalArgumentException If the listing already exists.
 	 */
 	public boolean addItemListing(ItemListing listing) throws IllegalArgumentException {
-		if (itemListings.containsKey(listing.getId())) {
+		if (hasItemListing(listing.getId(), itemListings)) {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
-		itemListings.put(listing.getId(), listing);
+		itemListings.add(listing);
 		return writeToFile();
 	}
 
 	/**
 	 * Method to remove an item listing (expired or bought)
-	 * @param listingId The listing id that should be removed.
+	 * @param listing The listing that should be removed.
 	 * @return true if the listing was successfully removed.
 	 * @throws IllegalArgumentException if the listing doesn't exist.
 	 */
-	public boolean removeItemListing(UUID listingId) throws IllegalArgumentException {
-		if (!itemListings.containsKey(listingId)) {
-			throw new IllegalArgumentException("No listing with the UUID " + listingId + " exists.");
+	public boolean removeItemListing(ItemListing listing) throws IllegalArgumentException {
+		if (hasItemListing(listing.getId(), itemListings)) {
+			throw new IllegalArgumentException("No listing with the UUID " + listing.getId() + " exists.");
 		}
 
-		itemListings.remove(listingId);
+		itemListings.remove(listing);
 		return writeToFile();
+	}
+
+	private boolean hasPokemonListing(UUID listing, List<PokemonListing> pokemonListings) {
+		for (PokemonListing pkm : pokemonListings) {
+			if (pkm.getId().equals(listing)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean hasItemListing(UUID listing, List<ItemListing> itemListings) {
+		for (ItemListing item : itemListings) {
+			if (item.getId().equals(listing)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -139,7 +157,6 @@ public class ListingsProvider {
 	private boolean writeToFile() {
 
 		Gson gson = Utils.newGson();
-
 		String data = gson.toJson(this);
 
 		CompletableFuture<Boolean> future = Utils.writeFileAsync("/config/gts/", "listings.json", data);
@@ -147,7 +164,14 @@ public class ListingsProvider {
 		return future.join();
 	}
 
-	public void initialize() {
-		// TODO read files.
+	public boolean initialize() {
+		CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/", "listings.json", el -> {
+			Gson gson = Utils.newGson();
+			ListingsProvider data = gson.fromJson(el, ListingsProvider.class);
+			pokemonListings = data.getPokemonListings();
+			itemListings = data.getItemListings();
+		});
+
+		return future.join();
 	}
 }
