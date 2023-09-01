@@ -7,10 +7,15 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
 public abstract class Utils {
@@ -21,43 +26,50 @@ public abstract class Utils {
 	 * @param filePath the directory to write the file to
 	 * @param filename the name of the file
 	 * @param data the data to write to file
-	 * @return true if writing to file was successful
+	 * @return CompletableFuture if writing to file was successful
 	 */
-	public static boolean writeFileAsync(String filePath, String filename, String data) {
-		try {
-			String pathString = new File("").getAbsolutePath() + filePath;
+	public static CompletableFuture<Boolean> writeFileAsync(String filePath, String filename, String data) {
+		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
-			Path path = Paths.get(pathString + filename);
+		Path path = Paths.get(filePath, filename);
+		File file = path.toFile();
 
+		// If the path doesn't exist, create it.
+		if (!Files.exists(path.getParent())) {
+			file.getParentFile().mkdirs();
+		}
 
-			// If the path doesn't exist, create it.
-			if (!Files.exists(Paths.get(pathString))) {
-				Files.createDirectory(Path.of(pathString));
-			}
-
-
-			// Write the data to file.
-			AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.WRITE,
-					StandardOpenOption.CREATE);
-			ByteBuffer buffer = ByteBuffer.allocate(10240);
-			buffer.put(data.getBytes());
-			buffer.flip();
+		// Write the data to file.
+		try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(
+				path,
+				StandardOpenOption.WRITE,
+				StandardOpenOption.CREATE)) {
+			ByteBuffer buffer = ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8));
 
 			fileChannel.write(buffer, 0, buffer, new CompletionHandler<Integer, ByteBuffer>() {
 				@Override
 				public void completed(Integer result, ByteBuffer attachment) {
 					attachment.clear();
+					try {
+						fileChannel.close();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+					future.complete(true);
 				}
 
 				@Override
 				public void failed(Throwable exc, ByteBuffer attachment) {
 					exc.printStackTrace();
+					future.complete(false);
 				}
 			});
-			return true;
-		} catch (Exception e) {
-			return false;
+		} catch (IOException | SecurityException e) {
+			e.printStackTrace();
+			future.complete(false);
 		}
+
+		return future;
 	}
 
 	/**
@@ -67,38 +79,47 @@ public abstract class Utils {
 	 * @param callback a callback to deal with the data read
 	 * @return true if the file was read successfully
 	 */
-	public static boolean readFileAsync(String filePath, String filename, Consumer<String> callback) {
-		try {
-			Path path = Paths.get( filePath + filename);
+	public static CompletableFuture<Boolean> readFileAsync(String filePath, String filename,
+	                                                       Consumer<String> callback) {
+		CompletableFuture<Boolean> future = new CompletableFuture<>();
+		ExecutorService executor = Executors.newSingleThreadExecutor();
 
-			// If the directory doesn't exist, return false.
-			if (!Files.exists(Paths.get(filePath))) {
-				return false;
-			}
+		Path path = Paths.get(filePath, filename);
+		File file = path.toFile();
 
-			// Read the file.
-			AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ);
-			ByteBuffer buffer = ByteBuffer.allocate(1024);
-
-			fileChannel.read(buffer, 0, buffer, new CompletionHandler<Integer, ByteBuffer>() {
-				@Override
-				public void completed(Integer result, ByteBuffer attachment) {
-					attachment.flip();
-					byte[] data = new byte[attachment.limit()];
-					attachment.get(data);
-					callback.accept(new String(data));
-					attachment.clear();
-				}
-
-				@Override
-				public void failed(Throwable exc, ByteBuffer attachment) {
-					exc.printStackTrace();
-				}
-			});
-			return true;
-		} catch (Exception e) {
-			return false;
+		if (!file.exists()) {
+			future.complete(false);
+			executor.shutdown();
+			return future;
 		}
+
+		try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)) {
+			ByteBuffer buffer = ByteBuffer.allocate((int) fileChannel.size()); // Allocate buffer for the entire file
+
+			Future<Integer> readResult = fileChannel.read(buffer, 0);
+			readResult.get(); // Wait for the read operation to complete
+			buffer.flip();
+
+			byte[] bytes = new byte[buffer.remaining()];
+			buffer.get(bytes);
+			String fileContent = new String(bytes, StandardCharsets.UTF_8);
+
+			callback.accept(fileContent);
+
+			fileChannel.close();
+			executor.shutdown();
+			future.complete(true);
+		} catch (IOException e) {
+			e.printStackTrace();
+			executor.shutdown();
+			future.completeExceptionally(e);
+		} catch (Exception e) {
+			e.printStackTrace();
+			executor.shutdown();
+			future.completeExceptionally(e);
+		}
+
+		return future;
 	}
 
 	/**

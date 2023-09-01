@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Manages all types of listings. Data is saved to memory here.
@@ -141,6 +142,12 @@ public class ListingsProvider {
 
 		String data = gson.toJson(this);
 
-		return Utils.writeFileAsync("/config/gts/", "listings.json", data);
+		CompletableFuture<Boolean> future = Utils.writeFileAsync("/config/gts/", "listings.json", data);
+
+		return future.join();
+	}
+
+	public void initialize() {
+		// TODO read files.
 	}
 }
