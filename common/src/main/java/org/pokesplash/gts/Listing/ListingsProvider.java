@@ -1,6 +1,7 @@
 package org.pokesplash.gts.Listing;
 
 import com.google.gson.Gson;
+import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -132,6 +133,12 @@ public class ListingsProvider {
 		return writeToFile();
 	}
 
+	/**
+	 * Method to check if a pokemon listing already exists.
+	 * @param listing the listing to check for
+	 * @param pokemonListings the list to check in
+	 * @return true if the listing already exists in the list.
+	 */
 	private boolean hasPokemonListing(UUID listing, List<PokemonListing> pokemonListings) {
 		for (PokemonListing pkm : pokemonListings) {
 			if (pkm.getId().equals(listing)) {
@@ -141,6 +148,12 @@ public class ListingsProvider {
 		return false;
 	}
 
+	/**
+	 * Method to check if a pokemon listing already exists.
+	 * @param listing the listing to check for
+	 * @param itemListings the list to check in
+	 * @return true if the listing already exists in the list.
+	 */
 	private boolean hasItemListing(UUID listing, List<ItemListing> itemListings) {
 		for (ItemListing item : itemListings) {
 			if (item.getId().equals(listing)) {
@@ -164,14 +177,25 @@ public class ListingsProvider {
 		return future.join();
 	}
 
-	public boolean initialize() {
-		CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/", "listings.json", el -> {
-			Gson gson = Utils.newGson();
-			ListingsProvider data = gson.fromJson(el, ListingsProvider.class);
-			pokemonListings = data.getPokemonListings();
-			itemListings = data.getItemListings();
-		});
+	/**
+	 * Method to load the listings from file.
+	 * @return true if the listings could be read.
+	 */
+	public void initialize() {
+		try {
+			CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/", "listings.json", el -> {
+				Gson gson = Utils.newGson();
+				ListingsProvider data = gson.fromJson(el, ListingsProvider.class);
+				pokemonListings = data.getPokemonListings();
+				itemListings = data.getItemListings();
+			});
 
-		return future.join();
+			if (!future.join()) {
+				throw new Exception();
+			}
+
+		} catch (Exception e) {
+			Gts.LOGGER.error("Unable to load listings into memory for " + Gts.MOD_ID + ". Does the file exist?");
+		}
 	}
 }

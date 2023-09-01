@@ -2,6 +2,7 @@ package org.pokesplash.gts.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.pokesplash.gts.Gts;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -58,12 +59,12 @@ public abstract class Utils {
 
 				@Override
 				public void failed(Throwable exc, ByteBuffer attachment) {
-					exc.printStackTrace();
+					Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: " + exc.getStackTrace());
 					future.complete(false);
 				}
 			});
 		} catch (IOException | SecurityException e) {
-			e.printStackTrace();
+			Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: " + e.getStackTrace());
 			future.complete(false);
 		}
 
@@ -107,12 +108,8 @@ public abstract class Utils {
 			fileChannel.close();
 			executor.shutdown();
 			future.complete(true);
-		} catch (IOException e) {
-			e.printStackTrace();
-			executor.shutdown();
-			future.completeExceptionally(e);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Gts.LOGGER.fatal("Unable to read file " + filename + " for " + Gts.MOD_ID + ".\nStack Trace: " + e.getStackTrace());
 			executor.shutdown();
 			future.completeExceptionally(e);
 		}
