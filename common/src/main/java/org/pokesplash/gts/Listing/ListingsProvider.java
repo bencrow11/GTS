@@ -77,6 +77,7 @@ public class ListingsProvider {
 		}
 
 		pokemonListings.remove(listing);
+		Gts.timers.deleteTimer(listing.getId());
 		return writeToFile();
 	}
 
@@ -130,6 +131,7 @@ public class ListingsProvider {
 		}
 
 		itemListings.remove(listing);
+		Gts.timers.deleteTimer(listing.getId());
 		return writeToFile();
 	}
 
@@ -181,7 +183,7 @@ public class ListingsProvider {
 	 * Method to load the listings from file.
 	 * @return true if the listings could be read.
 	 */
-	public void initialize() {
+	public void init() {
 		try {
 			CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/", "listings.json", el -> {
 				Gson gson = Utils.newGson();
@@ -197,5 +199,8 @@ public class ListingsProvider {
 		} catch (Exception e) {
 			Gts.LOGGER.error("Unable to load listings into memory for " + Gts.MOD_ID + ". Does the file exist?");
 		}
+
+		// TODO add each listing to the timer class.
+
 	}
 }
