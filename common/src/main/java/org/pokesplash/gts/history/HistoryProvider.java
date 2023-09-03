@@ -57,7 +57,7 @@ public class HistoryProvider {
 
 		CompletableFuture<Boolean> future = Utils.writeFileAsync(filePath, playerHistory.getPlayer() +
 						".json",
-				gson.toJson(playerHistory));
+				gson.toJson(playerHistory), false);
 
 		return future.join();
 	}

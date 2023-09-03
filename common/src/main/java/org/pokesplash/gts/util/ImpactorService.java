@@ -10,38 +10,62 @@ import net.kyori.adventure.key.Key;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class ImpactorService {
+/**
+ * Class to interact with the Impactor API
+ */
+public abstract class ImpactorService {
 
-	private EconomyService service;
-	private Currency currency;
+	// The impactor service
+	private static EconomyService service = EconomyService.instance();
 
-	public ImpactorService(Key currencyKey) {
-		service = EconomyService.instance();
+	// The currency used for this mod.
+	private static Currency currency = service.currencies().primary();
 
-		currency = currencyKey == null ? service.currencies().primary() :
-				service.currencies().currency(currencyKey).orElse(service.currencies().primary());
-	}
+	/**
+	 * Method to get the account of a player.
+	 * @param uuid The UUID of the player.
+	 * @return The account of the player.
+	 */
 
-	public Account getAccount(UUID uuid) {
+	public static Account getAccount(UUID uuid) {
 		if (!service.hasAccount(uuid).join()) {
 			return null;
 		}
 		return service.account(currency, uuid).join();
 	}
 
-	public boolean add(Account account, double amount) {
+	/**
+	 * Method to add to the balance of an account.
+	 * @param account The account to add the balance to.
+	 * @param amount The amount to add.
+	 * @return true if the transaction was successful.
+	 */
+	public static boolean add(Account account, double amount) {
 		EconomyTransaction transaction = account.depositAsync(new BigDecimal(amount)).join();
 
 		return transaction.successful();
 	}
 
-	public boolean remove(Account account, double amount) {
+	/**
+	 * Method to remove a balance from an account.
+	 * @param account The account to remove the balance from.
+	 * @param amount The amount to remove from the account.
+	 * @return true if the transaction was successful.
+	 */
+	public static boolean remove(Account account, double amount) {
 		EconomyTransaction transaction = account.withdrawAsync(new BigDecimal(amount)).join();
 
 		return transaction.successful();
 	}
 
-	public boolean transfer(Account sender, Account receiver, double amount) {
+	/**
+	 * Method to transfer a balance from one account to another.
+	 * @param sender The account that is sending the balance.
+	 * @param receiver The account that is receiving the balance.
+	 * @param amount The amount to be transferred.
+	 * @return true if the transaction was successful.
+	 */
+	public static boolean transfer(Account sender, Account receiver, double amount) {
 		EconomyTransferTransaction transaction = sender.transferAsync(receiver, new BigDecimal(amount)).join();
 
 		return transaction.successful();

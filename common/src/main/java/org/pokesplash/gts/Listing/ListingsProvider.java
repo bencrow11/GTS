@@ -174,7 +174,7 @@ public class ListingsProvider {
 		Gson gson = Utils.newGson();
 		String data = gson.toJson(this);
 
-		CompletableFuture<Boolean> future = Utils.writeFileAsync("/config/gts/", "listings.json", data);
+		CompletableFuture<Boolean> future = Utils.writeFileAsync("/config/gts/", "listings.json", data, false);
 
 		return future.join();
 	}
