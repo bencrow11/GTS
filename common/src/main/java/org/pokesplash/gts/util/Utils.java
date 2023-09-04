@@ -44,11 +44,11 @@ public abstract class Utils {
 				path,
 				StandardOpenOption.WRITE,
 				StandardOpenOption.CREATE,
-				append ? StandardOpenOption.APPEND : StandardOpenOption.TRUNCATE_EXISTING // TODO fix this
+				append ?: StandardOpenOption.TRUNCATE_EXISTING // TODO fix this
 		)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8));
 
-			fileChannel.write(buffer, 0, buffer, new CompletionHandler<Integer, ByteBuffer>() {
+			fileChannel.write(buffer, append ? fileChannel.size() : 0, buffer, new CompletionHandler<Integer, ByteBuffer>() {
 				@Override
 				public void completed(Integer result, ByteBuffer attachment) {
 					attachment.clear();
