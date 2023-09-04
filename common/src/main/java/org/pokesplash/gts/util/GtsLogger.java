@@ -3,6 +3,8 @@ package org.pokesplash.gts.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Class for logging.
  */
@@ -27,7 +29,7 @@ public class GtsLogger {
 	 */
 	public void info(String message) {
 		logger.info(message);
-		write(Level.INFO, message);
+//		write(Level.INFO, message);
 	}
 
 	/**
@@ -36,7 +38,7 @@ public class GtsLogger {
 	 */
 	public void error(String message) {
 		logger.error(message);
-		write(Level.ERROR, message);
+//		write(Level.ERROR, message);
 	}
 
 	/**
@@ -45,7 +47,7 @@ public class GtsLogger {
 	 */
 	public void fatal(String message) {
 		logger.fatal(message);
-		write(Level.FATAL, message);
+//		write(Level.FATAL, message);
 	}
 
 	/**
@@ -54,9 +56,12 @@ public class GtsLogger {
 	 * @param message The message to log.
 	 */
 	private void write(Level level, String message) {
+		// TODO Can't append to file.
 
 		String output = "[" + level + "]: " + message;
 
-		Utils.writeFileAsync("/config/gts/", "logs.txt", output, true);
+		CompletableFuture<Boolean> future = Utils.writeFileAsync("/config/gts/", "logs.txt", output);
+
+		System.out.println("GTS WRITE FUTURE: " + future.join());
 	}
 }

@@ -62,6 +62,7 @@ public class ListingsProvider {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
 		pokemonListings.add(listing);
+		Gts.timers.addTimer(listing.getId());
 		return writeToFile();
 	}
 
@@ -116,6 +117,7 @@ public class ListingsProvider {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
 		itemListings.add(listing);
+		Gts.timers.addTimer(listing.getId());
 		return writeToFile();
 	}
 
@@ -174,7 +176,7 @@ public class ListingsProvider {
 		Gson gson = Utils.newGson();
 		String data = gson.toJson(this);
 
-		CompletableFuture<Boolean> future = Utils.writeFileAsync("/config/gts/", "listings.json", data, false);
+		CompletableFuture<Boolean> future = Utils.writeFileAsync("/config/gts/", "listings.json", data);
 
 		return future.join();
 	}

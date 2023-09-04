@@ -24,12 +24,11 @@ public abstract class GtsAPI {
 		boolean success = Gts.listings.removePokemonListing(listing);
 		try {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(listing.getSellerUuid());
+			party.add(listing.getPokemon());
 		} catch (NoPokemonStoreException e) {
-
+			Gts.LOGGER.error("Could not return pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
+					".\nError: " + e.getMessage());
 		}
-
-		// TODO return pokemon to player.
-
 		return success;
 	}
 
@@ -52,8 +51,13 @@ public abstract class GtsAPI {
 	 */
 	public static boolean addListing(PokemonListing listing) {
 		boolean success = Gts.listings.addPokemonListing(listing);
-		// TODO Take pokemon from player.
-
+		try {
+			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(listing.getSellerUuid());
+			party.remove(listing.getPokemon());
+		} catch (NoPokemonStoreException e) {
+			Gts.LOGGER.error("Could not take pokemon " + listing.getPokemon().getSpecies() + " from player: " + listing.getSellerName() +
+					".\nError: " + e.getMessage());
+		}
 		return success;
 	}
 
@@ -101,8 +105,15 @@ public abstract class GtsAPI {
 			}
 		}
 
-		// TODO check transaction success before giving pokemon.
-		// TODO Give Pokemon to buyer.
+		if (impactorSuccess) {
+			try {
+				PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer.getUUID());
+				party.add(listing.getPokemon());
+			} catch (NoPokemonStoreException e) {
+				Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
+						".\nError: " + e.getMessage());
+			}
+		}
 		return listingsSuccess && impactorSuccess;
 	}
 
@@ -138,8 +149,10 @@ public abstract class GtsAPI {
 			}
 		}
 
-		// TODO check transaction success before giving item.
-		// TODO Give Pokemon to buyer.
+		if (impactorSuccess) {
+			// TODO Give Item to buyer.
+		}
+
 		return listingsSuccess && impactorSuccess;
 	}
 }

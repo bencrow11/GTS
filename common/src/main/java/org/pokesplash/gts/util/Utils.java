@@ -27,8 +27,7 @@ public abstract class Utils {
 	 * @param data the data to write to file
 	 * @return CompletableFuture if writing to file was successful
 	 */
-	public static CompletableFuture<Boolean> writeFileAsync(String filePath, String filename, String data,
-	                                                        boolean append) {
+	public static CompletableFuture<Boolean> writeFileAsync(String filePath, String filename, String data) {
 		CompletableFuture<Boolean> future = new CompletableFuture<>();
 
 		Path path = Paths.get(new File("").getAbsolutePath() + filePath, filename);
@@ -44,11 +43,11 @@ public abstract class Utils {
 				path,
 				StandardOpenOption.WRITE,
 				StandardOpenOption.CREATE,
-				append ?: StandardOpenOption.TRUNCATE_EXISTING // TODO fix this
+				StandardOpenOption.TRUNCATE_EXISTING
 		)) {
 			ByteBuffer buffer = ByteBuffer.wrap(data.getBytes(StandardCharsets.UTF_8));
 
-			fileChannel.write(buffer, append ? fileChannel.size() : 0, buffer, new CompletionHandler<Integer, ByteBuffer>() {
+			fileChannel.write(buffer, 0, buffer, new CompletionHandler<Integer, ByteBuffer>() {
 				@Override
 				public void completed(Integer result, ByteBuffer attachment) {
 					attachment.clear();
