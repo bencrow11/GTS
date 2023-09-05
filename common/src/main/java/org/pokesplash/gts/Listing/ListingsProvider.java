@@ -1,12 +1,11 @@
 package org.pokesplash.gts.Listing;
 
 import com.google.gson.Gson;
+import net.minecraft.world.item.Item;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -17,6 +16,9 @@ public class ListingsProvider {
 	private List<PokemonListing> pokemonListings;
 	// All active item listings.
 	private List<ItemListing> itemListings;
+	// Where listings are stored once they have expired.
+	private HashMap<UUID, List<PokemonListing>> expiredPokemonListings;
+	private HashMap<UUID, List<ItemListing>> expiredItemListings;
 
 	/**
 	 * Constructor to create a new list for both hashmaps.
@@ -24,6 +26,8 @@ public class ListingsProvider {
 	public ListingsProvider() {
 		pokemonListings = new ArrayList<>();
 		itemListings = new ArrayList<>();
+		expiredPokemonListings = new HashMap<>();
+		expiredItemListings = new HashMap<>();
 	}
 
 	/**
@@ -62,7 +66,7 @@ public class ListingsProvider {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
 		pokemonListings.add(listing);
-		Gts.timers.addTimer(listing.getId());
+		Gts.timers.addTimer(listing);
 		return writeToFile();
 	}
 
@@ -73,12 +77,12 @@ public class ListingsProvider {
 	 * @throws IllegalArgumentException if the listing doesn't exist.
 	 */
 	public boolean removePokemonListing(PokemonListing listing) throws IllegalArgumentException {
-		if (hasPokemonListing(listing.getId(), pokemonListings)) {
+		if (!hasPokemonListing(listing.getId(), pokemonListings)) {
 			throw new IllegalArgumentException("No listing with the UUID " + listing.getId() + " exists.");
 		}
 
 		pokemonListings.remove(listing);
-		Gts.timers.deleteTimer(listing.getId());
+		Gts.timers.deleteTimer(listing);
 		return writeToFile();
 	}
 
@@ -117,7 +121,7 @@ public class ListingsProvider {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
 		itemListings.add(listing);
-		Gts.timers.addTimer(listing.getId());
+		Gts.timers.addTimer(listing);
 		return writeToFile();
 	}
 
@@ -128,12 +132,12 @@ public class ListingsProvider {
 	 * @throws IllegalArgumentException if the listing doesn't exist.
 	 */
 	public boolean removeItemListing(ItemListing listing) throws IllegalArgumentException {
-		if (hasItemListing(listing.getId(), itemListings)) {
+		if (!hasItemListing(listing.getId(), itemListings)) {
 			throw new IllegalArgumentException("No listing with the UUID " + listing.getId() + " exists.");
 		}
 
 		itemListings.remove(listing);
-		Gts.timers.deleteTimer(listing.getId());
+		Gts.timers.deleteTimer(listing);
 		return writeToFile();
 	}
 
@@ -168,6 +172,88 @@ public class ListingsProvider {
 	}
 
 	/**
+	 * Checks that a player has some expired pokemon listings.
+	 * @param playerUUID The player to check for expired listings
+	 * @return true if the player has expired listings.
+	 */
+	public boolean hasExpiredPokemonListings(UUID playerUUID) {
+		return expiredPokemonListings.containsKey(playerUUID);
+	}
+
+	/**
+	 * Checks that a player has some expired item listings.
+	 * @param playerUUID The player to check for expired listings
+	 * @return true if the player has expired listings.
+	 */
+	public boolean hasExpiredItemListings(UUID playerUUID) {
+		return expiredItemListings.containsKey(playerUUID);
+	}
+
+	/**
+	 * Method to add an expired pokemon to the list.
+	 * @param listing The pokemon listing to add.
+	 * @return true if successfully written to file.
+	 */
+	public boolean addExpiredPokemonListing(PokemonListing listing) {
+		if (expiredPokemonListings.containsKey(listing.getSellerUuid())) {
+			List<PokemonListing> currentListings = expiredPokemonListings.get(listing.getSellerUuid());
+			currentListings.add(listing);
+			expiredPokemonListings.put(listing.getSellerUuid(), currentListings);
+		} else {
+			expiredPokemonListings.put(listing.getSellerUuid(), List.of(listing));
+		}
+		return writeToFile();
+	}
+
+	/**
+	 * Method to add an expired item to the list.
+	 * @param listing The item listing to add.
+	 * @return true if successfully written to file.
+	 */
+	public boolean addExpiredItemListing(ItemListing listing) {
+		if (expiredItemListings.containsKey(listing.getSellerUuid())) {
+			List<ItemListing> currentListings = expiredItemListings.get(listing.getSellerUuid());
+			currentListings.add(listing);
+			expiredItemListings.put(listing.getSellerUuid(), currentListings);
+		} else {
+			expiredItemListings.put(listing.getSellerUuid(), List.of(listing));
+		}
+		return writeToFile();
+	}
+
+	/**
+	 * Method to remove an expired listing that has been collected by the player.
+	 * @param listing The listing to remove.
+	 * @return true if successfully written to file.
+	 */
+	public boolean removeExpiredPokemonListing(PokemonListing listing) {
+		List<PokemonListing> listings = expiredPokemonListings.get(listing.getSellerUuid());
+		if (!listings.isEmpty()) {
+			listings.remove(listing);
+			expiredPokemonListings.put(listing.getSellerUuid(), listings);
+		} else {
+			expiredPokemonListings.remove(listing.getSellerUuid());
+		}
+		return writeToFile();
+	}
+
+	/**
+	 * Method to remove an expired listing that has been collected by the player.
+	 * @param listing The listing to remove.
+	 * @return true if successfully written to file.
+	 */
+	public boolean removeExpiredItemListing(ItemListing listing) {
+		List<ItemListing> listings = expiredItemListings.get(listing.getSellerUuid());
+		if (!listings.isEmpty()) {
+			listings.remove(listing);
+			expiredItemListings.put(listing.getSellerUuid(), listings);
+		} else {
+			expiredItemListings.remove(listing.getSellerUuid());
+		}
+		return writeToFile();
+	}
+
+	/**
 	 * Method to write this object to the file.
 	 * @return true if the file was successfully written.
 	 */
@@ -183,7 +269,6 @@ public class ListingsProvider {
 
 	/**
 	 * Method to load the listings from file.
-	 * @return true if the listings could be read.
 	 */
 	public void init() {
 		try {
@@ -202,7 +287,12 @@ public class ListingsProvider {
 			Gts.LOGGER.error("Unable to load listings into memory for " + Gts.MOD_ID + ". Does the file exist?");
 		}
 
-		// TODO add each listing to the timer class.
+		for (PokemonListing listing : pokemonListings) {
+			Gts.timers.addTimer(listing);
+		}
 
+		for (ItemListing listing : itemListings) {
+			Gts.timers.addTimer(listing);
+		}
 	}
 }

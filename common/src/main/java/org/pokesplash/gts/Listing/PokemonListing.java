@@ -3,8 +3,10 @@ package org.pokesplash.gts.Listing;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -33,12 +35,12 @@ public class PokemonListing {
 	 * @param endTime The time the listing ends.
 	 * @param pokemon The Pokemon for sale.
 	 */
-	public PokemonListing(UUID sellerUuid, String sellerName, double price, long endTime, Pokemon pokemon) {
+	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {
 		this.id = UUID.randomUUID();
 		this.sellerUuid = sellerUuid;
 		this.sellerName = sellerName;
 		this.price = price;
-		this.endTime = endTime;
+		this.endTime = new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
 		this.pokemon = pokemon.saveToJSON(new JsonObject());
 	}
 

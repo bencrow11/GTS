@@ -7,6 +7,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,32 +39,45 @@ public class TimerProvider {
 	}
 
 	public void addTimer(PokemonListing listing) {
-		Timer timer = new Timer();
+		long timeDiff = listing.getEndTime() - new Date().getTime();
 
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				try {
-					PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(listing.getSellerUuid());
-					party.add(listing.getPokemon());
-				} catch (NoPokemonStoreException e) {
-					Gts.LOGGER.error("Could not return pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
-							".\nError: " + e.getMessage());
+		if (timeDiff > 0) {
+			Timer timer = new Timer();
+
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					Gts.listings.removePokemonListing(listing);
+					Gts.listings.addExpiredPokemonListing(listing);
 				}
-			}
-		}, 1000 * 20);
-		pokemonTimers.put(listing, timer);
+			}, timeDiff);
+			pokemonTimers.put(listing, timer);
+		} else {
+			Gts.listings.removePokemonListing(listing);
+			Gts.listings.addExpiredPokemonListing(listing);
+		}
 	}
 
 	public void addTimer(ItemListing listing) {
-		Timer timer = new Timer();
 
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				// TODO Make timers remove the listing once it's up.
-			}
-		}, 1000 * 20);
-		itemTimers.put(listing, timer);
+		long timeDiff = listing.getEndTime() - new Date().getTime();
+
+		if (timeDiff > 0) {
+			Timer timer = new Timer();
+
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					Gts.listings.removeItemListing(listing);
+					Gts.listings.addExpiredItemListing(listing);
+				}
+			}, timeDiff);
+			itemTimers.put(listing, timer);
+		} else {
+			Gts.listings.removeItemListing(listing);
+			Gts.listings.addExpiredItemListing(listing);
+		}
+
+
 	}
 }

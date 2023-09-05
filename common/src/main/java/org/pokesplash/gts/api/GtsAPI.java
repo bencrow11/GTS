@@ -5,6 +5,7 @@ import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
@@ -37,10 +38,10 @@ public abstract class GtsAPI {
 	 * @param listing The item listing to cancel.
 	 * @return true if the listing was successfully cancelled.
 	 */
-	public static boolean cancelListing(ItemListing listing) {
+	public static boolean cancelListing(ServerPlayer player, ItemListing listing) {
 		boolean success = Gts.listings.removeItemListing(listing);
-		// TODO return item to player.
 
+		player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
 		return success;
 	}
 
@@ -66,10 +67,9 @@ public abstract class GtsAPI {
 	 * @param listing The item listing to add.
 	 * @return true if the listing was successfully added.
 	 */
-	public static boolean addListing(ItemListing listing) {
+	public static boolean addListing(ServerPlayer player, ItemListing listing) {
 		boolean success = Gts.listings.addItemListing(listing);
-		// TODO Take item from player.
-
+		player.getInventory().removeItem(new ItemStack(listing.getItem(), listing.getAmount()));
 		return success;
 	}
 
@@ -150,7 +150,7 @@ public abstract class GtsAPI {
 		}
 
 		if (impactorSuccess) {
-			// TODO Give Item to buyer.
+			buyer.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
 		}
 
 		return listingsSuccess && impactorSuccess;

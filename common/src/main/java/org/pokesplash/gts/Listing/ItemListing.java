@@ -2,7 +2,9 @@ package org.pokesplash.gts.Listing;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.world.item.Item;
+import org.pokesplash.gts.Gts;
 
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -33,13 +35,13 @@ public class ItemListing {
 	 * @param endTime The time the listing ends.
 	 * @param item The item to sell.
 	 */
-	public ItemListing(UUID sellerUuid, String sellerName, double price, int amount, long endTime, Item item) {
+	public ItemListing(UUID sellerUuid, String sellerName, double price, int amount, Item item) {
 		this.id = UUID.randomUUID();
 		this.sellerUuid = sellerUuid;
 		this.sellerName = sellerName;
 		this.price = price;
 		this.amount = amount;
-		this.endTime = endTime;
+		this.endTime = new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
 		this.itemId = Item.getId(item);
 	}
 
