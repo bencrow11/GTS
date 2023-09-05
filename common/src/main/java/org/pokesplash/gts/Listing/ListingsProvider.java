@@ -1,7 +1,15 @@
 package org.pokesplash.gts.Listing;
 
+import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
+import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.google.gson.Gson;
+import dev.architectury.event.Event;
+import dev.architectury.event.events.common.PlayerEvent;
+import dev.architectury.registry.registries.forge.RegistriesImpl;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
@@ -253,6 +261,14 @@ public class ListingsProvider {
 		return writeToFile();
 	}
 
+	public List<PokemonListing> getExpiredPokemonListings(UUID playerId) {
+		return expiredPokemonListings.get(playerId);
+	}
+
+	public List<ItemListing> getExpiredItemListings(UUID playerId) {
+		return expiredItemListings.get(playerId);
+	}
+
 	/**
 	 * Method to write this object to the file.
 	 * @return true if the file was successfully written.
@@ -294,5 +310,32 @@ public class ListingsProvider {
 		for (ItemListing listing : itemListings) {
 			Gts.timers.addTimer(listing);
 		}
+	}
+
+	/**
+	 * Method used for when a player joins to return their expired listings.
+	 * @param player The player to return their expired listings to.
+	 */
+	public void playerJoinedEvent(ServerPlayer player) {
+
+			List<PokemonListing> expiredPokemon = getExpiredPokemonListings(player.getUUID());
+
+			for (PokemonListing listing : expiredPokemon) {
+				try {
+					PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player.getUUID());
+					party.add(listing.getPokemon());
+					removeExpiredPokemonListing(listing);
+				} catch (NoPokemonStoreException e) {
+					Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
+							".\nError: " + e.getMessage());
+				}
+
+			}
+
+			List<ItemListing> expiredItems = getExpiredItemListings(player.getUUID());
+
+			for (ItemListing listing : expiredItems) {
+				player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+			}
 	}
 }

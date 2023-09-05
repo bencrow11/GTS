@@ -32,7 +32,6 @@ public class ItemListing {
 	 * @param sellerName The name of the seller.
 	 * @param price The price the Pokemon is selling for.
 	 * @param amount The amount of items to list.
-	 * @param endTime The time the listing ends.
 	 * @param item The item to sell.
 	 */
 	public ItemListing(UUID sellerUuid, String sellerName, double price, int amount, Item item) {
@@ -42,7 +41,7 @@ public class ItemListing {
 		this.price = price;
 		this.amount = amount;
 		this.endTime = new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
-		this.itemId = Item.getId(item);
+		this.itemId = Item.getId(item); // TODO Get david to do something about nbt.
 	}
 
 	public UUID getId() {

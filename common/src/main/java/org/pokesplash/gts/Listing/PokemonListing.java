@@ -32,7 +32,6 @@ public class PokemonListing {
 	 * @param sellerUuid The UUID of the person selling the Pokemon.
 	 * @param sellerName The name of the seller.
 	 * @param price The price the Pokemon is selling for.
-	 * @param endTime The time the listing ends.
 	 * @param pokemon The Pokemon for sale.
 	 */
 	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {

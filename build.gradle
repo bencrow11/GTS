@@ -46,6 +46,10 @@ allprojects {
         }
 
         maven {
+            url "https://maven.fabricmc.net/net/fabricmc/fabric-api/fabric-api/"
+        }
+
+        maven {
             url = uri("https://cursemaven.com")
             content {
                 includeGroup("curse.maven")
