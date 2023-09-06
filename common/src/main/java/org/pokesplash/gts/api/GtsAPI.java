@@ -9,7 +9,10 @@ import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.util.ImpactorService;
+
+import java.util.UUID;
 
 /**
  * API for interacting with listings.
@@ -80,12 +83,17 @@ public abstract class GtsAPI {
 	 * @param listing The pokemon listing that is being sold.
 	 * @return true if the transaction was successful.
 	 */
-	public static boolean sale(ServerPlayer seller, ServerPlayer buyer, PokemonListing listing) {
+	public static boolean sale(UUID seller, UUID buyer, PokemonListing listing) {
 		boolean listingsSuccess = Gts.listings.removePokemonListing(listing);
-		Gts.history.getPlayerHistory(seller.getUUID()).addPokemonListing(listing);
 
-		Account sellerAccount = ImpactorService.getAccount(seller.getUUID());
-		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
+		if (Gts.history.getPlayerHistory(seller) == null) {
+			Gts.history.updatePlayerHistory(new PlayerHistory(seller));
+		}
+			Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
+
+
+		Account sellerAccount = ImpactorService.getAccount(seller);
+		Account buyerAccount = ImpactorService.getAccount(buyer);
 
 		boolean impactorSuccess = ImpactorService.transfer(buyerAccount, sellerAccount, listing.getPrice());
 
@@ -107,7 +115,7 @@ public abstract class GtsAPI {
 
 		if (impactorSuccess) {
 			try {
-				PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer.getUUID());
+				PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
 				party.add(listing.getPokemon());
 			} catch (NoPokemonStoreException e) {
 				Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
@@ -124,11 +132,15 @@ public abstract class GtsAPI {
 	 * @param listing The item listing that is being sold.
 	 * @return true if the transaction was successful.
 	 */
-	public static boolean sale(ServerPlayer seller, ServerPlayer buyer, ItemListing listing) {
+	public static boolean sale(UUID seller, ServerPlayer buyer, ItemListing listing) {
 		boolean listingsSuccess = Gts.listings.removeItemListing(listing);
-		Gts.history.getPlayerHistory(seller.getUUID()).addItemListing(listing);
 
-		Account sellerAccount = ImpactorService.getAccount(seller.getUUID());
+		if (Gts.history.getPlayerHistory(seller) == null) {
+			Gts.history.updatePlayerHistory(new PlayerHistory(seller));
+		}
+		Gts.history.getPlayerHistory(seller).addItemListing(listing);
+
+		Account sellerAccount = ImpactorService.getAccount(seller);
 		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
 
 		boolean impactorSuccess = ImpactorService.transfer(buyerAccount, sellerAccount, listing.getPrice());

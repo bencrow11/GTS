@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -167,4 +168,59 @@ public abstract class Utils {
 			return false;
 		}
 	}
+
+	public static String parseLongDate(long time) {
+		// 1000 ms in 1 s
+		// 60s in 1 m
+		// 60m in 1 h
+		// 24h in 1 d
+		long second = 1000;
+		long minute = second * 60;
+		long hour = minute * 60;
+		long day = hour * 24;
+
+		long timeLeft = time;
+		String output = "";
+
+		if (timeLeft > day) {
+			output += (time - (time % day)) / day + "d ";
+			timeLeft = timeLeft % day;
+		}
+
+		if (timeLeft > hour) {
+			output += (timeLeft - (timeLeft % hour)) / hour + "h ";
+			timeLeft = timeLeft % hour;
+		}
+
+		if (timeLeft > minute) {
+			output += (timeLeft - (timeLeft % minute)) / minute + "m ";
+			timeLeft = timeLeft % minute;
+		}
+
+		if (timeLeft > second) {
+			output += (timeLeft - (timeLeft % second)) / second + "s ";
+			timeLeft = timeLeft % second;
+		}
+
+		return output;
+	}
+
+	public static String capitaliseFirst(String message) {
+
+		if (message.contains("[") || message.contains("]")) {
+			return message.replaceAll("\\[|\\]", "");
+		}
+
+		if (message.contains("_")) {
+			String[] messages = message.split("_");
+			String output = "";
+			for (String msg : messages) {
+				output += capitaliseFirst(msg);
+			}
+			return output;
+		}
+
+		return message.substring(0, 1).toUpperCase() + message.substring(1).toLowerCase();
+	}
+
 }

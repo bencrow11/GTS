@@ -34,7 +34,7 @@ public class GtsCommand extends BaseCommand {
 
 		ServerPlayer sender = context.getSource().getPlayer();
 
-		Page page = new PokemonListings("Gts").getPage();
+		Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
 
 		UIManager.openUIForcefully(sender, page);
 

@@ -320,22 +320,25 @@ public class ListingsProvider {
 
 			List<PokemonListing> expiredPokemon = getExpiredPokemonListings(player.getUUID());
 
-			for (PokemonListing listing : expiredPokemon) {
-				try {
-					PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player.getUUID());
-					party.add(listing.getPokemon());
-					removeExpiredPokemonListing(listing);
-				} catch (NoPokemonStoreException e) {
-					Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
-							".\nError: " + e.getMessage());
+			if (expiredPokemon != null) {
+				for (PokemonListing listing : expiredPokemon) {
+					try {
+						PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player.getUUID());
+						party.add(listing.getPokemon());
+						removeExpiredPokemonListing(listing);
+					} catch (NoPokemonStoreException e) {
+						Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
+								".\nError: " + e.getMessage());
+					}
 				}
-
 			}
 
 			List<ItemListing> expiredItems = getExpiredItemListings(player.getUUID());
 
-			for (ItemListing listing : expiredItems) {
-				player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+			if (expiredItems != null) {
+				for (ItemListing listing : expiredItems) {
+					player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+				}
 			}
 	}
 }

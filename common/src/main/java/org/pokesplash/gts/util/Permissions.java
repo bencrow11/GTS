@@ -20,7 +20,8 @@ public class Permissions {
 	public Permissions() {
 		permissions = new HashMap<>();
 		// Add you permissions here.
-		createPermission("GtsCommand", "command.gts.user.open", 1);
+		createPermission("GtsCommand", "gts.command.user.gts", 1);
+		createPermission("GtsMod", "gts.manage", 2);
 	}
 
 	/**
