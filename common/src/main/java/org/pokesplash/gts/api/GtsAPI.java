@@ -9,8 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.history.HistoryProvider;
-import org.pokesplash.gts.history.PlayerHistory;
+import org.pokesplash.gts.expired.PlayerExpired;
 import org.pokesplash.gts.util.ImpactorService;
 
 import java.util.UUID;
@@ -81,7 +80,7 @@ public abstract class GtsAPI {
 		boolean listingsSuccess = Gts.listings.removePokemonListing(listing);
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			Gts.history.updatePlayerHistory(new PlayerHistory(seller));
+			Gts.history.updatePlayerHistory(new PlayerExpired(seller));
 		}
 			Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
 
@@ -130,7 +129,7 @@ public abstract class GtsAPI {
 		boolean listingsSuccess = Gts.listings.removeItemListing(listing);
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			Gts.history.updatePlayerHistory(new PlayerHistory(seller));
+			Gts.history.updatePlayerHistory(new PlayerExpired(seller));
 		}
 		Gts.history.getPlayerHistory(seller).addItemListing(listing);
 

@@ -1,4 +1,4 @@
-package org.pokesplash.gts.history;
+package org.pokesplash.gts.expired;
 
 import com.google.gson.Gson;
 import org.pokesplash.gts.Gts;
@@ -12,16 +12,16 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Class that provides and controls player history.
  */
-public class HistoryProvider {
+public class ExpiredProvider {
 	// path the player history are written to.
 	private String filePath = "/config/gts/history/";
 	// Storage of player history.
-	private HashMap<UUID, PlayerHistory> history;
+	private HashMap<UUID, PlayerExpired> history;
 
 	/**
 	 * Constructor to create the history class.
 	 */
-	public HistoryProvider() {
+	public ExpiredProvider() {
 		history = new HashMap<>();
 	}
 
@@ -30,34 +30,34 @@ public class HistoryProvider {
 	 * @param player The player to get the history of.
 	 * @return The history of the player, or null.
 	 */
-	public PlayerHistory getPlayerHistory(UUID player) {
+	public PlayerExpired getPlayerHistory(UUID player) {
 		return history.get(player);
 	}
 
 	/**
 	 * Method to update player history. This method doesn't need to be used as
 	 * editing the PlayerHistory object automatically calls this method.
-	 * @param playerHistory The new PlayerHistory object.
+	 * @param playerExpired The new PlayerHistory object.
 	 */
-	public void updatePlayerHistory(PlayerHistory playerHistory) {
-		history.put(playerHistory.getPlayer(), playerHistory);
-		if (!write(playerHistory)) {
-			Gts.LOGGER.error("Player History for player " + playerHistory.getPlayer() + " could not be written to " +
+	public void updatePlayerHistory(PlayerExpired playerExpired) {
+		history.put(playerExpired.getPlayer(), playerExpired);
+		if (!write(playerExpired)) {
+			Gts.LOGGER.error("Player History for player " + playerExpired.getPlayer() + " could not be written to " +
 					"file.");
 		}
 	}
 
 	/**
 	 * Method to write a player history to file.
-	 * @param playerHistory The PlayerHistory object to write.
+	 * @param playerExpired The PlayerHistory object to write.
 	 * @return true if the write was successful.
 	 */
-	private boolean write(PlayerHistory playerHistory) {
+	private boolean write(PlayerExpired playerExpired) {
 		Gson gson = Utils.newGson();
 
-		CompletableFuture<Boolean> future = Utils.writeFileAsync(filePath, playerHistory.getPlayer() +
+		CompletableFuture<Boolean> future = Utils.writeFileAsync(filePath, playerExpired.getPlayer() +
 						".json",
-				gson.toJson(playerHistory));
+				gson.toJson(playerExpired));
 
 		return future.join();
 	}
@@ -77,7 +77,7 @@ public class HistoryProvider {
 		for (String file : list) {
 			Utils.readFileAsync(filePath, file, el -> {
 				Gson gson = Utils.newGson();
-				PlayerHistory player = gson.fromJson(el, PlayerHistory.class);
+				PlayerExpired player = gson.fromJson(el, PlayerExpired.class);
 				history.put(player.getPlayer(), player);
 			});
 		}

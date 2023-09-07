@@ -1,18 +1,23 @@
 package org.pokesplash.gts.command.subcommand;
 
+import ca.landonjw.gooeylibs2.api.UIManager;
+import ca.landonjw.gooeylibs2.api.page.Page;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import org.pokesplash.gts.UI.ManageListings;
+import org.pokesplash.gts.UI.PokemonListings;
 import org.pokesplash.gts.util.Subcommand;
 import org.pokesplash.gts.util.Utils;
 
-public class ListSubcommand extends Subcommand {
+public class Manage extends Subcommand {
 
-	public ListSubcommand() {
-		super("This is the subcommand usage.");
+	public Manage() {
+		super("§9Usage:\n§3- gts manage");
 	}
 
 	/**
@@ -21,16 +26,8 @@ public class ListSubcommand extends Subcommand {
 	 */
 	@Override
 	public LiteralCommandNode<CommandSourceStack> build() {
-		return Commands.literal("sell")
-				.executes(this::showUsage)
-				.then(Commands.argument("player", StringArgumentType.string())
-						.suggests((ctx, builder) -> {
-							for (String name : ctx.getSource().getOnlinePlayerNames()) {
-								builder.suggest(name);
-							}
-							return builder.buildFuture();
-						})
-						.executes(this::run))
+		return Commands.literal("manage")
+				.executes(this::run)
 				.build();
 	}
 
@@ -42,8 +39,16 @@ public class ListSubcommand extends Subcommand {
 	@Override
 	public int run(CommandContext<CommandSourceStack> context) {
 
-		context.getSource().sendSystemMessage(Component.literal(Utils.formatMessage("subcommand ran!",
-				context.getSource().isPlayer())));
+		if (!context.getSource().isPlayer()) {
+			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			return 1;
+		}
+
+		ServerPlayer sender = context.getSource().getPlayer();
+
+		Page page = new ManageListings().getPage(sender.getUUID());
+
+		UIManager.openUIForcefully(sender, page);
 
 		return 1;
 	}

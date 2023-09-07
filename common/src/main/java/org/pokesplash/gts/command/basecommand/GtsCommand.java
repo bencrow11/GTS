@@ -8,7 +8,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.PokemonListings;
-import org.pokesplash.gts.command.subcommand.ListSubcommand;
+import org.pokesplash.gts.command.subcommand.Expired;
+import org.pokesplash.gts.command.subcommand.Manage;
 import org.pokesplash.gts.util.BaseCommand;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class GtsCommand extends BaseCommand {
 
 	public GtsCommand() {
 		super("gts", Arrays.asList("gts"),
-				Gts.permissions.getPermission("GtsCommand"), Arrays.asList(new ListSubcommand()));
+				Gts.permissions.getPermission("GtsCommand"), Arrays.asList(new Manage(), new Expired()));
 	}
 
 	// Runs when the base command is run with no subcommands.
