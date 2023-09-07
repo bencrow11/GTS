@@ -162,6 +162,11 @@ public abstract class GtsAPI {
 		return listingsSuccess && impactorSuccess;
 	}
 
+	/**
+	 * Method to return a Pokemon to a player
+	 * @param player The player to return the pokemon to
+	 * @param listing The listing to return to the player.
+	 */
 	public static void returnListing(ServerPlayer player, PokemonListing listing) {
 		try {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player.getUUID());
@@ -173,6 +178,11 @@ public abstract class GtsAPI {
 		}
 	}
 
+	/**
+	 * Method to return an item to a player
+	 * @param player The player to return the item to
+	 * @param listing The item to be returned.
+	 */
 	public static void returnListing(ServerPlayer player, ItemListing listing) {
 		player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
 		Gts.listings.removeExpiredItemListing(listing);

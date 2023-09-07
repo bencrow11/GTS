@@ -8,6 +8,5 @@ public class GtsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         Gts.init();
-        ServerPlayConnectionEvents.JOIN.register(new PlayerJoinEvent());
     }
 }

@@ -12,6 +12,5 @@ public class GtsForge {
     }
 
     private void PlayerJoinEvent(PlayerEvent.PlayerLoggedInEvent event) {
-        Gts.listings.playerJoinedEvent((ServerPlayer) event.getEntity());
     }
 }
