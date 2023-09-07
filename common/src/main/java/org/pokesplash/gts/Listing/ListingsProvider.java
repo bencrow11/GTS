@@ -318,6 +318,8 @@ public class ListingsProvider {
 	 */
 	public void playerJoinedEvent(ServerPlayer player) {
 
+
+			// TODO make into its own UI that the player can redeem from.
 			List<PokemonListing> expiredPokemon = getExpiredPokemonListings(player.getUUID());
 
 			if (expiredPokemon != null) {
@@ -338,6 +340,7 @@ public class ListingsProvider {
 			if (expiredItems != null) {
 				for (ItemListing listing : expiredItems) {
 					player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+					removeExpiredItemListing(listing);
 				}
 			}
 	}

@@ -2,41 +2,35 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
-import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
-import ca.landonjw.gooeylibs2.api.button.PlaceholderButton;
-import ca.landonjw.gooeylibs2.api.button.linked.LinkType;
-import ca.landonjw.gooeylibs2.api.button.linked.LinkedPageButton;
-import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
-import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
-import com.cobblemon.mod.common.CobblemonItems;
 import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 /**
- * UI of the Item Listings page.
+ * UI of the Expired Pokemon Listing page.
  */
-public class SinglePokemonListing {
+public class ExpiredPokemonListing {
 
 	/**
 	 * Method that returns the page.
 	 * @return SinglePokemonListing page.
 	 */
-	public Page getPage(ServerPlayer viewer, PokemonListing listing) {
+	public Page getPage(PokemonListing listing) {
 
 		Collection<String> lore = new ArrayList<>();
 
@@ -51,14 +45,14 @@ public class SinglePokemonListing {
 				.lore(lore)
 				.build();
 
-		Button purchase = GooeyButton.builder()
+		Button receiveListing = GooeyButton.builder()
 				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
-				.title("§2Confirm Purchase")
+				.title("§2Receive Listing")
 				.onClick((action) -> {
 					UIManager.closeUI(action.getPlayer());
-					GtsAPI.sale(listing.getSellerUuid(), action.getPlayer().getUUID(), listing);
+					GtsAPI.returnListing(action.getPlayer(), listing);
 
-					String message = Gts.language.getPurchase_pokemon_message_buyer().replaceAll("\\{pokemon\\}",
+					String message = Gts.language.getReturn_pokemon_listing().replaceAll("\\{pokemon\\}",
 							listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
 							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
 							action.getPlayer().getName().getString());
@@ -71,22 +65,8 @@ public class SinglePokemonListing {
 				.title("§cCancel Purchase")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
+					Page page = new ExpiredListings().getPage(action.getPlayer().getUUID());
 					UIManager.openUIForcefully(sender, page);
-				})
-				.build();
-
-		Button removeListing = GooeyButton.builder()
-				.display(new ItemStack(Items.ORANGE_STAINED_GLASS_PANE))
-				.title("§6Remove Listing")
-				.onClick((action) -> {
-					GtsAPI.cancelListing(listing);
-					String message = Gts.language.getCancel_pokemon_listing().replaceAll("\\{pokemon\\}",
-							listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
-							action.getPlayer().getName().getString());
-
-					action.getPlayer().sendSystemMessage(Component.literal(message));
 				})
 				.build();
 
@@ -96,19 +76,10 @@ public class SinglePokemonListing {
 
 		ChestTemplate.Builder template = ChestTemplate.builder(3)
 				.fill(filler)
+				.set(11, receiveListing)
 				.set(13, pokemon)
 				.set(15, cancel);
 
-		if (viewer.getUUID().equals(listing.getSellerUuid())) {
-			template.set(11, removeListing);
-		} else {
-			template.set(11, purchase);
-		}
-
-		if (Gts.permissions.hasPermission(viewer, Gts.permissions.getPermission("GtsMod"))
-		&& !viewer.getUUID().equals(listing.getSellerUuid())) {
-			template.set(22, removeListing);
-		}
 
 		GooeyPage page = GooeyPage.builder()
 				.template(template.build())

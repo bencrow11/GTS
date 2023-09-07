@@ -2,26 +2,22 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
+import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.button.PlaceholderButton;
 import ca.landonjw.gooeylibs2.api.button.linked.LinkType;
 import ca.landonjw.gooeylibs2.api.button.linked.LinkedPageButton;
 import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
-import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
-import ca.landonjw.gooeylibs2.api.template.Template;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.CobblemonItems;
-import com.cobblemon.mod.common.api.moves.Move;
-import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import com.cobblemon.mod.common.item.PokemonItem;
-import com.google.gson.JsonObject;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.lwjgl.system.linux.Stat;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.util.Utils;
@@ -29,59 +25,26 @@ import org.pokesplash.gts.util.Utils;
 import java.util.*;
 
 /**
- * UI of the Pokemon Listings page.
+ * UI of the Manage Listings page.
  */
-public class PokemonListings {
-
-	public enum SORT {
-		DATE,
-		NAME,
-		PRICE,
-		NONE
-	}
+public class ExpiredListings {
 
 	/**
 	 * Method that returns the page.
 	 * @return Pokemon Listings page.
 	 */
-	public Page getPage(SORT sort) {
+	public Page getPage(UUID owner) {
 
-		List<PokemonListing> pkmListings = Gts.listings.getPokemonListings();
+		List<PokemonListing> pkmListings = Gts.listings.getExpiredPokemonListings(owner);
+		List<ItemListing> itmListings = Gts.listings.getExpiredItemListings(owner);
 
-		if (sort.equals(SORT.PRICE)) {
-			pkmListings.sort(Comparator.comparingDouble(PokemonListing::getPrice));
-		} else if (sort.equals(SORT.DATE)) {
-			pkmListings.sort(Comparator.comparingLong(PokemonListing::getEndTime));
-		} else if (sort.equals(SORT.NAME)) {
-			pkmListings.sort(Comparator.comparing(o -> o.getPokemon().getSpecies().toString()));
-		}
-
-		Button sortByPriceButton = GooeyButton.builder()
-				.display(new ItemStack(Items.GOLD_NUGGET))
-				.title("§eSort By Price")
+		Button seePokemonListings = GooeyButton.builder()
+				.display(new ItemStack(CobblemonItems.POKE_BALL.get()))
+				.hideFlags(FlagType.All)
+				.title("§9See Pokemon Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(SORT.PRICE);
-					UIManager.openUIForcefully(sender, page);
-				})
-				.build();
-
-		Button sortByNewestButton = GooeyButton.builder()
-				.display(new ItemStack(Items.CLOCK))
-				.title("§3Sort By Newest")
-				.onClick((action) -> {
-					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(SORT.DATE);
-					UIManager.openUIForcefully(sender, page);
-				})
-				.build();
-
-		Button sortByNameButton = GooeyButton.builder()
-				.display(new ItemStack(Items.OAK_SIGN))
-				.title("§6Sort By Pokemon")
-				.onClick((action) -> {
-					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(SORT.NAME);
+					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -106,6 +69,7 @@ public class PokemonListings {
 				})
 				.build();
 
+
 		LinkedPageButton nextPage = LinkedPageButton.builder()
 				.display(new ItemStack(Items.ARROW))
 				.title("§7Next Page")
@@ -122,25 +86,51 @@ public class PokemonListings {
 		PlaceholderButton placeholder = new PlaceholderButton();
 
 		List<Button> pokemonButtons = new ArrayList<>();
-		for (PokemonListing listing : Gts.listings.getPokemonListings()) {
-			Collection<String> lore = new ArrayList<>();
+		if (pkmListings != null) {
+			for (PokemonListing listing : pkmListings) {
+				Collection<String> lore = new ArrayList<>();
 
-			lore.add("§9Seller: §b" + listing.getSellerName());
-			lore.add("§9Price: §b" + listing.getPrice());
-			lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
-			lore.addAll(PokemonInfo.parse(listing));
+				lore.add("§9Seller: §b" + listing.getSellerName());
+				lore.add("§9Price: §b" + listing.getPrice());
+				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+				lore.addAll(PokemonInfo.parse(listing));
 
-			Button button = GooeyButton.builder()
-					.display(PokemonItem.from(listing.getPokemon(), 1))
-					.title("§3" + Utils.capitaliseFirst(listing.getPokemon().getSpecies().toString()))
-					.lore(lore)
-					.onClick((action) -> {
-						ServerPlayer sender = action.getPlayer();
-						Page page = new SinglePokemonListing().getPage(sender, listing);
-						UIManager.openUIForcefully(sender, page);
-					})
-					.build();
-			pokemonButtons.add(button);
+				Button button = GooeyButton.builder()
+						.display(PokemonItem.from(listing.getPokemon(), 1))
+						.title("§3" + Utils.capitaliseFirst(listing.getPokemon().getSpecies().toString()))
+						.lore(lore)
+						.onClick((action) -> {
+							ServerPlayer sender = action.getPlayer();
+							Page page = new ExpiredPokemonListing().getPage(listing);
+							UIManager.openUIForcefully(sender, page);
+						})
+						.build();
+				pokemonButtons.add(button);
+			}
+		}
+
+
+		List<Button> itemButtons = new ArrayList<>();
+		if (itmListings != null) {
+			for (ItemListing listing : itmListings) {
+				Collection<String> lore = new ArrayList<>();
+
+				lore.add("§9Seller: §b" + listing.getSellerName());
+				lore.add("§9Price: §b" + listing.getPrice());
+				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+
+				Button button = GooeyButton.builder()
+						.display(new ItemStack(listing.getItem()))
+						.title("§3" + Utils.capitaliseFirst(new ItemStack(listing.getItem()).getDisplayName().getString()))
+						.lore(lore)
+						.onClick((action) -> {
+							ServerPlayer sender = action.getPlayer();
+							Page page = new ExpiredItemListing().getPage(listing);
+							UIManager.openUIForcefully(sender, page);
+						})
+						.build();
+				itemButtons.add(button);
+			}
 		}
 
 		Button filler = GooeyButton.builder()
@@ -150,17 +140,15 @@ public class PokemonListings {
 		ChestTemplate template = ChestTemplate.builder(6)
 				.rectangle(0, 0, 5, 9, placeholder)
 				.fill(filler)
-				.set(47, sortByPriceButton)
-				.set(48, sortByNewestButton)
-				.set(49, sortByNameButton)
+				.set(48, seePokemonListings)
+				.set(49, manageListings)
 				.set(50, seeItemListings)
-				.set(51, manageListings)
 				.set(53, nextPage)
 				.set(45, previousPage)
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
-		page.setTitle("§3" + Gts.language.getTitle() + " - Pokemon");
+		page.setTitle("§3" + Gts.language.getTitle() + " - Expired");
 
 		setPageTitle(page);
 
@@ -170,7 +158,7 @@ public class PokemonListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle() + " - Pokemon");
+			next.setTitle("§3" + Gts.language.getTitle() + " - Expired");
 			setPageTitle(next);
 		}
 	}

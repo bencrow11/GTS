@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.history.HistoryProvider;
 import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.util.ImpactorService;
 
@@ -26,13 +27,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean cancelListing(PokemonListing listing) {
 		boolean success = Gts.listings.removePokemonListing(listing);
-		try {
-			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(listing.getSellerUuid());
-			party.add(listing.getPokemon());
-		} catch (NoPokemonStoreException e) {
-			Gts.LOGGER.error("Could not return pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
-					".\nError: " + e.getMessage());
-		}
+		Gts.history.getPlayerHistory(listing.getSellerUuid()).addPokemonListing(listing);
 		return success;
 	}
 
@@ -41,10 +36,9 @@ public abstract class GtsAPI {
 	 * @param listing The item listing to cancel.
 	 * @return true if the listing was successfully cancelled.
 	 */
-	public static boolean cancelListing(ServerPlayer player, ItemListing listing) {
+	public static boolean cancelListing(ItemListing listing) {
 		boolean success = Gts.listings.removeItemListing(listing);
-
-		player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+		Gts.history.getPlayerHistory(listing.getSellerUuid()).addItemListing(listing);
 		return success;
 	}
 
@@ -166,5 +160,21 @@ public abstract class GtsAPI {
 		}
 
 		return listingsSuccess && impactorSuccess;
+	}
+
+	public static void returnListing(ServerPlayer player, PokemonListing listing) {
+		try {
+			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player.getUUID());
+			party.add(listing.getPokemon());
+			Gts.listings.removeExpiredPokemonListing(listing);
+		} catch (NoPokemonStoreException e) {
+			Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
+					".\nError: " + e.getMessage());
+		}
+	}
+
+	public static void returnListing(ServerPlayer player, ItemListing listing) {
+		player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+		Gts.listings.removeExpiredItemListing(listing);
 	}
 }

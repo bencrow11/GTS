@@ -98,7 +98,9 @@ public class ItemListings {
 				.display(new ItemStack(CobblemonItems.SACHET.get()))
 				.title("§dManage Listings")
 				.onClick((action) -> {
-					System.out.println("Manage listings");
+					ServerPlayer sender = action.getPlayer();
+					Page page = new ManageListings().getPage(action.getPlayer().getUUID());
+					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
 
@@ -129,6 +131,11 @@ public class ItemListings {
 					.display(new ItemStack(listing.getItem()))
 					.title("§3" + Utils.capitaliseFirst(new ItemStack(listing.getItem()).getDisplayName().getString()))
 					.lore(lore)
+					.onClick((action) -> {
+						ServerPlayer sender = action.getPlayer();
+						Page page = new SingleItemListing().getPage(sender, listing);
+						UIManager.openUIForcefully(sender, page);
+					})
 					.build();
 			itemButtons.add(button);
 		}
