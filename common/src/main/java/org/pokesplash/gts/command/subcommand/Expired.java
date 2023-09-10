@@ -24,7 +24,7 @@ public class Expired extends Subcommand {
 	 */
 	@Override
 	public LiteralCommandNode<CommandSourceStack> build() {
-		return Commands.literal("manage")
+		return Commands.literal("expired")
 				.executes(this::run)
 				.build();
 	}

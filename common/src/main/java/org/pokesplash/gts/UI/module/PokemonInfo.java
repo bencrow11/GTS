@@ -14,7 +14,13 @@ public abstract class PokemonInfo {
 		Collection<String> lore = new ArrayList<>();
 
 		lore.add("§2Nature: §a" + Utils.capitaliseFirst(listing.getPokemon().getNature().getName().toString().split(":")[1]));
-		lore.add("§2Ability: §a" + Utils.capitaliseFirst(listing.getPokemon().getAbility().getName()));
+
+		if (Utils.isHA(listing.getPokemon())) {
+			lore.add("§2Ability: §a" + Utils.capitaliseFirst(listing.getPokemon().getAbility().getName()) + " §b(HA)");
+		} else {
+			lore.add("§2Ability: §a" + Utils.capitaliseFirst(listing.getPokemon().getAbility().getName()));
+		}
+
 		lore.add("§2Level: §a" + listing.getPokemon().getLevel());
 		lore.add("§2Gender: §a" + Utils.capitaliseFirst(listing.getPokemon().getGender().toString()));
 		lore.add("§2Shiny: " + (listing.getPokemon().getShiny() ? "§eYes" : "§cNo"));

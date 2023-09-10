@@ -1,5 +1,7 @@
 package org.pokesplash.gts.util;
 
+import com.cobblemon.mod.common.api.Priority;
+import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.kyori.adventure.text.NBTComponent;
@@ -225,5 +227,15 @@ public abstract class Utils {
 		}
 
 		return message.substring(0, 1).toUpperCase() + message.substring(1).toLowerCase();
+	}
+
+	public static boolean isHA(Pokemon pokemon) {
+		if (pokemon.getForm().getAbilities().getMapping().get(Priority.LOW).size() != 1) {
+			return false;
+		}
+		String ability =
+				pokemon.getForm().getAbilities().getMapping().get(Priority.LOW).get(0).getTemplate().getName();
+
+		return pokemon.getAbility().getName().equalsIgnoreCase(ability);
 	}
 }

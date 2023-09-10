@@ -2,6 +2,7 @@ package org.pokesplash.gts.api;
 
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
+import com.cobblemon.mod.common.api.storage.party.PartyPosition;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,16 +47,25 @@ public abstract class GtsAPI {
 	 * @param listing The pokemon listing to add.
 	 * @return true if the listing was successfully added.
 	 */
-	public static boolean addListing(PokemonListing listing) {
+	public static boolean addListing(PokemonListing listing, ServerPlayer player, int slot) {
 		boolean success = Gts.listings.addPokemonListing(listing);
-		try {
-			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(listing.getSellerUuid());
-			party.remove(listing.getPokemon());
-		} catch (NoPokemonStoreException e) {
-			Gts.LOGGER.error("Could not take pokemon " + listing.getPokemon().getSpecies() + " from player: " + listing.getSellerName() +
-					".\nError: " + e.getMessage());
+		PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
+		boolean removeSuccess = party.remove(new PartyPosition(slot));
+
+		if (!success || !removeSuccess) {
+			Gts.LOGGER.error("Could not list pokemon " + listing.getPokemon().getSpecies() + " for player: " + player.getUUID());
+
+			if (success) {
+				Gts.listings.removePokemonListing(listing);
+			}
+
+			if (removeSuccess) {
+				party.add(listing.getPokemon());
+			}
+			return false;
 		}
-		return success;
+
+		return true;
 	}
 
 	/**
@@ -109,7 +119,7 @@ public abstract class GtsAPI {
 		if (impactorSuccess) {
 			try {
 				PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
-				party.add(listing.getPokemon());
+				party.add(listing.getPokemon()); // TODO Fix
 			} catch (NoPokemonStoreException e) {
 				Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
 						".\nError: " + e.getMessage());
@@ -167,14 +177,9 @@ public abstract class GtsAPI {
 	 * @param listing The listing to return to the player.
 	 */
 	public static void returnListing(ServerPlayer player, PokemonListing listing) {
-		try {
-			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player.getUUID());
-			party.add(listing.getPokemon());
-			Gts.listings.removeExpiredPokemonListing(listing);
-		} catch (NoPokemonStoreException e) {
-			Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
-					".\nError: " + e.getMessage());
-		}
+		PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
+		party.add(listing.getPokemon()); // TODO Fix
+		Gts.listings.removeExpiredPokemonListing(listing);
 	}
 
 	/**
