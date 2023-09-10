@@ -65,7 +65,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean addListing(ServerPlayer player, ItemListing listing) {
 		boolean success = Gts.listings.addItemListing(listing);
-		player.getInventory().removeItem(new ItemStack(listing.getItem(), listing.getAmount()));
+		player.getInventory().removeItem(listing.getItem());
 		return success;
 	}
 
@@ -155,7 +155,7 @@ public abstract class GtsAPI {
 		}
 
 		if (impactorSuccess) {
-			buyer.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+			buyer.getInventory().add(listing.getItem());
 		}
 
 		return listingsSuccess && impactorSuccess;
@@ -183,7 +183,7 @@ public abstract class GtsAPI {
 	 * @param listing The item to be returned.
 	 */
 	public static void returnListing(ServerPlayer player, ItemListing listing) {
-		player.getInventory().add(new ItemStack(listing.getItem(), listing.getAmount()));
+		player.getInventory().add(listing.getItem());
 		Gts.listings.removeExpiredItemListing(listing);
 	}
 }

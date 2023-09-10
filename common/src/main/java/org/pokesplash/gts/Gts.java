@@ -1,8 +1,15 @@
 package org.pokesplash.gts;
 
+import com.cobblemon.mod.common.util.adapters.NbtCompoundAdapter;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
@@ -42,13 +49,12 @@ public class Gts
 			@Override
 			public void run() {
 //				for (ItemListing listing : listings.getItemListings()) {
-//					System.out.println(new ItemStack(listing.getItem()).toString());
-//				}
-//				for (int x=0; x<100; x++) {
-//					listings.addItemListing(new ItemListing(UUID.randomUUID(), "bencrow11", x+10, x,
-//							Item.byId(x + 100)));
+//					System.out.println(listing.getItem().getDisplayName().getString());
+//					System.out.println(listing.getItem().getCount());
 //				}
 			}
-		}, 1000 * 30);
+		}, 1000 * 20);
+
+
 	}
 }

@@ -40,8 +40,8 @@ public class SingleItemListing {
 		lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 		Button pokemon = GooeyButton.builder()
-				.display(new ItemStack(listing.getItem()))
-				.title("§3" + Utils.capitaliseFirst(new ItemStack(listing.getItem()).getDisplayName().getString()))
+				.display(listing.getItem())
+				.title("§3" + Utils.capitaliseFirst(listing.getItem().getDisplayName().getString()))
 				.lore(lore)
 				.build();
 
@@ -53,7 +53,7 @@ public class SingleItemListing {
 					GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
 					String message = Gts.language.getPurchase_item_message_buyer().replaceAll("\\{item\\}",
-							Utils.capitaliseFirst(new ItemStack(listing.getItem()).getDisplayName().getString())).replaceAll("\\{seller\\}",
+							Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
 							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));
@@ -76,7 +76,7 @@ public class SingleItemListing {
 				.onClick((action) -> {
 					GtsAPI.cancelListing(listing);
 					String message = Gts.language.getCancel_item_listing().replaceAll("\\{item\\}",
-							Utils.capitaliseFirst(new ItemStack(listing.getItem()).getDisplayName().getString())).replaceAll("\\{seller\\}",
+							Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
 							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));

@@ -120,8 +120,8 @@ public class ExpiredListings {
 				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 				Button button = GooeyButton.builder()
-						.display(new ItemStack(listing.getItem()))
-						.title("§3" + Utils.capitaliseFirst(new ItemStack(listing.getItem()).getDisplayName().getString()))
+						.display(listing.getItem())
+						.title("§3" + Utils.capitaliseFirst(listing.getItem().getDisplayName().getString()))
 						.lore(lore)
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
