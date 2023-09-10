@@ -291,9 +291,26 @@ public class ListingsProvider {
 			CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/", "listings.json", el -> {
 				Gson gson = Utils.newGson();
 				ListingsProvider data = gson.fromJson(el, ListingsProvider.class);
-				pokemonListings = data.getPokemonListings();
-				itemListings = data.getItemListings();
+
+				for (PokemonListing listing : data.getPokemonListings()) {
+					if (listing.getEndTime() > new Date().getTime()) {
+						pokemonListings.add(listing);
+						Gts.timers.addTimer(listing);
+					} else {
+						addExpiredPokemonListing(listing);
+					}
+				}
+
+				for (ItemListing listing : data.getItemListings()) {
+					if (listing.getEndTime() > new Date().getTime()) {
+						itemListings.add(listing);
+						Gts.timers.addTimer(listing);
+					} else {
+						addExpiredItemListing(listing);
+					}
+				}
 			});
+
 
 			if (!future.join()) {
 				throw new Exception();
@@ -301,14 +318,6 @@ public class ListingsProvider {
 
 		} catch (Exception e) {
 			Gts.LOGGER.error("Unable to load listings into memory for " + Gts.MOD_ID + ". Does the file exist?");
-		}
-
-		for (PokemonListing listing : pokemonListings) {
-			Gts.timers.addTimer(listing);
-		}
-
-		for (ItemListing listing : itemListings) {
-			Gts.timers.addTimer(listing);
 		}
 	}
 }

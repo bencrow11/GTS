@@ -1,6 +1,9 @@
 package org.pokesplash.gts;
 
 import dev.architectury.event.events.common.CommandRegistrationEvent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
@@ -13,6 +16,7 @@ import org.pokesplash.gts.util.Permissions;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
 public class Gts
 {
@@ -37,9 +41,12 @@ public class Gts
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-//				for (int x=0; x < 100; x++) {
-//					listings.addItemListing(new ItemListing(UUID.randomUUID(), "bencrow11", 100 + x,
-//							x, Item.byId(100 + x)));
+//				for (ItemListing listing : listings.getItemListings()) {
+//					System.out.println(new ItemStack(listing.getItem()).toString());
+//				}
+//				for (int x=0; x<100; x++) {
+//					listings.addItemListing(new ItemListing(UUID.randomUUID(), "bencrow11", x+10, x,
+//							Item.byId(x + 100)));
 //				}
 			}
 		}, 1000 * 30);

@@ -7,10 +7,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class TimerProvider {
 	private HashMap<PokemonListing, Timer> pokemonTimers;
@@ -77,7 +74,5 @@ public class TimerProvider {
 			Gts.listings.removeItemListing(listing);
 			Gts.listings.addExpiredItemListing(listing);
 		}
-
-
 	}
 }

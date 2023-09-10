@@ -2,6 +2,7 @@ package org.pokesplash.gts.Listing;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 
 import java.util.Date;
