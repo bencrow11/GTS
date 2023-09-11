@@ -218,8 +218,9 @@ public class List extends Subcommand {
 				return 1;
 			}
 
+			// Checks the amount isn't 0.
 			if (amount <= 0) {
-				// TODO Not allowed!
+				context.getSource().sendSystemMessage(Component.literal(Gts.language.getItem_amount_is_zero()));
 				return 1;
 			}
 

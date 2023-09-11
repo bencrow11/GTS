@@ -7,6 +7,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.UI.AllListings;
 import org.pokesplash.gts.UI.PokemonListings;
 import org.pokesplash.gts.command.subcommand.Expired;
 import org.pokesplash.gts.command.subcommand.List;
@@ -36,7 +37,7 @@ public class GtsCommand extends BaseCommand {
 
 		ServerPlayer sender = context.getSource().getPlayer();
 
-		Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
+		Page page = new AllListings().getPage();
 
 		UIManager.openUIForcefully(sender, page);
 

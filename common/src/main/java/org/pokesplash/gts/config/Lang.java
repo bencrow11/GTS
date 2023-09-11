@@ -36,6 +36,7 @@ public class Lang {
 	private String listing_success_item; // Message to confirm a pokemon listing.
 	private String listing_fail_item; // Message to confirm a pokemon listing.
 	private String no_item_id_found; // Couldn't find the item ID of the given item.
+	private String item_amount_is_zero; // If the item amount given is 0.
 
 	/**
 	 * Constructor to generate a file if one doesn't exist.
@@ -62,6 +63,7 @@ public class Lang {
 		listing_success_item = "§2Successfully added your {item} to GTS!";
 		listing_fail_item = "§cFailed to add your {item} to GTS!";
 		no_item_id_found = "§cCould not find an item!";
+		item_amount_is_zero = "§cListing amount can not be zero!";
 	}
 
 	/**
@@ -130,6 +132,9 @@ public class Lang {
 	public String getNo_item_id_found() {
 		return no_item_id_found;
 	}
+	public String getItem_amount_is_zero() {
+		return item_amount_is_zero;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -159,6 +164,7 @@ public class Lang {
 					listing_success_item = lang.getListing_success_item();
 					listing_fail_item = lang.getListing_fail_item();
 					no_item_id_found = lang.getNo_item_id_found();
+					item_amount_is_zero = lang.getItem_amount_is_zero();
 		});
 
 		if (!futureRead.join()) {
