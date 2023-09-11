@@ -64,7 +64,7 @@ public class ExpiredItemListing {
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 					}
 
-					UIManager.closeUI(action.getPlayer());
+					UIManager.openUIForcefully(action.getPlayer(), new ExpiredListings().getPage(action.getPlayer().getUUID()));
 				})
 				.build();
 

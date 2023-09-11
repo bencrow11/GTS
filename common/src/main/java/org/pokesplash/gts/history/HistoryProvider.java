@@ -31,6 +31,9 @@ public class HistoryProvider {
 	 * @return The history of the player, or null.
 	 */
 	public PlayerHistory getPlayerHistory(UUID player) {
+		if (history.get(player) == null) {
+			new PlayerHistory(player);
+		}
 		return history.get(player);
 	}
 

@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class List extends Subcommand {
 
 	public List() {
-		super("§9Usage:\n§3- gts list <pokemon/item>");
+		super("§9Usage:\n§3- gts sell <pokemon/item>");
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class List extends Subcommand {
 	 */
 	@Override
 	public LiteralCommandNode<CommandSourceStack> build() {
-		return Commands.literal("list")
+		return Commands.literal("sell")
 				.executes(this::showUsage)
 				.then(Commands.literal("pokemon")
 						.executes(this::showPokemonUsage)
@@ -294,13 +294,13 @@ public class List extends Subcommand {
 	}
 
 	public int showPokemonUsage(CommandContext<CommandSourceStack> context) {
-		String usage = "§9Usage:\n§3- gts list pokemon <slot> <price>";
+		String usage = "§9Usage:\n§3- gts sell pokemon <slot> <price>";
 		context.getSource().sendSystemMessage(Component.literal(Utils.formatMessage(usage, context.getSource().isPlayer())));
 		return 1;
 	}
 
 	public int showItemUsage(CommandContext<CommandSourceStack> context) {
-		String usage = "§9Usage:\n§3- gts list item <price> <quantity>";
+		String usage = "§9Usage:\n§3- gts sell item <price> <quantity>";
 		context.getSource().sendSystemMessage(Component.literal(Utils.formatMessage(usage, context.getSource().isPlayer())));
 		return 1;
 	}

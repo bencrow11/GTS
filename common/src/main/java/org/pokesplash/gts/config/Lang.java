@@ -37,6 +37,7 @@ public class Lang {
 	private String listing_fail_item; // Message to confirm a pokemon listing.
 	private String no_item_id_found; // Couldn't find the item ID of the given item.
 	private String item_amount_is_zero; // If the item amount given is 0.
+	private String reload_message; // Message sent when reload command is executed.
 
 	/**
 	 * Constructor to generate a file if one doesn't exist.
@@ -64,6 +65,7 @@ public class Lang {
 		listing_fail_item = "§cFailed to add your {item} to GTS!";
 		no_item_id_found = "§cCould not find an item!";
 		item_amount_is_zero = "§cListing amount can not be zero!";
+		reload_message = "§2Reloaded Configs!";
 	}
 
 	/**
@@ -135,6 +137,9 @@ public class Lang {
 	public String getItem_amount_is_zero() {
 		return item_amount_is_zero;
 	}
+	public String getReload_message() {
+		return reload_message;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -165,6 +170,7 @@ public class Lang {
 					listing_fail_item = lang.getListing_fail_item();
 					no_item_id_found = lang.getNo_item_id_found();
 					item_amount_is_zero = lang.getItem_amount_is_zero();
+					reload_message = lang.getReload_message();
 		});
 
 		if (!futureRead.join()) {

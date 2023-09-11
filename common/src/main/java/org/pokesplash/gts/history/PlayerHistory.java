@@ -5,7 +5,9 @@ import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,10 +18,10 @@ public class PlayerHistory {
 	private UUID player;
 
 	// The previous sold Pokemon.
-	private HashSet<PokemonListing> pokemonListings;
+	private List<PokemonListing> pokemonListings;
 
 	// The previous sold items.
-	private HashSet<ItemListing> itemListings;
+	private List<ItemListing> itemListings;
 
 	/**
 	 * Constructor for a new player.
@@ -28,8 +30,8 @@ public class PlayerHistory {
 	 */
 	public PlayerHistory(UUID playerUUID) {
 		player = playerUUID;
-		pokemonListings = new HashSet<>();
-		itemListings = new HashSet<>();
+		pokemonListings = new ArrayList<>();
+		itemListings = new ArrayList<>();
 		Gts.history.updatePlayerHistory(this);
 	}
 
@@ -45,7 +47,7 @@ public class PlayerHistory {
 	 * Getter for the players pokemon sales.
 	 * @return List of pokemon that have been sold.
 	 */
-	public HashSet<PokemonListing> getPokemonListings() {
+	public List<PokemonListing> getPokemonListings() {
 		return pokemonListings;
 	}
 
@@ -53,7 +55,7 @@ public class PlayerHistory {
 	 * Getter for the players item sales.
 	 * @return List of items that have been sold.
 	 */
-	public HashSet<ItemListing> getItemListings() {
+	public List<ItemListing> getItemListings() {
 		return itemListings;
 	}
 

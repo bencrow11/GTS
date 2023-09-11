@@ -17,21 +17,18 @@ import java.util.TimerTask;
 public class Gts
 {
 	public static final String MOD_ID = "gts";
-	public static final Config config = new Config();
+	public static Config config;
 	public static final Permissions permissions = new Permissions();
-	public static ListingsProvider listings = new ListingsProvider();
-	public static HistoryProvider history = new HistoryProvider();
+	public static ListingsProvider listings;
+	public static HistoryProvider history;
 	public static TimerProvider timers = new TimerProvider();
 	public static final GtsLogger LOGGER = new GtsLogger();
-	public static final Lang language = new Lang();
+	public static Lang language;
 
 	public static void init() {
 		CommandsRegistry.addCommand(new GtsCommand());
 		CommandRegistrationEvent.EVENT.register(CommandsRegistry::registerCommands);
-		config.init();
-		listings.init();
-		history.init();
-		language.init();
+		reload();
 
 		Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
@@ -44,4 +41,16 @@ public class Gts
 			}
 		}, 1000 * 20);
 	}
+
+	public static void reload() {
+		config = new Config();
+		listings = new ListingsProvider();
+		history = new HistoryProvider();
+		language = new Lang();
+		config.init();
+		listings.init();
+		history.init();
+		language.init();
+	}
+
 }
