@@ -41,7 +41,7 @@ public abstract class PokemonInfo {
 				(listing.getPokemon().getEvs().get(Stats.SPEED) == null ? "0" : listing.getPokemon().getEvs().get(Stats.SPEED)));
 		lore.add("§6Moves:");
 		for (Move move : listing.getPokemon().getMoveSet().getMoves()) {
-			lore.add(move.getName());
+			lore.add("§f" + move.getName());
 		}
 
 		return lore;

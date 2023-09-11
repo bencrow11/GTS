@@ -49,14 +49,26 @@ public class ExpiredPokemonListing {
 				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
 				.title("§2Receive Listing")
 				.onClick((action) -> {
-					UIManager.closeUI(action.getPlayer());
-					GtsAPI.returnListing(action.getPlayer(), listing);
+					boolean success = GtsAPI.returnListing(action.getPlayer(), listing);
 
-					String message = Gts.language.getReturn_pokemon_listing().replaceAll("\\{pokemon\\}",
-							listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
-							action.getPlayer().getName().getString());
-					action.getPlayer().sendSystemMessage(Component.literal(message));
+					String message = "";
+
+					if (success) {
+						message = Gts.language.getReturn_pokemon_listing_success().replaceAll("\\{pokemon\\}",
+								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
+								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+						action.getPlayer().sendSystemMessage(Component.literal(message));
+					} else {
+						message = Gts.language.getReturn_pokemon_listing_fail().replaceAll("\\{pokemon\\}",
+								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
+								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+						action.getPlayer().sendSystemMessage(Component.literal(message));
+					}
+
+
+					UIManager.closeUI(action.getPlayer());
 				})
 				.build();
 

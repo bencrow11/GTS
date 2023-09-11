@@ -5,12 +5,12 @@ import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
 import com.cobblemon.mod.common.api.storage.party.PartyPosition;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import net.impactdev.impactor.api.economy.accounts.Account;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.expired.PlayerExpired;
+import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.util.ImpactorService;
 
 import java.util.UUID;
@@ -27,7 +27,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean cancelListing(PokemonListing listing) {
 		boolean success = Gts.listings.removePokemonListing(listing);
-		Gts.history.getPlayerHistory(listing.getSellerUuid()).addPokemonListing(listing);
+		Gts.listings.addExpiredPokemonListing(listing);
 		return success;
 	}
 
@@ -38,7 +38,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean cancelListing(ItemListing listing) {
 		boolean success = Gts.listings.removeItemListing(listing);
-		Gts.history.getPlayerHistory(listing.getSellerUuid()).addItemListing(listing);
+		Gts.listings.addExpiredItemListing(listing);
 		return success;
 	}
 
@@ -75,8 +75,12 @@ public abstract class GtsAPI {
 	 */
 	public static boolean addListing(ServerPlayer player, ItemListing listing) {
 		boolean success = Gts.listings.addItemListing(listing);
-		player.getInventory().removeItem(listing.getItem());
-		return success;
+		if (!success) {
+			Gts.LOGGER.error("Could not list item " + listing.getItem().getDisplayName().getString() + " for player: " + player.getUUID());
+			return false;
+		}
+		player.getMainHandItem().setCount(player.getMainHandItem().getCount() - listing.getItem().getCount());
+		return true;
 	}
 
 	/**
@@ -90,7 +94,7 @@ public abstract class GtsAPI {
 		boolean listingsSuccess = Gts.listings.removePokemonListing(listing);
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			Gts.history.updatePlayerHistory(new PlayerExpired(seller));
+			new PlayerHistory(seller);
 		}
 			Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
 
@@ -119,7 +123,7 @@ public abstract class GtsAPI {
 		if (impactorSuccess) {
 			try {
 				PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
-				party.add(listing.getPokemon()); // TODO Fix
+				party.add(listing.getPokemon());
 			} catch (NoPokemonStoreException e) {
 				Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
 						".\nError: " + e.getMessage());
@@ -139,7 +143,7 @@ public abstract class GtsAPI {
 		boolean listingsSuccess = Gts.listings.removeItemListing(listing);
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			Gts.history.updatePlayerHistory(new PlayerExpired(seller));
+			new PlayerHistory(seller);
 		}
 		Gts.history.getPlayerHistory(seller).addItemListing(listing);
 
@@ -176,10 +180,15 @@ public abstract class GtsAPI {
 	 * @param player The player to return the pokemon to
 	 * @param listing The listing to return to the player.
 	 */
-	public static void returnListing(ServerPlayer player, PokemonListing listing) {
-		PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
-		party.add(listing.getPokemon()); // TODO Fix
-		Gts.listings.removeExpiredPokemonListing(listing);
+	public static boolean returnListing(ServerPlayer player, PokemonListing listing) {
+
+		if (Gts.listings.removeExpiredPokemonListing(listing)) {
+			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
+			party.add(listing.getPokemon());
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -187,8 +196,12 @@ public abstract class GtsAPI {
 	 * @param player The player to return the item to
 	 * @param listing The item to be returned.
 	 */
-	public static void returnListing(ServerPlayer player, ItemListing listing) {
-		player.getInventory().add(listing.getItem());
-		Gts.listings.removeExpiredItemListing(listing);
+	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
+		if (Gts.listings.removeExpiredItemListing(listing)) {
+			player.getInventory().add(listing.getItem());
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

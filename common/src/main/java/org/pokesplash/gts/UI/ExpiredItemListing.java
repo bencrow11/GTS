@@ -6,15 +6,12 @@ import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
-import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
-import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
 
@@ -49,14 +46,25 @@ public class ExpiredItemListing {
 				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
 				.title("§2Receive Listing")
 				.onClick((action) -> {
-					UIManager.closeUI(action.getPlayer());
-					GtsAPI.returnListing(action.getPlayer(), listing);
+					boolean success = GtsAPI.returnListing(action.getPlayer(), listing);
 
-					String message = Gts.language.getReturn_item_listing().replaceAll("\\{item\\}",
-							Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
-							action.getPlayer().getName().getString());
-					action.getPlayer().sendSystemMessage(Component.literal(message));
+					String message = "";
+
+					if (success) {
+						message = Gts.language.getReturn_item_listing_success().replaceAll("\\{item\\}",
+								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
+								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+						action.getPlayer().sendSystemMessage(Component.literal(message));
+					} else {
+						message = Gts.language.getReturn_item_listing_fail().replaceAll("\\{item\\}",
+								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
+								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+						action.getPlayer().sendSystemMessage(Component.literal(message));
+					}
+
+					UIManager.closeUI(action.getPlayer());
 				})
 				.build();
 

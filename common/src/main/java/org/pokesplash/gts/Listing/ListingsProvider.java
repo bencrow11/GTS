@@ -21,12 +21,12 @@ import java.util.concurrent.CompletableFuture;
  */
 public class ListingsProvider {
 	// All active pokemon listings.
-	private List<PokemonListing> pokemonListings;
+	private ArrayList<PokemonListing> pokemonListings;
 	// All active item listings.
-	private List<ItemListing> itemListings;
+	private ArrayList<ItemListing> itemListings;
 	// Where listings are stored once they have expired.
-	private HashMap<UUID, List<PokemonListing>> expiredPokemonListings;
-	private HashMap<UUID, List<ItemListing>> expiredItemListings;
+	private HashMap<UUID, ArrayList<PokemonListing>> expiredPokemonListings;
+	private HashMap<UUID, ArrayList<ItemListing>> expiredItemListings;
 
 	/**
 	 * Constructor to create a new list for both hashmaps.
@@ -204,11 +204,11 @@ public class ListingsProvider {
 	 */
 	public boolean addExpiredPokemonListing(PokemonListing listing) {
 		if (expiredPokemonListings.containsKey(listing.getSellerUuid())) {
-			List<PokemonListing> currentListings = expiredPokemonListings.get(listing.getSellerUuid());
+			ArrayList<PokemonListing> currentListings = expiredPokemonListings.get(listing.getSellerUuid());
 			currentListings.add(listing);
 			expiredPokemonListings.put(listing.getSellerUuid(), currentListings);
 		} else {
-			expiredPokemonListings.put(listing.getSellerUuid(), List.of(listing));
+			expiredPokemonListings.put(listing.getSellerUuid(), new ArrayList<>(List.of(listing)));
 		}
 		return writeToFile();
 	}
@@ -220,11 +220,11 @@ public class ListingsProvider {
 	 */
 	public boolean addExpiredItemListing(ItemListing listing) {
 		if (expiredItemListings.containsKey(listing.getSellerUuid())) {
-			List<ItemListing> currentListings = expiredItemListings.get(listing.getSellerUuid());
+			ArrayList<ItemListing> currentListings = expiredItemListings.get(listing.getSellerUuid());
 			currentListings.add(listing);
 			expiredItemListings.put(listing.getSellerUuid(), currentListings);
 		} else {
-			expiredItemListings.put(listing.getSellerUuid(), List.of(listing));
+			expiredItemListings.put(listing.getSellerUuid(), new ArrayList<>(List.of(listing)));
 		}
 		return writeToFile();
 	}
@@ -235,12 +235,17 @@ public class ListingsProvider {
 	 * @return true if successfully written to file.
 	 */
 	public boolean removeExpiredPokemonListing(PokemonListing listing) {
-		List<PokemonListing> listings = expiredPokemonListings.get(listing.getSellerUuid());
-		if (!listings.isEmpty()) {
+
+		if (expiredPokemonListings.get(listing.getSellerUuid()) == null) {
+			return false;
+		}
+
+		ArrayList<PokemonListing> listings = expiredPokemonListings.get(listing.getSellerUuid());
+		if (listings.contains(listing)) {
 			listings.remove(listing);
 			expiredPokemonListings.put(listing.getSellerUuid(), listings);
 		} else {
-			expiredPokemonListings.remove(listing.getSellerUuid());
+			return false;
 		}
 		return writeToFile();
 	}
@@ -251,18 +256,30 @@ public class ListingsProvider {
 	 * @return true if successfully written to file.
 	 */
 	public boolean removeExpiredItemListing(ItemListing listing) {
-		List<ItemListing> listings = expiredItemListings.get(listing.getSellerUuid());
-		if (!listings.isEmpty()) {
+		if (expiredItemListings.get(listing.getSellerUuid()) == null) {
+			return false;
+		}
+
+		ArrayList<ItemListing> listings = expiredItemListings.get(listing.getSellerUuid());
+		if (listings.contains(listing)) {
 			listings.remove(listing);
 			expiredItemListings.put(listing.getSellerUuid(), listings);
 		} else {
-			expiredItemListings.remove(listing.getSellerUuid());
+			return false;
 		}
 		return writeToFile();
 	}
 
 	public List<PokemonListing> getExpiredPokemonListings(UUID playerId) {
 		return expiredPokemonListings.get(playerId);
+	}
+
+	public HashMap<UUID, ArrayList<PokemonListing>> getAllExpiredPokemonListings() {
+		return expiredPokemonListings;
+	}
+
+	public HashMap<UUID, ArrayList<ItemListing>> getAllExpiredItemListings() {
+		return expiredItemListings;
 	}
 
 	public List<ItemListing> getExpiredItemListings(UUID playerId) {
@@ -309,6 +326,9 @@ public class ListingsProvider {
 						addExpiredItemListing(listing);
 					}
 				}
+
+				expiredPokemonListings.putAll(data.getAllExpiredPokemonListings());
+				expiredItemListings.putAll(data.getAllExpiredItemListings());
 			});
 
 

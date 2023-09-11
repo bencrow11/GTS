@@ -49,7 +49,6 @@ public class SingleItemListing {
 				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
 				.title("§2Confirm Purchase")
 				.onClick((action) -> {
-					UIManager.closeUI(action.getPlayer());
 					GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
 					String message = Gts.language.getPurchase_item_message_buyer().replaceAll("\\{item\\}",
@@ -57,6 +56,7 @@ public class SingleItemListing {
 							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+					UIManager.closeUI(action.getPlayer());
 				})
 				.build();
 
@@ -80,6 +80,7 @@ public class SingleItemListing {
 							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+					UIManager.closeUI(action.getPlayer());
 				})
 				.build();
 

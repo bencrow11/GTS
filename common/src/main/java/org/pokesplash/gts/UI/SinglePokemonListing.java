@@ -55,7 +55,6 @@ public class SinglePokemonListing {
 				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
 				.title("§2Confirm Purchase")
 				.onClick((action) -> {
-					UIManager.closeUI(action.getPlayer());
 					GtsAPI.sale(listing.getSellerUuid(), action.getPlayer().getUUID(), listing);
 
 					String message = Gts.language.getPurchase_pokemon_message_buyer().replaceAll("\\{pokemon\\}",
@@ -63,6 +62,7 @@ public class SinglePokemonListing {
 							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+					UIManager.closeUI(action.getPlayer());
 				})
 				.build();
 
@@ -87,6 +87,7 @@ public class SinglePokemonListing {
 							action.getPlayer().getName().getString());
 
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+					UIManager.closeUI(action.getPlayer());
 				})
 				.build();
 

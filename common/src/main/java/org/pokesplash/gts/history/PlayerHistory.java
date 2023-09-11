@@ -1,4 +1,4 @@
-package org.pokesplash.gts.expired;
+package org.pokesplash.gts.history;
 
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -11,7 +11,7 @@ import java.util.UUID;
 /**
  * Class that holds a players previous sell history.
  */
-public class PlayerExpired {
+public class PlayerHistory {
 	// The minecraft UUID of the player.
 	private UUID player;
 
@@ -26,7 +26,7 @@ public class PlayerExpired {
 	 * @param playerUUID
 	 * @throws IOException
 	 */
-	public PlayerExpired(UUID playerUUID) {
+	public PlayerHistory(UUID playerUUID) {
 		player = playerUUID;
 		pokemonListings = new HashSet<>();
 		itemListings = new HashSet<>();

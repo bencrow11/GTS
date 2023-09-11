@@ -147,6 +147,8 @@ public class ExpiredListings {
 				.set(45, previousPage)
 				.build();
 
+		pokemonButtons.addAll(itemButtons);
+
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
 		page.setTitle("§3" + Gts.language.getTitle() + " - Expired");
 

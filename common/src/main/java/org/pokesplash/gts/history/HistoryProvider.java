@@ -1,4 +1,4 @@
-package org.pokesplash.gts.expired;
+package org.pokesplash.gts.history;
 
 import com.google.gson.Gson;
 import org.pokesplash.gts.Gts;
@@ -12,16 +12,16 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Class that provides and controls player history.
  */
-public class ExpiredProvider {
+public class HistoryProvider {
 	// path the player history are written to.
 	private String filePath = "/config/gts/history/";
 	// Storage of player history.
-	private HashMap<UUID, PlayerExpired> history;
+	private HashMap<UUID, PlayerHistory> history;
 
 	/**
 	 * Constructor to create the history class.
 	 */
-	public ExpiredProvider() {
+	public HistoryProvider() {
 		history = new HashMap<>();
 	}
 
@@ -30,19 +30,19 @@ public class ExpiredProvider {
 	 * @param player The player to get the history of.
 	 * @return The history of the player, or null.
 	 */
-	public PlayerExpired getPlayerHistory(UUID player) {
+	public PlayerHistory getPlayerHistory(UUID player) {
 		return history.get(player);
 	}
 
 	/**
 	 * Method to update player history. This method doesn't need to be used as
 	 * editing the PlayerHistory object automatically calls this method.
-	 * @param playerExpired The new PlayerHistory object.
+	 * @param playerHistory The new PlayerHistory object.
 	 */
-	public void updatePlayerHistory(PlayerExpired playerExpired) {
-		history.put(playerExpired.getPlayer(), playerExpired);
-		if (!write(playerExpired)) {
-			Gts.LOGGER.error("Player History for player " + playerExpired.getPlayer() + " could not be written to " +
+	public void updatePlayerHistory(PlayerHistory playerHistory) {
+		history.put(playerHistory.getPlayer(), playerHistory);
+		if (!write(playerHistory)) {
+			Gts.LOGGER.error("Player History for player " + playerHistory.getPlayer() + " could not be written to " +
 					"file.");
 		}
 	}
@@ -52,7 +52,7 @@ public class ExpiredProvider {
 	 * @param playerExpired The PlayerHistory object to write.
 	 * @return true if the write was successful.
 	 */
-	private boolean write(PlayerExpired playerExpired) {
+	private boolean write(PlayerHistory playerExpired) {
 		Gson gson = Utils.newGson();
 
 		CompletableFuture<Boolean> future = Utils.writeFileAsync(filePath, playerExpired.getPlayer() +
@@ -77,7 +77,7 @@ public class ExpiredProvider {
 		for (String file : list) {
 			Utils.readFileAsync(filePath, file, el -> {
 				Gson gson = Utils.newGson();
-				PlayerExpired player = gson.fromJson(el, PlayerExpired.class);
+				PlayerHistory player = gson.fromJson(el, PlayerHistory.class);
 				history.put(player.getPlayer(), player);
 			});
 		}
