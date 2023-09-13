@@ -55,13 +55,34 @@ public class SinglePokemonListing {
 				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
 				.title("§2Confirm Purchase")
 				.onClick((action) -> {
-					GtsAPI.sale(listing.getSellerUuid(), action.getPlayer().getUUID(), listing);
+					boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer().getUUID(), listing);
 
-					String message = Gts.language.getPurchase_pokemon_message_buyer().replaceAll("\\{pokemon\\}",
-							listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
-							action.getPlayer().getName().getString());
+					String message;
+					if (success) {
+						message = Gts.language.getPurchase_pokemon_message_buyer().replaceAll("\\{pokemon\\}",
+								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
+								listing.getSellerName()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+
+						ServerPlayer seller =
+								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
+
+						if (seller != null) {
+							seller.sendSystemMessage(Component.literal(Gts.language.getListing_bought_pokemon()
+									.replaceAll("\\{pokemon\\}",
+									listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
+											listing.getSellerName()).replaceAll("\\{buyer}",
+									action.getPlayer().getName().getString())));
+						}
+
+					} else {
+						message = Gts.language.getInsufficient_funds().replaceAll("\\{pokemon\\}",
+								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
+								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+
 					UIManager.closeUI(action.getPlayer());
 				})
 				.build();
@@ -87,6 +108,14 @@ public class SinglePokemonListing {
 							action.getPlayer().getName().getString());
 
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+
+					ServerPlayer seller =
+							action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
+
+					if (seller != null) {
+						seller.sendSystemMessage(Component.literal(message));
+					}
+
 					UIManager.closeUI(action.getPlayer());
 				})
 				.build();

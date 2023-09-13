@@ -49,13 +49,33 @@ public class SingleItemListing {
 				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
 				.title("§2Confirm Purchase")
 				.onClick((action) -> {
-					GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
+				 	boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
-					String message = Gts.language.getPurchase_item_message_buyer().replaceAll("\\{item\\}",
-							Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
-							action.getPlayer().getName().getString());
+					String message;
+					if (success) {
+						message = Gts.language.getPurchase_item_message_buyer().replaceAll("\\{item\\}",
+								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
+								listing.getSellerName()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+
+						ServerPlayer seller =
+								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
+
+						if (seller != null) {
+							seller.sendSystemMessage(Component.literal(Gts.language.getListing_bought_item()
+									.replaceAll("\\{item\\}",
+											Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
+											listing.getSellerName()).replaceAll("\\{buyer}",
+											action.getPlayer().getName().getString())));
+						}
+					} else {
+						message = Gts.language.getInsufficient_funds().replaceAll("\\{item\\}",
+								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
+								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+								action.getPlayer().getName().getString());
+					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+
 					UIManager.closeUI(action.getPlayer());
 				})
 				.build();

@@ -1,5 +1,6 @@
 package org.pokesplash.gts;
 
+import dev.architectury.event.Event;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
@@ -29,17 +30,6 @@ public class Gts
 		CommandsRegistry.addCommand(new GtsCommand());
 		CommandRegistrationEvent.EVENT.register(CommandsRegistry::registerCommands);
 		reload();
-
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-//				for (ItemListing listing : listings.getItemListings()) {
-//					System.out.println(listing.getItem().getDisplayName().getString());
-//					System.out.println(listing.getItem().getCount());
-//				}
-			}
-		}, 1000 * 20);
 	}
 
 	public static void reload() {
