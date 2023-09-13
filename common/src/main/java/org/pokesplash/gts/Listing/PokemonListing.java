@@ -1,10 +1,8 @@
 package org.pokesplash.gts.Listing;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.util.Utils;
 
 import java.util.Date;
 import java.util.UUID;

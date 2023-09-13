@@ -1,10 +1,8 @@
 package org.pokesplash.gts.Listing;
 
-import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 

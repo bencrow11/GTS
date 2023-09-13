@@ -1,15 +1,11 @@
 package org.pokesplash.gts.command.subcommand;
 
-import ca.landonjw.gooeylibs2.api.UIManager;
-import ca.landonjw.gooeylibs2.api.page.Page;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.UI.ExpiredListings;
 import org.pokesplash.gts.util.Subcommand;
 import org.pokesplash.gts.util.Utils;
 

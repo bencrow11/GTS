@@ -7,7 +7,6 @@ import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public abstract class PokemonInfo {
 	public static Collection<String> parse(PokemonListing listing) {

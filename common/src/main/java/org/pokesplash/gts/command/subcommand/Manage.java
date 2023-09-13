@@ -2,7 +2,6 @@ package org.pokesplash.gts.command.subcommand;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.page.Page;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
@@ -10,9 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.UI.ManageListings;
-import org.pokesplash.gts.UI.PokemonListings;
 import org.pokesplash.gts.util.Subcommand;
-import org.pokesplash.gts.util.Utils;
 
 public class Manage extends Subcommand {
 

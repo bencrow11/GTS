@@ -5,7 +5,6 @@ import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransferTransaction;
-import net.kyori.adventure.key.Key;
 
 import java.math.BigDecimal;
 import java.util.UUID;

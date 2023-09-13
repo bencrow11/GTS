@@ -1,13 +1,13 @@
 package org.pokesplash.gts.timer;
 
-import com.cobblemon.mod.common.Cobblemon;
-import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
-import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TimerProvider {
 	private HashMap<PokemonListing, Timer> pokemonTimers;
@@ -41,21 +41,13 @@ public class TimerProvider {
 		if (timeDiff > 0) {
 			Timer timer = new Timer();
 
-//			timer.schedule(new TimerTask() {
-//				@Override
-//				public void run() {
-//					Gts.listings.removePokemonListing(listing);
-//					Gts.listings.addExpiredPokemonListing(listing);
-//				}
-//			}, timeDiff);
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
 					Gts.listings.removePokemonListing(listing);
 					Gts.listings.addExpiredPokemonListing(listing);
-					System.out.println("Timer is up!");
 				}
-			}, 60000 * 3);
+			}, timeDiff);
 			pokemonTimers.put(listing, timer);
 		} else {
 			Gts.listings.removePokemonListing(listing);

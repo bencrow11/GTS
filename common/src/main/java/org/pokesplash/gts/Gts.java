@@ -1,6 +1,5 @@
 package org.pokesplash.gts;
 
-import dev.architectury.event.Event;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
@@ -11,9 +10,6 @@ import org.pokesplash.gts.timer.TimerProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
 import org.pokesplash.gts.util.GtsLogger;
 import org.pokesplash.gts.util.Permissions;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Gts
 {

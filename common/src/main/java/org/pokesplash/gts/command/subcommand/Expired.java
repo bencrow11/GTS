@@ -9,7 +9,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.UI.ExpiredListings;
-import org.pokesplash.gts.UI.ManageListings;
 import org.pokesplash.gts.util.Subcommand;
 
 public class Expired extends Subcommand {

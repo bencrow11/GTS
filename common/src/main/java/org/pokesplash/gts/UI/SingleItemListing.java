@@ -6,15 +6,12 @@ import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
-import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
-import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
 
@@ -61,7 +58,7 @@ public class SingleItemListing {
 						ServerPlayer seller =
 								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
-						if (seller != null) {
+						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
 							seller.sendSystemMessage(Component.literal(Gts.language.getListing_bought_item()
 									.replaceAll("\\{item\\}",
 											Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
