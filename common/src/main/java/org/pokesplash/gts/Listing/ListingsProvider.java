@@ -214,8 +214,10 @@ public class ListingsProvider {
 	public boolean addExpiredItemListing(ItemListing listing) {
 		if (expiredItemListings.containsKey(listing.getSellerUuid())) {
 			ArrayList<ItemListing> currentListings = expiredItemListings.get(listing.getSellerUuid());
-			currentListings.add(listing);
-			expiredItemListings.put(listing.getSellerUuid(), currentListings);
+			if (!currentListings.contains(listing)) {
+				currentListings.add(listing);
+				expiredItemListings.put(listing.getSellerUuid(), currentListings);
+			}
 		} else {
 			expiredItemListings.put(listing.getSellerUuid(), new ArrayList<>(List.of(listing)));
 		}
