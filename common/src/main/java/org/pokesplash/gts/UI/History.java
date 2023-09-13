@@ -22,7 +22,10 @@ import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.util.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * UI of the Manage Listings page.
@@ -92,7 +95,6 @@ public class History {
 
 				lore.add("§9Seller: §b" + listing.getSellerName());
 				lore.add("§9Price: §b" + listing.getPrice());
-				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 				lore.addAll(PokemonInfo.parse(listing));
 
 				Button button = GooeyButton.builder()
@@ -111,7 +113,6 @@ public class History {
 
 				lore.add("§9Seller: §b" + listing.getSellerName());
 				lore.add("§9Price: §b" + listing.getPrice());
-				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 				Button button = GooeyButton.builder()
 						.display(listing.getItem())

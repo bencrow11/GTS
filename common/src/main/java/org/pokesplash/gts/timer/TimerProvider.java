@@ -4,10 +4,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class TimerProvider {
 	private HashMap<PokemonListing, Timer> pokemonTimers;
@@ -19,20 +16,22 @@ public class TimerProvider {
 		itemTimers = new HashMap<>();
 	}
 
-	public Timer getTimer(PokemonListing listing) {
-		return pokemonTimers.get(listing);
+	public Set<PokemonListing> getPokemonTimers() {
+		return pokemonTimers.keySet();
 	}
 
-	public Timer getTimer(ItemListing listing) {
-		return itemTimers.get(listing);
+	public Set<ItemListing> getItemTimers() {
+		return itemTimers.keySet();
 	}
 
 	public void deleteTimer(PokemonListing listing) {
-		pokemonTimers.remove(listing);
+		Timer timer = pokemonTimers.remove(listing);
+		timer.cancel();
 	}
 
 	public void deleteTimer(ItemListing listing) {
-		itemTimers.remove(listing);
+		Timer timer = itemTimers.remove(listing);
+		timer.cancel();
 	}
 
 	public void addTimer(PokemonListing listing) {

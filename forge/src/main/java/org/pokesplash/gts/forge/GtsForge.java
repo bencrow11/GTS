@@ -1,6 +1,5 @@
 package org.pokesplash.gts.forge;
 
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.pokesplash.gts.Gts;
 
@@ -8,8 +7,5 @@ import org.pokesplash.gts.Gts;
 public class GtsForge {
     public GtsForge() {
         Gts.init();
-    }
-
-    private void PlayerJoinEvent(PlayerEvent.PlayerLoggedInEvent event) {
     }
 }
