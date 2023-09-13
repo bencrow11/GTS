@@ -54,15 +54,13 @@ public class ExpiredPokemonListing {
 					String message = "";
 
 					if (success) {
-						message = Gts.language.getReturn_pokemon_listing_success().replaceAll("\\{pokemon\\}",
-								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_success(),
+								0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 					} else {
-						message = Gts.language.getReturn_pokemon_listing_fail().replaceAll("\\{pokemon\\}",
-								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_fail(),
+								0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 					}

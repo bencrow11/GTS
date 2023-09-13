@@ -53,26 +53,22 @@ public class SinglePokemonListing {
 
 					String message;
 					if (success) {
-						message = Gts.language.getPurchase_pokemon_message_buyer().replaceAll("\\{pokemon\\}",
-								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-								listing.getSellerName()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getPurchase_message_buyer(),
+								0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 
 						ServerPlayer seller =
 								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
 						if (seller != null) {
-							seller.sendSystemMessage(Component.literal(Gts.language.getListing_bought_pokemon()
-									.replaceAll("\\{pokemon\\}",
-									listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-											listing.getSellerName()).replaceAll("\\{buyer}",
+							seller.sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListing_bought(),
+									0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
 									action.getPlayer().getName().getString())));
 						}
 
 					} else {
-						message = Gts.language.getInsufficient_funds().replaceAll("\\{pokemon\\}",
-								listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getInsufficient_funds(),
+								0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
@@ -96,9 +92,8 @@ public class SinglePokemonListing {
 				.title("§6Remove Listing")
 				.onClick((action) -> {
 					GtsAPI.cancelListing(listing);
-					String message = Gts.language.getCancel_pokemon_listing().replaceAll("\\{pokemon\\}",
-							listing.getPokemon().getSpecies().getName()).replaceAll("\\{seller\\}",
-							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+					String message = Utils.formatPlaceholders(Gts.language.getCancel_listing(),
+							0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
 
 					action.getPlayer().sendSystemMessage(Component.literal(message));

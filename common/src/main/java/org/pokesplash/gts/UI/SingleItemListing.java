@@ -50,25 +50,24 @@ public class SingleItemListing {
 
 					String message;
 					if (success) {
-						message = Gts.language.getPurchase_item_message_buyer().replaceAll("\\{item\\}",
-								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-								listing.getSellerName()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getPurchase_message_buyer(),
+								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 
 						ServerPlayer seller =
 								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
 						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
-							seller.sendSystemMessage(Component.literal(Gts.language.getListing_bought_item()
-									.replaceAll("\\{item\\}",
-											Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-											listing.getSellerName()).replaceAll("\\{buyer}",
+							seller.sendSystemMessage(Component.literal(
+									Utils.formatPlaceholders(Gts.language.getListing_bought(),
+											0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
 											action.getPlayer().getName().getString())));
+
+
 						}
 					} else {
-						message = Gts.language.getInsufficient_funds().replaceAll("\\{item\\}",
-								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getInsufficient_funds(),
+								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
@@ -92,9 +91,8 @@ public class SingleItemListing {
 				.title("§6Remove Listing")
 				.onClick((action) -> {
 					GtsAPI.cancelListing(listing);
-					String message = Gts.language.getCancel_item_listing().replaceAll("\\{item\\}",
-							Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-							action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+					String message = Utils.formatPlaceholders(Gts.language.getCancel_listing(),
+							0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));
 					UIManager.closeUI(action.getPlayer());

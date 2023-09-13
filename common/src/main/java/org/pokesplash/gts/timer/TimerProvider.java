@@ -16,12 +16,14 @@ public class TimerProvider {
 		itemTimers = new HashMap<>();
 	}
 
-	public Set<PokemonListing> getPokemonTimers() {
-		return pokemonTimers.keySet();
+	public ArrayList<PokemonListing> getPokemonTimers() {
+		ArrayList<PokemonListing> keys = new ArrayList<>(pokemonTimers.keySet());
+		return keys;
 	}
 
-	public Set<ItemListing> getItemTimers() {
-		return itemTimers.keySet();
+	public ArrayList<ItemListing> getItemTimers() {
+		ArrayList<ItemListing> keys = new ArrayList<>(itemTimers.keySet());
+		return keys;
 	}
 
 	public void deleteTimer(PokemonListing listing) {

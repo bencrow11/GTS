@@ -51,15 +51,15 @@ public class ExpiredItemListing {
 					String message = "";
 
 					if (success) {
-						message = Gts.language.getReturn_item_listing_success().replaceAll("\\{item\\}",
-								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_success(),
+								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
+
+
 					} else {
-						message = Gts.language.getReturn_item_listing_fail().replaceAll("\\{item\\}",
-								Utils.capitaliseFirst(listing.getItem().getDisplayName().getString())).replaceAll("\\{seller\\}",
-								action.getPlayer().getName().getString()).replaceAll("\\{buyer}",
+						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_fail(),
+								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 					}

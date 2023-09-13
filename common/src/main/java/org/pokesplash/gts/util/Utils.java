@@ -4,7 +4,10 @@ import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.PokemonListing;
 
 import java.io.File;
 import java.io.IOException;
@@ -234,4 +237,30 @@ public abstract class Utils {
 
 		return pokemon.getAbility().getName().equalsIgnoreCase(ability);
 	}
+
+	public static String formatPlaceholders(String message, double minPrice, String listing,
+	                                        String seller, String buyer) {
+		String newMessage = message;
+		if (message == null) {
+			return "";
+		}
+
+		if (listing != null) {
+			newMessage = newMessage.replaceAll("\\{listing\\}", listing);
+		}
+
+		if (seller != null) {
+			newMessage = newMessage.replaceAll("\\{seller\\}", seller);
+		}
+
+		if (buyer != null) {
+			newMessage = newMessage.replaceAll("\\{buyer\\}", buyer);
+		}
+
+		return newMessage
+				.replaceAll("\\{min_price\\}", "" + minPrice)
+				.replaceAll("\\{max_listings\\}", "" + Gts.config.getMax_listings_per_player())
+				.replaceAll("\\{max_price\\}", "" + Gts.config.getMaximum_price());
+	}
+
 }
