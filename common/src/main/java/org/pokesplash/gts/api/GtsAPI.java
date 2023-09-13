@@ -92,13 +92,6 @@ public abstract class GtsAPI {
 	 */
 	public static boolean sale(UUID seller, UUID buyer, PokemonListing listing) {
 		boolean listingsSuccess = Gts.listings.removePokemonListing(listing);
-
-		if (Gts.history.getPlayerHistory(seller) == null) {
-			new PlayerHistory(seller);
-		}
-			Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
-
-
 		Account sellerAccount = ImpactorService.getAccount(seller);
 		Account buyerAccount = ImpactorService.getAccount(buyer);
 
@@ -111,25 +104,29 @@ public abstract class GtsAPI {
 			if (impactorSuccess) {
 				ImpactorService.transfer(sellerAccount, buyerAccount, listing.getPrice());
 			}
+			return false;
 		}
 
 		// If transaction failed, revert the pokemon listing.
 		if (!impactorSuccess) {
-			if (listingsSuccess) {
-				Gts.listings.addPokemonListing(listing);
-			}
+			Gts.listings.addPokemonListing(listing);
+			return false;
 		}
 
-		if (impactorSuccess) {
-			try {
-				PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
-				party.add(listing.getPokemon());
-			} catch (NoPokemonStoreException e) {
-				Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
-						".\nError: " + e.getMessage());
-			}
+		try {
+			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
+			party.add(listing.getPokemon());
+		} catch (NoPokemonStoreException e) {
+			Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
+					".\nError: " + e.getMessage());
 		}
-		return listingsSuccess && impactorSuccess;
+
+		if (Gts.history.getPlayerHistory(seller) == null) {
+			new PlayerHistory(seller);
+		}
+		Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
+
+		return true;
 	}
 
 	/**
@@ -142,10 +139,7 @@ public abstract class GtsAPI {
 	public static boolean sale(UUID seller, ServerPlayer buyer, ItemListing listing) {
 		boolean listingsSuccess = Gts.listings.removeItemListing(listing);
 
-		if (Gts.history.getPlayerHistory(seller) == null) {
-			new PlayerHistory(seller);
-		}
-		Gts.history.getPlayerHistory(seller).addItemListing(listing);
+
 
 		Account sellerAccount = ImpactorService.getAccount(seller);
 		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
@@ -159,20 +153,23 @@ public abstract class GtsAPI {
 			if (impactorSuccess) {
 				ImpactorService.transfer(sellerAccount, buyerAccount, listing.getPrice());
 			}
+			return false;
 		}
 
 		// If transaction failed, revert the pokemon listing.
 		if (!impactorSuccess) {
-			if (listingsSuccess) {
-				Gts.listings.addItemListing(listing);
-			}
+			Gts.listings.addItemListing(listing);
+			return false;
 		}
 
-		if (impactorSuccess) {
-			buyer.getInventory().add(listing.getItem());
-		}
+		buyer.getInventory().add(listing.getItem());
 
-		return listingsSuccess && impactorSuccess;
+		if (Gts.history.getPlayerHistory(seller) == null) {
+			new PlayerHistory(seller);
+		}
+		Gts.history.getPlayerHistory(seller).addItemListing(listing);
+
+		return true;
 	}
 
 	/**

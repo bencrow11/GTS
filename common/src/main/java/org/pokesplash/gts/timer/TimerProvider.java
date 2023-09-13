@@ -41,13 +41,21 @@ public class TimerProvider {
 		if (timeDiff > 0) {
 			Timer timer = new Timer();
 
+//			timer.schedule(new TimerTask() {
+//				@Override
+//				public void run() {
+//					Gts.listings.removePokemonListing(listing);
+//					Gts.listings.addExpiredPokemonListing(listing);
+//				}
+//			}, timeDiff);
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
 					Gts.listings.removePokemonListing(listing);
 					Gts.listings.addExpiredPokemonListing(listing);
+					System.out.println("Timer is up!");
 				}
-			}, timeDiff);
+			}, 60000 * 3);
 			pokemonTimers.put(listing, timer);
 		} else {
 			Gts.listings.removePokemonListing(listing);

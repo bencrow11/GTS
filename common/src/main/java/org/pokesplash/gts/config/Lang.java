@@ -38,6 +38,9 @@ public class Lang {
 	private String no_item_id_found; // Couldn't find the item ID of the given item.
 	private String item_amount_is_zero; // If the item amount given is 0.
 	private String reload_message; // Message sent when reload command is executed.
+	private String insufficient_funds; // Not enough monies.
+	private String listing_bought_pokemon; // Message sent to seller when their pokemon is bought.
+	private String listing_bought_item; // Message sent to seller when their item is bought.
 
 	/**
 	 * Constructor to generate a file if one doesn't exist.
@@ -45,9 +48,9 @@ public class Lang {
 	public Lang() {
 		title = "Gts";
 		purchase_pokemon_message_buyer = "§2You have bought {pokemon} from {seller}!";
-		cancel_pokemon_listing = "§6You have cancelled the {pokemon} listing!";
+		cancel_pokemon_listing = "§6The {pokemon} listing has been cancelled!";
 		purchase_item_message_buyer = "§2You have bought {item} from {seller}!";
-		cancel_item_listing = "§6You have cancelled the {item} listing!";
+		cancel_item_listing = "§6The {item} listing has been cancelled!";
 		return_pokemon_listing_success = "§2You have received the {pokemon} listing!";
 		return_pokemon_listing_fail = "§cCould not receive the {pokemon} listing.";
 		return_item_listing_success = "§2You have received the {item} listing!";
@@ -66,6 +69,9 @@ public class Lang {
 		no_item_id_found = "§cCould not find an item!";
 		item_amount_is_zero = "§cListing amount can not be zero!";
 		reload_message = "§2Reloaded Configs!";
+		insufficient_funds = "§cYou do not have enough money to purchase this listing!";
+		listing_bought_pokemon = "§2Your {pokemon} has been bought by {buyer}";
+		listing_bought_item = "§2Your {item} has been bought by {buyer}";
 	}
 
 	/**
@@ -140,6 +146,15 @@ public class Lang {
 	public String getReload_message() {
 		return reload_message;
 	}
+	public String getInsufficient_funds() {
+		return insufficient_funds;
+	}
+	public String getListing_bought_pokemon() {
+		return listing_bought_pokemon;
+	}
+	public String getListing_bought_item() {
+		return listing_bought_item;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -171,6 +186,9 @@ public class Lang {
 					no_item_id_found = lang.getNo_item_id_found();
 					item_amount_is_zero = lang.getItem_amount_is_zero();
 					reload_message = lang.getReload_message();
+					insufficient_funds = lang.getInsufficient_funds();
+					listing_bought_pokemon = lang.getListing_bought_pokemon();
+					listing_bought_item = lang.getListing_bought_item();
 		});
 
 		if (!futureRead.join()) {

@@ -1,15 +1,6 @@
 package org.pokesplash.gts.Listing;
 
-import com.cobblemon.mod.common.Cobblemon;
-import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
-import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.google.gson.Gson;
-import dev.architectury.event.Event;
-import dev.architectury.event.events.common.PlayerEvent;
-import dev.architectury.registry.registries.forge.RegistriesImpl;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
@@ -205,8 +196,10 @@ public class ListingsProvider {
 	public boolean addExpiredPokemonListing(PokemonListing listing) {
 		if (expiredPokemonListings.containsKey(listing.getSellerUuid())) {
 			ArrayList<PokemonListing> currentListings = expiredPokemonListings.get(listing.getSellerUuid());
-			currentListings.add(listing);
-			expiredPokemonListings.put(listing.getSellerUuid(), currentListings);
+			if (!currentListings.contains(listing)) {
+				currentListings.add(listing);
+				expiredPokemonListings.put(listing.getSellerUuid(), currentListings);
+			}
 		} else {
 			expiredPokemonListings.put(listing.getSellerUuid(), new ArrayList<>(List.of(listing)));
 		}
