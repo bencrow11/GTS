@@ -8,7 +8,7 @@ public class ItemPrices {
 	private String item_name;
 
 	// The price of the item.
-	private int min_price;
+	private double min_price;
 
 	/**
 	 * Constructor to create an example item.
@@ -30,7 +30,7 @@ public class ItemPrices {
 	 * Getter for the minimum price of the item.
 	 * @return min price as an int.
 	 */
-	public int getMin_price() {
+	public double getMin_price() {
 		return min_price;
 	}
 }
