@@ -16,6 +16,7 @@ A Global Trading System mod for [Cobblemon](https://cobblemon.com/) that allows 
 
 This mod can be ran on both [Fabric](https://fabricmc.net/) and [Forge](https://files.minecraftforge.net/net/minecraftforge/forge/). It has a few dependencies:
 
+- Minecraft Versions: 1.19.2
 - [Cobblemon](https://modrinth.com/mod/cobblemon)
 - [Impactor](https://modrinth.com/mod/impactor)
 - [Gooeylibs](https://github.com/NickImpact/GooeyLibs)
