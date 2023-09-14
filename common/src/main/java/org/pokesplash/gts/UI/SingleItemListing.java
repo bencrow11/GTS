@@ -90,11 +90,23 @@ public class SingleItemListing {
 				.display(new ItemStack(Items.ORANGE_STAINED_GLASS_PANE))
 				.title("§6Remove Listing")
 				.onClick((action) -> {
-					GtsAPI.cancelListing(listing);
+					if (action.getPlayer().getUUID().equals(listing.getSellerUuid())) {
+						GtsAPI.cancelAndReturnListing(action.getPlayer(), listing);
+					} else {
+						GtsAPI.cancelListing(listing);
+					}
 					String message = Utils.formatPlaceholders(Gts.language.getCancel_listing(),
 							0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));
+
+					ServerPlayer seller =
+							action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
+
+					if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
+						seller.sendSystemMessage(Component.literal(message));
+					}
+
 					UIManager.closeUI(action.getPlayer());
 				})
 				.build();

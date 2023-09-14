@@ -200,4 +200,35 @@ public abstract class GtsAPI {
 			return false;
 		}
 	}
+
+	/**
+	 * Method to cancel and return a Pokemon to a player
+	 * @param player The player to return the pokemon to
+	 * @param listing The listing to return to the player.
+	 */
+	public static boolean cancelAndReturnListing(ServerPlayer player, PokemonListing listing) {
+
+		if (Gts.listings.removePokemonListing(listing)) {
+			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
+			party.add(listing.getPokemon());
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Method to cancel and return an item to a player
+	 * @param player The player to return the item to
+	 * @param listing The listing to return to the player.
+	 */
+	public static boolean cancelAndReturnListing(ServerPlayer player, ItemListing listing) {
+
+		if (Gts.listings.removeItemListing(listing)) {
+			player.getInventory().add(listing.getItem());
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

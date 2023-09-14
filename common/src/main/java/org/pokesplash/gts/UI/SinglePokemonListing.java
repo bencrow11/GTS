@@ -91,7 +91,13 @@ public class SinglePokemonListing {
 				.display(new ItemStack(Items.ORANGE_STAINED_GLASS_PANE))
 				.title("§6Remove Listing")
 				.onClick((action) -> {
-					GtsAPI.cancelListing(listing);
+
+
+					if (action.getPlayer().getUUID().equals(listing.getSellerUuid())) {
+						GtsAPI.cancelAndReturnListing(action.getPlayer(), listing);
+					} else {
+						GtsAPI.cancelListing(listing);
+					}
 					String message = Utils.formatPlaceholders(Gts.language.getCancel_listing(),
 							0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
