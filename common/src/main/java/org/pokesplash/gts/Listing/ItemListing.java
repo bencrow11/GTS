@@ -67,7 +67,8 @@ public class ItemListing {
 			return ItemStack.of(TagParser.parseTag(item));
 		} catch (CommandSyntaxException e) {
 			Gts.LOGGER.fatal("Failed to parse item for NBT: " + item);
-			Gts.LOGGER.fatal("Stacktrace: " + e.getStackTrace());
+			Gts.LOGGER.fatal("Stacktrace: ");
+			e.printStackTrace();
 		}
 		return null;
 	}

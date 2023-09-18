@@ -286,7 +286,8 @@ public class List extends Subcommand {
 		} catch (NullPointerException e) {
 			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNo_item_id_found(),
 					0, null, player.getDisplayName().getString(), null)));
-			Gts.LOGGER.error("Couldn't find Item ID\n Stacktrace: " + e.getStackTrace());
+			Gts.LOGGER.error("Couldn't find Item ID\n Stacktrace: ");
+			e.printStackTrace();
 			return 1;
 
 

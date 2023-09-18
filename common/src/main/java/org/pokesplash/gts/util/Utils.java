@@ -67,12 +67,14 @@ public abstract class Utils {
 
 				@Override
 				public void failed(Throwable exc, ByteBuffer attachment) {
-					Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: " + exc.getStackTrace());
+					Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: ");
+					exc.printStackTrace();
 					future.complete(false);
 				}
 			});
 		} catch (IOException | SecurityException e) {
-			Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: " + e.getStackTrace());
+			Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: ");
+			e.printStackTrace();
 			future.complete(false);
 		}
 
@@ -117,7 +119,8 @@ public abstract class Utils {
 			executor.shutdown();
 			future.complete(true);
 		} catch (Exception e) {
-			Gts.LOGGER.fatal("Unable to read file " + filename + " for " + Gts.MOD_ID + ".\nStack Trace: " + e.getStackTrace());
+			Gts.LOGGER.fatal("Unable to read file " + filename + " for " + Gts.MOD_ID + ".\nStack Trace: ");
+			e.printStackTrace();
 			executor.shutdown();
 			future.completeExceptionally(e);
 		}
