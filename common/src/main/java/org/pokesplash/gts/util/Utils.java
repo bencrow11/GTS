@@ -10,6 +10,7 @@ import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -67,19 +69,37 @@ public abstract class Utils {
 
 				@Override
 				public void failed(Throwable exc, ByteBuffer attachment) {
-					Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: ");
-					exc.printStackTrace();
-					future.complete(false);
+					Gts.LOGGER.fatal("Unable to write file asynchronously, attempting sync write.");
+					future.complete(writeFileSync(file, data));
 				}
 			});
 		} catch (IOException | SecurityException e) {
-			Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: ");
-			e.printStackTrace();
-			future.complete(false);
+			Gts.LOGGER.fatal("Unable to write file asynchronously, attempting sync write.");
+			future.complete(future.complete(false));
 		}
 
 		return future;
 	}
+
+	/**
+	 * Method to write a file sync.
+	 * @param file the location to write.
+	 * @param data the data to write.
+	 * @return true if the write was successful.
+	 */
+	public static boolean writeFileSync(File file, String data) {
+		try {
+			FileWriter writer = new FileWriter(file);
+			writer.write(data);
+			writer.close();
+			return true;
+		} catch (Exception e) {
+			Gts.LOGGER.fatal("Unable to write to file for " + Gts.MOD_ID + ".\nStack Trace: ");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 
 	/**
 	 * Method to read a file asynchronously
@@ -119,13 +139,37 @@ public abstract class Utils {
 			executor.shutdown();
 			future.complete(true);
 		} catch (Exception e) {
-			Gts.LOGGER.fatal("Unable to read file " + filename + " for " + Gts.MOD_ID + ".\nStack Trace: ");
-			e.printStackTrace();
+			Gts.LOGGER.error("Unable to read file " + filename + " async, attempting to read sync.");
+			future.complete(readFileSync(file, callback));
 			executor.shutdown();
-			future.completeExceptionally(e);
 		}
 
 		return future;
+	}
+
+	/**
+	 * Method to read files sync.
+	 * @param file The file to read
+	 * @param callback what to do with the read data.
+	 * @return true if the file could be read successfully.
+	 */
+	public static boolean readFileSync(File file, Consumer<String> callback) {
+		try {
+			Scanner reader = new Scanner(file);
+
+			String data = "";
+
+			while (reader.hasNextLine()) {
+				data += reader.nextLine();
+			}
+			reader.close();
+			callback.accept(data);
+			return true;
+		} catch (Exception e) {
+			Gts.LOGGER.fatal("Unable to read file " + file.getName() + " for " + Gts.MOD_ID + ".\nStack Trace: ");
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**
