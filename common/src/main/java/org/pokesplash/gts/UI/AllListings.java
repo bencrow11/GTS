@@ -37,6 +37,7 @@ public class AllListings {
 	 * @return Pokemon Listings page.
 	 */
 	public Page getPage() {
+
 		Button seeItemListings = GooeyButton.builder()
 				.display(new ItemStack(CobblemonItems.ASSAULT_VEST.get()))
 				.title("§9See Item Listings")

@@ -28,6 +28,7 @@ public class GtsCommand extends BaseCommand {
 	@Override
 	public int run(CommandContext<CommandSourceStack> context) {
 
+
 		if (!context.getSource().isPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
 			return 1;
@@ -36,6 +37,8 @@ public class GtsCommand extends BaseCommand {
 		ServerPlayer sender = context.getSource().getPlayer();
 
 		Page page = new AllListings().getPage();
+
+		System.out.println(sender.getUUID());
 
 		UIManager.openUIForcefully(sender, page);
 
