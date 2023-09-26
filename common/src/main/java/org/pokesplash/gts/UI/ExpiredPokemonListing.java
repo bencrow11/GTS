@@ -2,6 +2,7 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
+import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
@@ -46,7 +47,7 @@ public class ExpiredPokemonListing {
 				.build();
 
 		Button receiveListing = GooeyButton.builder()
-				.display(new ItemStack(Items.GREEN_STAINED_GLASS_PANE))
+				.display(Utils.parseItemId(Gts.language.getPurchase_button()))
 				.title("§2Receive Listing")
 				.onClick((action) -> {
 					boolean success = GtsAPI.returnListing(action.getPlayer(), listing);
@@ -69,7 +70,7 @@ public class ExpiredPokemonListing {
 				.build();
 
 		Button cancel = GooeyButton.builder()
-				.display(new ItemStack(Items.RED_STAINED_GLASS_PANE))
+				.display(Utils.parseItemId(Gts.language.getCancel_button()))
 				.title("§cCancel Purchase")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -79,7 +80,10 @@ public class ExpiredPokemonListing {
 				.build();
 
 		Button filler = GooeyButton.builder()
-				.display(new ItemStack(Items.WHITE_STAINED_GLASS_PANE))
+				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.hideFlags(FlagType.All)
+				.lore(new ArrayList<>())
+				.title("")
 				.build();
 
 		ChestTemplate.Builder template = ChestTemplate.builder(3)

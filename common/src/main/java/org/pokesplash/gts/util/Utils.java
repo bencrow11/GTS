@@ -4,7 +4,9 @@ import com.cobblemon.mod.common.api.Priority;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
@@ -310,4 +312,10 @@ public abstract class Utils {
 				.replaceAll("\\{max_price\\}", "" + Gts.config.getMaximum_price());
 	}
 
+	public static ItemStack parseItemId(String id) {
+		CompoundTag tag = new CompoundTag();
+		tag.putString("id", id);
+		tag.putInt("Count", 1);
+		return ItemStack.of(tag);
+	}
 }

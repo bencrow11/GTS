@@ -2,6 +2,7 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
+import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.button.PlaceholderButton;
 import ca.landonjw.gooeylibs2.api.button.linked.LinkType;
@@ -51,7 +52,7 @@ public class PokemonListings {
 		}
 
 		Button sortByPriceButton = GooeyButton.builder()
-				.display(new ItemStack(Items.GOLD_NUGGET))
+				.display(Utils.parseItemId(Gts.language.getSort_price_button()))
 				.title("§eSort By Price")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -61,7 +62,7 @@ public class PokemonListings {
 				.build();
 
 		Button sortByNewestButton = GooeyButton.builder()
-				.display(new ItemStack(Items.CLOCK))
+				.display(Utils.parseItemId(Gts.language.getSort_newest_button()))
 				.title("§3Sort By Newest")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -71,7 +72,7 @@ public class PokemonListings {
 				.build();
 
 		Button sortByNameButton = GooeyButton.builder()
-				.display(new ItemStack(Items.OAK_SIGN))
+				.display(Utils.parseItemId(Gts.language.getSort_name_button()))
 				.title("§6Sort By Pokemon")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -81,7 +82,7 @@ public class PokemonListings {
 				.build();
 
 		Button seeItemListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.ASSAULT_VEST.get()))
+				.display(Utils.parseItemId(Gts.language.getItem_listing_display()))
 				.title("§9See Item Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -91,7 +92,7 @@ public class PokemonListings {
 				.build();
 
 		Button manageListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.SACHET.get()))
+				.display(Utils.parseItemId(Gts.language.getManage_listing_display()))
 				.title("§dManage Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -101,13 +102,13 @@ public class PokemonListings {
 				.build();
 
 		LinkedPageButton nextPage = LinkedPageButton.builder()
-				.display(new ItemStack(Items.ARROW))
+				.display(Utils.parseItemId(Gts.language.getNext_page_display()))
 				.title("§7Next Page")
 				.linkType(LinkType.Next)
 				.build();
 
 		LinkedPageButton previousPage = LinkedPageButton.builder()
-				.display(new ItemStack(CobblemonItems.POISON_BARB.get()))
+				.display(Utils.parseItemId(Gts.language.getPrevious_page_display()))
 				.title("§7Previous Page")
 				.linkType(LinkType.Previous)
 				.build();
@@ -138,7 +139,10 @@ public class PokemonListings {
 		}
 
 		Button filler = GooeyButton.builder()
-				.display(new ItemStack(Items.WHITE_STAINED_GLASS_PANE))
+				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.hideFlags(FlagType.All)
+				.lore(new ArrayList<>())
+				.title("")
 				.build();
 
 		ChestTemplate template = ChestTemplate.builder(6)

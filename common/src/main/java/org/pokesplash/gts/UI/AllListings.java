@@ -39,7 +39,7 @@ public class AllListings {
 	public Page getPage() {
 
 		Button seeItemListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.ASSAULT_VEST.get()))
+				.display(Utils.parseItemId(Gts.language.getItem_listing_display()))
 				.title("§9See Item Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -49,7 +49,7 @@ public class AllListings {
 				.build();
 
 		Button seePokemonListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.POKE_BALL.get()))
+				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
 				.hideFlags(FlagType.All)
 				.title("§9See Pokemon Listings")
 				.onClick((action) -> {
@@ -60,7 +60,7 @@ public class AllListings {
 				.build();
 
 		Button manageListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.SACHET.get()))
+				.display(Utils.parseItemId(Gts.language.getManage_listing_display()))
 				.title("§dManage Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -70,13 +70,13 @@ public class AllListings {
 				.build();
 
 		LinkedPageButton nextPage = LinkedPageButton.builder()
-				.display(new ItemStack(Items.ARROW))
+				.display(Utils.parseItemId(Gts.language.getNext_page_display()))
 				.title("§7Next Page")
 				.linkType(LinkType.Next)
 				.build();
 
 		LinkedPageButton previousPage = LinkedPageButton.builder()
-				.display(new ItemStack(CobblemonItems.POISON_BARB.get()))
+				.display(Utils.parseItemId(Gts.language.getPrevious_page_display()))
 				.title("§7Previous Page")
 				.linkType(LinkType.Previous)
 				.build();
@@ -128,7 +128,10 @@ public class AllListings {
 		}
 
 		Button filler = GooeyButton.builder()
-				.display(new ItemStack(Items.WHITE_STAINED_GLASS_PANE))
+				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.hideFlags(FlagType.All)
+				.lore(new ArrayList<>())
+				.title("")
 				.build();
 
 		ChestTemplate template = ChestTemplate.builder(6)

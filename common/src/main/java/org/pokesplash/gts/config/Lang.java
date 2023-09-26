@@ -33,6 +33,20 @@ public class Lang {
 	private String reload_message; // Message sent when reload command is executed.
 	private String insufficient_funds; // Not enough monies.
 	private String listing_bought; // Message sent to seller when their listing is bought.
+	private String item_listing_display; // The display item for the "item listings" menu.
+	private String pokemon_listing_display; // The display item for the "pokemon listings" menu.
+	private String manage_listing_display; // The display item for the "manage listings" menu.
+	private String expired_listing_display; // The material for the expired listings button.
+	private String next_page_display; // The display item for the "next page" button.
+	private String previous_page_display; // The display item for the "previous page" button.
+	private String filler_item; // The filler item for the UI.
+	private String purchase_button; // The material for the purchase button.
+	private String cancel_button; // The material for the cancel button.
+	private String remove_listing_button; // The material for the remove listing moderation button.
+	private String sort_price_button; // The material for the sort by price button.
+	private String sort_newest_button; // The material for the sort by newest button.
+	private String sort_name_button; // The material for the sort by name button.
+
 
 	/**
 	 * Constructor to generate a file if one doesn't exist.
@@ -57,6 +71,19 @@ public class Lang {
 		reload_message = "§2Reloaded Configs!";
 		insufficient_funds = "§cYou do not have enough money to purchase this listing!";
 		listing_bought = "§2Your {listing} has been bought by {buyer}";
+		item_listing_display = "cobblemon:assault_vest";
+		pokemon_listing_display = "cobblemon:poke_ball";
+		manage_listing_display = "cobblemon:sachet";
+		next_page_display = "minecraft:arrow";
+		previous_page_display = "cobblemon:poison_barb";
+		filler_item = "minecraft:white_stained_glass_pane";
+		purchase_button = "minecraft:green_stained_glass_pane";
+		cancel_button = "minecraft:red_stained_glass_pane";
+		sort_price_button = "minecraft:gold_nugget";
+		sort_newest_button = "minecraft:clock";
+		sort_name_button = "minecraft:oak_sign";
+		expired_listing_display = "cobblemon:link_cable";
+		remove_listing_button = "minecraft:orange_stained_glass_pane";
 	}
 
 	/**
@@ -119,6 +146,45 @@ public class Lang {
 	public String getListing_bought() {
 		return listing_bought;
 	}
+	public String getItem_listing_display() {
+		return item_listing_display;
+	}
+	public String getPokemon_listing_display() {
+		return pokemon_listing_display;
+	}
+	public String getManage_listing_display() {
+		return manage_listing_display;
+	}
+	public String getNext_page_display() {
+		return next_page_display;
+	}
+	public String getPrevious_page_display() {
+		return previous_page_display;
+	}
+	public String getFiller_item() {
+		return filler_item;
+	}
+	public String getPurchase_button() {
+		return purchase_button;
+	}
+	public String getCancel_button() {
+		return cancel_button;
+	}
+	public String getSort_price_button() {
+		return sort_price_button;
+	}
+	public String getSort_newest_button() {
+		return sort_newest_button;
+	}
+	public String getSort_name_button() {
+		return sort_name_button;
+	}
+	public String getExpired_listing_display() {
+		return expired_listing_display;
+	}
+	public String getRemove_listing_button() {
+		return remove_listing_button;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -147,6 +213,19 @@ public class Lang {
 					reload_message = lang.getReload_message();
 					insufficient_funds = lang.getInsufficient_funds();
 					listing_bought = lang.getListing_bought();
+					item_listing_display = lang.getItem_listing_display();
+					pokemon_listing_display = lang.getPokemon_listing_display();
+					manage_listing_display = lang.getManage_listing_display();
+					next_page_display = lang.getNext_page_display();
+					previous_page_display = lang.getPrevious_page_display();
+					filler_item = lang.getFiller_item();
+					purchase_button = lang.getPurchase_button();
+					cancel_button = lang.getCancel_button();
+					sort_price_button = lang.getSort_price_button();
+					sort_newest_button = lang.getSort_newest_button();
+					sort_name_button = lang.getSort_name_button();
+					expired_listing_display = lang.getExpired_listing_display();
+					remove_listing_button = lang.getRemove_listing_button();
 		});
 
 		if (!futureRead.join()) {

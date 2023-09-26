@@ -39,7 +39,7 @@ public class ManageListings {
 		List<ItemListing> itmListings = Gts.listings.getItemListingsByPlayer(owner);
 
 		Button seePokemonListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.POKE_BALL.get()))
+				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
 				.hideFlags(FlagType.All)
 				.title("§9See Pokemon Listings")
 				.onClick((action) -> {
@@ -50,7 +50,7 @@ public class ManageListings {
 				.build();
 
 		Button seeItemListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.ASSAULT_VEST.get()))
+				.display(Utils.parseItemId(Gts.language.getItem_listing_display()))
 				.title("§9See Item Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -61,19 +61,19 @@ public class ManageListings {
 
 
 		LinkedPageButton nextPage = LinkedPageButton.builder()
-				.display(new ItemStack(Items.ARROW))
+				.display(Utils.parseItemId(Gts.language.getNext_page_display()))
 				.title("§7Next Page")
 				.linkType(LinkType.Next)
 				.build();
 
 		LinkedPageButton previousPage = LinkedPageButton.builder()
-				.display(new ItemStack(CobblemonItems.POISON_BARB.get()))
+				.display(Utils.parseItemId(Gts.language.getPrevious_page_display()))
 				.title("§7Previous Page")
 				.linkType(LinkType.Previous)
 				.build();
 
 		Button expiredListings = GooeyButton.builder()
-				.display(new ItemStack(CobblemonItems.LINK_CABLE.get()))
+				.display(Utils.parseItemId(Gts.language.getExpired_listing_display()))
 				.title("§cExpired Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -134,7 +134,10 @@ public class ManageListings {
 
 
 		Button filler = GooeyButton.builder()
-				.display(new ItemStack(Items.WHITE_STAINED_GLASS_PANE))
+				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.hideFlags(FlagType.All)
+				.lore(new ArrayList<>())
+				.title("")
 				.build();
 
 		ChestTemplate template = ChestTemplate.builder(6)

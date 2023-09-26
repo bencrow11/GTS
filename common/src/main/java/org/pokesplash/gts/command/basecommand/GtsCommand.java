@@ -38,8 +38,6 @@ public class GtsCommand extends BaseCommand {
 
 		Page page = new AllListings().getPage();
 
-		System.out.println(sender.getUUID());
-
 		UIManager.openUIForcefully(sender, page);
 
 		return 1;
