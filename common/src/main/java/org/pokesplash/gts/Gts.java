@@ -1,6 +1,5 @@
 package org.pokesplash.gts;
 
-import com.cobblemon.mod.common.pokemon.Pokemon;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import dev.architectury.event.events.common.LifecycleEvent;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -14,10 +13,6 @@ import org.pokesplash.gts.timer.TimerProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
 import org.pokesplash.gts.util.GtsLogger;
 import org.pokesplash.gts.util.Permissions;
-
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
 
 public class Gts
 {
