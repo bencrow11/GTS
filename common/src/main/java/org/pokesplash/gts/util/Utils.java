@@ -68,7 +68,6 @@ public abstract class Utils {
 
 				@Override
 				public void failed(Throwable exc, ByteBuffer attachment) {
-					Gts.LOGGER.fatal("Unable to write file asynchronously, attempting sync write.");
 					future.complete(writeFileSync(file, data));
 				}
 			});
@@ -138,7 +137,6 @@ public abstract class Utils {
 			executor.shutdown();
 			future.complete(true);
 		} catch (Exception e) {
-			Gts.LOGGER.error("Unable to read file " + filename + " async, attempting to read sync.");
 			future.complete(readFileSync(file, callback));
 			executor.shutdown();
 		}
