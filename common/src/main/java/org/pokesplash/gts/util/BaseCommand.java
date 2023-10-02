@@ -45,7 +45,6 @@ public abstract class BaseCommand {
 
 		this.subcommands = new ArrayList<>();
 		this.subcommands.addAll(subcommands);
-
 	}
 
 	/**

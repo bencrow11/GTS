@@ -1,10 +1,6 @@
 package org.pokesplash.gts;
 
-import dev.architectury.event.events.common.CommandRegistrationEvent;
-import dev.architectury.event.events.common.LifecycleEvent;
-import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.ListingsProvider;
-import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
 import org.pokesplash.gts.config.Lang;
@@ -27,18 +23,7 @@ public class Gts
 
 	public static void init() {
 		CommandsRegistry.addCommand(new GtsCommand());
-		CommandRegistrationEvent.EVENT.register(CommandsRegistry::registerCommands);
 		reload();
-
-		// Delete all the timers when the server shuts down.
-		LifecycleEvent.SERVER_STOPPING.register((t) -> {
-			for (PokemonListing listing : Gts.timers.getPokemonTimers()) {
-				Gts.timers.deleteTimer(listing);
-			}
-			for (ItemListing listing : Gts.timers.getItemTimers()) {
-				Gts.timers.deleteTimer(listing);
-			}
-		});
 	}
 
 	public static void reload() {

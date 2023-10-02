@@ -7,6 +7,8 @@ import com.google.gson.GsonBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.PokemonListing;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -312,5 +314,14 @@ public abstract class Utils {
 		tag.putString("id", id);
 		tag.putInt("Count", 1);
 		return ItemStack.of(tag);
+	}
+
+	public static void removeAllTimers() {
+		for (PokemonListing listing : Gts.timers.getPokemonTimers()) {
+			Gts.timers.deleteTimer(listing);
+		}
+		for (ItemListing listing : Gts.timers.getItemTimers()) {
+			Gts.timers.deleteTimer(listing);
+		}
 	}
 }
