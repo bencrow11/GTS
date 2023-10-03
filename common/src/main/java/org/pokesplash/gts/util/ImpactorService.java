@@ -65,8 +65,18 @@ public abstract class ImpactorService {
 	 * @return true if the transaction was successful.
 	 */
 	public static boolean transfer(Account sender, Account receiver, double amount) {
-		EconomyTransferTransaction transaction = sender.transferAsync(receiver, new BigDecimal(amount)).join();
+		boolean removedMoney = remove(sender, amount);
+		boolean addMoney = add(receiver, amount);
+//		EconomyTransferTransaction transaction = sender.transferAsync(receiver, new BigDecimal(amount)).join();
 
-		return transaction.successful();
+		if (!removedMoney && addMoney) {
+			remove(receiver, amount);
+		}
+
+		if (removedMoney && !addMoney) {
+			add(sender, amount);
+		}
+
+		return removedMoney && addMoney;
 	}
 }
