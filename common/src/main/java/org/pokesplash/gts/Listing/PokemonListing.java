@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Class that holds a single listing.
  */
-public class PokemonListing {
+public class PokemonListing implements Listing<Pokemon> {
 	// The unique ID of the listing.
 
 	private final UUID id;
@@ -41,27 +41,38 @@ public class PokemonListing {
 		this.pokemon = pokemon.saveToJSON(new JsonObject());
 	}
 
+	@Override
 	public UUID getId() {
 		return id;
 	}
 
+	@Override
 	public UUID getSellerUuid() {
 		return sellerUuid;
 	}
 
+	@Override
 	public String getSellerName() {
 		return sellerName;
 	}
 
+	@Override
 	public double getPrice() {
 		return price;
 	}
 
+	@Override
 	public long getEndTime() {
 		return endTime;
 	}
 
-	public Pokemon getPokemon() {
+	@Override
+	public Pokemon getListing() {
 		return new Pokemon().loadFromJSON(pokemon);
+	}
+
+	@Override
+	public boolean isPokemon() {
+		return true;
 	}
 }

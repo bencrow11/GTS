@@ -36,8 +36,8 @@ public class SingleItemListing {
 		lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 		Button pokemon = GooeyButton.builder()
-				.display(listing.getItem())
-				.title("§3" + Utils.capitaliseFirst(listing.getItem().getDisplayName().getString()))
+				.display(listing.getListing())
+				.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
 				.lore(lore)
 				.build();
 
@@ -50,7 +50,7 @@ public class SingleItemListing {
 					String message;
 					if (success) {
 						message = Utils.formatPlaceholders(Gts.language.getPurchase_message_buyer(),
-								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 
 						ServerPlayer seller =
@@ -59,14 +59,14 @@ public class SingleItemListing {
 						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
 							seller.sendSystemMessage(Component.literal(
 									Utils.formatPlaceholders(Gts.language.getListing_bought(),
-											0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
+											0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 											action.getPlayer().getName().getString())));
 
 
 						}
 					} else {
 						message = Utils.formatPlaceholders(Gts.language.getInsufficient_funds(),
-								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
@@ -95,7 +95,7 @@ public class SingleItemListing {
 						GtsAPI.cancelListing(listing);
 					}
 					String message = Utils.formatPlaceholders(Gts.language.getCancel_listing(),
-							0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
+							0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
 					action.getPlayer().sendSystemMessage(Component.literal(message));
 

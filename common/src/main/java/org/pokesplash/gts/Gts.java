@@ -1,9 +1,14 @@
 package org.pokesplash.gts;
 
+import com.cobblemon.mod.common.pokemon.Pokemon;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
 import org.pokesplash.gts.config.Lang;
+import org.pokesplash.gts.api.event.GtsEvents;
+import org.pokesplash.gts.api.event.Subscription;
+import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.history.HistoryProvider;
 import org.pokesplash.gts.timer.TimerProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
@@ -35,5 +40,15 @@ public class Gts
 		listings.init();
 		history.init();
 		language.init();
+		Subscription<PurchaseEvent> sub = GtsEvents.PURCHASE_EVENT.subscribe(el -> { // TODO remove.
+			System.out.println(el.getBuyer().getName().getString());
+			if (el.getProduct().isPokemon()) {
+				Pokemon pokemon = (Pokemon) el.getProduct().getListing();
+				System.out.println(pokemon.getNature().getDisplayName());
+			} else {
+				ItemStack item = (ItemStack) el.getProduct().getListing();
+				System.out.println(item.getDisplayName().getString());
+			}
+		});
 	}
 }

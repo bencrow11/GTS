@@ -36,8 +36,8 @@ public class ExpiredItemListing {
 		lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 		Button pokemon = GooeyButton.builder()
-				.display(listing.getItem())
-				.title("§3" + Utils.capitaliseFirst(listing.getItem().getDisplayName().getString()))
+				.display(listing.getListing())
+				.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
 				.lore(lore)
 				.build();
 
@@ -51,14 +51,14 @@ public class ExpiredItemListing {
 
 					if (success) {
 						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_success(),
-								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 
 
 					} else {
 						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_fail(),
-								0, listing.getItem().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 					}

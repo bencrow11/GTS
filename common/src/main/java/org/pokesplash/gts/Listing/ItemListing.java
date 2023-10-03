@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Class that holds a single listing.
  */
-public class ItemListing {
+public class ItemListing implements Listing<ItemStack> {
 	// Unique id.
 	private final UUID id;
 	// The UUID of the person selling the Pokemon.
@@ -42,27 +42,33 @@ public class ItemListing {
 		this.item = item.save(new CompoundTag()).getAsString();
 	}
 
+	@Override
 	public UUID getId() {
 		return id;
 	}
 
+	@Override
 	public UUID getSellerUuid() {
 		return sellerUuid;
 	}
 
+	@Override
 	public String getSellerName() {
 		return sellerName;
 	}
 
+	@Override
 	public double getPrice() {
 		return price;
 	}
 
+	@Override
 	public long getEndTime() {
 		return endTime;
 	}
 
-	public ItemStack getItem() {
+	@Override
+	public ItemStack getListing() {
 		try {
 			return ItemStack.of(TagParser.parseTag(item));
 		} catch (CommandSyntaxException e) {
@@ -71,5 +77,10 @@ public class ItemListing {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public boolean isPokemon() {
+		return false;
 	}
 }

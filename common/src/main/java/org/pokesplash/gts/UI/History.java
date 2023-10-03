@@ -95,8 +95,8 @@ public class History {
 				lore.addAll(PokemonInfo.parse(listing));
 
 				Button button = GooeyButton.builder()
-						.display(PokemonItem.from(listing.getPokemon(), 1))
-						.title("§3" + Utils.capitaliseFirst(listing.getPokemon().getSpecies().toString()))
+						.display(PokemonItem.from(listing.getListing(), 1))
+						.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
 						.lore(lore)
 						.build();
 				pokemonButtons.add(button);
@@ -112,8 +112,8 @@ public class History {
 				lore.add("§9Price: §b" + listing.getPrice());
 
 				Button button = GooeyButton.builder()
-						.display(listing.getItem())
-						.title("§3" + Utils.capitaliseFirst(listing.getItem().getDisplayName().getString()))
+						.display(listing.getListing())
+						.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
 						.lore(lore)
 						.build();
 				itemButtons.add(button);

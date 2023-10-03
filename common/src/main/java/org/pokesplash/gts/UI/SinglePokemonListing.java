@@ -39,8 +39,8 @@ public class SinglePokemonListing {
 		lore.addAll(PokemonInfo.parse(listing));
 
 		Button pokemon = GooeyButton.builder()
-				.display(PokemonItem.from(listing.getPokemon(), 1))
-				.title("§3" + Utils.capitaliseFirst(listing.getPokemon().getSpecies().toString()))
+				.display(PokemonItem.from(listing.getListing(), 1))
+				.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
 				.lore(lore)
 				.build();
 
@@ -48,12 +48,12 @@ public class SinglePokemonListing {
 				.display(Utils.parseItemId(Gts.language.getPurchase_button()))
 				.title("§2Confirm Purchase")
 				.onClick((action) -> {
-					boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer().getUUID(), listing);
+					boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
 					String message;
 					if (success) {
 						message = Utils.formatPlaceholders(Gts.language.getPurchase_message_buyer(),
-								0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 
 						ServerPlayer seller =
@@ -61,13 +61,13 @@ public class SinglePokemonListing {
 
 						if (seller != null) {
 							seller.sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListing_bought(),
-									0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
+									0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 									action.getPlayer().getName().getString())));
 						}
 
 					} else {
 						message = Utils.formatPlaceholders(Gts.language.getInsufficient_funds(),
-								0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
@@ -98,7 +98,7 @@ public class SinglePokemonListing {
 						GtsAPI.cancelListing(listing);
 					}
 					String message = Utils.formatPlaceholders(Gts.language.getCancel_listing(),
-							0, listing.getPokemon().getDisplayName().getString(), listing.getSellerName(),
+							0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
 
 					action.getPlayer().sendSystemMessage(Component.literal(message));

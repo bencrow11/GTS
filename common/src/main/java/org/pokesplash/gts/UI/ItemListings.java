@@ -43,7 +43,7 @@ public class ItemListings {
 		} else if (sort.equals(SORT.DATE)) {
 			itmListings.sort(Comparator.comparingLong(ItemListing::getEndTime));
 		} else if (sort.equals(SORT.NAME)) {
-			itmListings.sort(Comparator.comparing(o -> o.getItem().getDisplayName().getString()));
+			itmListings.sort(Comparator.comparing(o -> o.getListing().getDisplayName().getString()));
 		}
 
 		Button sortByPriceButton = GooeyButton.builder()
@@ -121,8 +121,8 @@ public class ItemListings {
 			lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 			Button button = GooeyButton.builder()
-					.display(listing.getItem())
-					.title("§3" + Utils.capitaliseFirst(listing.getItem().getDisplayName().getString()))
+					.display(listing.getListing())
+					.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
 					.lore(lore)
 					.onClick((action) -> {
 						ServerPlayer sender = action.getPlayer();

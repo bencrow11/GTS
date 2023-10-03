@@ -1,7 +1,6 @@
 package org.pokesplash.gts.api;
 
 import com.cobblemon.mod.common.Cobblemon;
-import com.cobblemon.mod.common.api.storage.NoPokemonStoreException;
 import com.cobblemon.mod.common.api.storage.party.PartyPosition;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import net.impactdev.impactor.api.economy.accounts.Account;
@@ -9,6 +8,8 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.api.event.GtsEvents;
+import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.util.ImpactorService;
 
@@ -52,14 +53,14 @@ public abstract class GtsAPI {
 		boolean removeSuccess = party.remove(new PartyPosition(slot));
 
 		if (!success || !removeSuccess) {
-			Gts.LOGGER.error("Could not list pokemon " + listing.getPokemon().getSpecies() + " for player: " + player.getUUID());
+			Gts.LOGGER.error("Could not list pokemon " + listing.getListing().getSpecies() + " for player: " + player.getUUID());
 
 			if (success) {
 				Gts.listings.removePokemonListing(listing);
 			}
 
 			if (removeSuccess) {
-				party.add(listing.getPokemon());
+				party.add(listing.getListing());
 			}
 			return false;
 		}
@@ -75,10 +76,10 @@ public abstract class GtsAPI {
 	public static boolean addListing(ServerPlayer player, ItemListing listing) {
 		boolean success = Gts.listings.addItemListing(listing);
 		if (!success) {
-			Gts.LOGGER.error("Could not list item " + listing.getItem().getDisplayName().getString() + " for player: " + player.getUUID());
+			Gts.LOGGER.error("Could not list item " + listing.getListing().getDisplayName().getString() + " for player: " + player.getUUID());
 			return false;
 		}
-		player.getMainHandItem().setCount(player.getMainHandItem().getCount() - listing.getItem().getCount());
+		player.getMainHandItem().setCount(player.getMainHandItem().getCount() - listing.getListing().getCount());
 		return true;
 	}
 
@@ -89,10 +90,10 @@ public abstract class GtsAPI {
 	 * @param listing The pokemon listing that is being sold.
 	 * @return true if the transaction was successful.
 	 */
-	public static boolean sale(UUID seller, UUID buyer, PokemonListing listing) {
+	public static boolean sale(UUID seller, ServerPlayer buyer, PokemonListing listing) {
 		boolean listingsSuccess = Gts.listings.removePokemonListing(listing);
 		Account sellerAccount = ImpactorService.getAccount(seller);
-		Account buyerAccount = ImpactorService.getAccount(buyer);
+		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
 
 		boolean impactorSuccess = ImpactorService.transfer(buyerAccount, sellerAccount, listing.getPrice());
 
@@ -112,18 +113,15 @@ public abstract class GtsAPI {
 			return false;
 		}
 
-		try {
-			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
-			party.add(listing.getPokemon());
-		} catch (NoPokemonStoreException e) {
-			Gts.LOGGER.error("Could not give pokemon " + listing.getPokemon().getSpecies() + " to player: " + listing.getSellerName() +
-					".\nError: " + e.getMessage());
-		}
+		PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
+		party.add(listing.getListing());
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
 			new PlayerHistory(seller);
 		}
 		Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
+
+		GtsEvents.PURCHASE_EVENT.trigger(new PurchaseEvent(buyer, listing));
 
 		return true;
 	}
@@ -161,13 +159,14 @@ public abstract class GtsAPI {
 			return false;
 		}
 
-		buyer.getInventory().add(listing.getItem());
+		buyer.getInventory().add(listing.getListing());
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
 			new PlayerHistory(seller);
 		}
 		Gts.history.getPlayerHistory(seller).addItemListing(listing);
 
+		GtsEvents.PURCHASE_EVENT.trigger(new PurchaseEvent(buyer, listing));
 		return true;
 	}
 
@@ -180,7 +179,7 @@ public abstract class GtsAPI {
 
 		if (Gts.listings.removeExpiredPokemonListing(listing)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
-			party.add(listing.getPokemon());
+			party.add(listing.getListing());
 			return true;
 		} else {
 			return false;
@@ -194,7 +193,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
 		if (Gts.listings.removeExpiredItemListing(listing)) {
-			player.getInventory().add(listing.getItem());
+			player.getInventory().add(listing.getListing());
 			return true;
 		} else {
 			return false;
@@ -210,7 +209,7 @@ public abstract class GtsAPI {
 
 		if (Gts.listings.removePokemonListing(listing)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
-			party.add(listing.getPokemon());
+			party.add(listing.getListing());
 			return true;
 		} else {
 			return false;
@@ -225,7 +224,7 @@ public abstract class GtsAPI {
 	public static boolean cancelAndReturnListing(ServerPlayer player, ItemListing listing) {
 
 		if (Gts.listings.removeItemListing(listing)) {
-			player.getInventory().add(listing.getItem());
+			player.getInventory().add(listing.getListing());
 			return true;
 		} else {
 			return false;

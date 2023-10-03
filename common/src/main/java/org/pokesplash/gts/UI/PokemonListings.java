@@ -45,7 +45,7 @@ public class PokemonListings {
 		} else if (sort.equals(SORT.DATE)) {
 			pkmListings.sort(Comparator.comparingLong(PokemonListing::getEndTime));
 		} else if (sort.equals(SORT.NAME)) {
-			pkmListings.sort(Comparator.comparing(o -> o.getPokemon().getSpecies().toString()));
+			pkmListings.sort(Comparator.comparing(o -> o.getListing().getSpecies().toString()));
 		}
 
 		Button sortByPriceButton = GooeyButton.builder()
@@ -123,8 +123,8 @@ public class PokemonListings {
 			lore.addAll(PokemonInfo.parse(listing));
 
 			Button button = GooeyButton.builder()
-					.display(PokemonItem.from(listing.getPokemon(), 1))
-					.title("§3" + Utils.capitaliseFirst(listing.getPokemon().getSpecies().toString()))
+					.display(PokemonItem.from(listing.getListing(), 1))
+					.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
 					.lore(lore)
 					.onClick((action) -> {
 						ServerPlayer sender = action.getPlayer();

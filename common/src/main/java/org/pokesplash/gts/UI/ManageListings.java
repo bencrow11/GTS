@@ -93,8 +93,8 @@ public class ManageListings {
 				lore.addAll(PokemonInfo.parse(listing));
 
 				Button button = GooeyButton.builder()
-						.display(PokemonItem.from(listing.getPokemon(), 1))
-						.title("§3" + Utils.capitaliseFirst(listing.getPokemon().getSpecies().toString()))
+						.display(PokemonItem.from(listing.getListing(), 1))
+						.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
 						.lore(lore)
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
@@ -116,8 +116,8 @@ public class ManageListings {
 				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 				Button button = GooeyButton.builder()
-						.display(listing.getItem())
-						.title("§3" + Utils.capitaliseFirst(listing.getItem().getDisplayName().getString()))
+						.display(listing.getListing())
+						.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
 						.lore(lore)
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
