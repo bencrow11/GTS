@@ -9,7 +9,10 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.event.GtsEvents;
+import org.pokesplash.gts.api.event.events.AddEvent;
+import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
+import org.pokesplash.gts.api.event.events.ReturnEvent;
 import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.util.ImpactorService;
 
@@ -28,6 +31,7 @@ public abstract class GtsAPI {
 	public static boolean cancelListing(PokemonListing listing) {
 		boolean success = Gts.listings.removePokemonListing(listing);
 		Gts.listings.addExpiredPokemonListing(listing);
+		GtsEvents.CANCEL.trigger(new CancelEvent(listing));
 		return success;
 	}
 
@@ -39,6 +43,7 @@ public abstract class GtsAPI {
 	public static boolean cancelListing(ItemListing listing) {
 		boolean success = Gts.listings.removeItemListing(listing);
 		Gts.listings.addExpiredItemListing(listing);
+		GtsEvents.CANCEL.trigger(new CancelEvent(listing));
 		return success;
 	}
 
@@ -64,7 +69,7 @@ public abstract class GtsAPI {
 			}
 			return false;
 		}
-
+		GtsEvents.ADD.trigger(new AddEvent(listing, player));
 		return true;
 	}
 
@@ -80,6 +85,7 @@ public abstract class GtsAPI {
 			return false;
 		}
 		player.getMainHandItem().setCount(player.getMainHandItem().getCount() - listing.getListing().getCount());
+		GtsEvents.ADD.trigger(new AddEvent(listing, player));
 		return true;
 	}
 
@@ -121,7 +127,7 @@ public abstract class GtsAPI {
 		}
 		Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
 
-		GtsEvents.PURCHASE_EVENT.trigger(new PurchaseEvent(buyer, listing));
+		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
 
 		return true;
 	}
@@ -166,7 +172,7 @@ public abstract class GtsAPI {
 		}
 		Gts.history.getPlayerHistory(seller).addItemListing(listing);
 
-		GtsEvents.PURCHASE_EVENT.trigger(new PurchaseEvent(buyer, listing));
+		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
 		return true;
 	}
 
@@ -180,6 +186,7 @@ public abstract class GtsAPI {
 		if (Gts.listings.removeExpiredPokemonListing(listing)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
+			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
 		} else {
 			return false;
@@ -194,6 +201,7 @@ public abstract class GtsAPI {
 	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
 		if (Gts.listings.removeExpiredItemListing(listing)) {
 			player.getInventory().add(listing.getListing());
+			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
 		} else {
 			return false;
@@ -210,6 +218,8 @@ public abstract class GtsAPI {
 		if (Gts.listings.removePokemonListing(listing)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
+			GtsEvents.CANCEL.trigger(new CancelEvent(listing));
+			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
 		} else {
 			return false;
@@ -225,6 +235,8 @@ public abstract class GtsAPI {
 
 		if (Gts.listings.removeItemListing(listing)) {
 			player.getInventory().add(listing.getListing());
+			GtsEvents.CANCEL.trigger(new CancelEvent(listing));
+			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
 		} else {
 			return false;
