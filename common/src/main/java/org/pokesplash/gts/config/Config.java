@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
  * Config file.
  */
 public class Config {
+	private boolean broadcastListings; // Broadcasts new listings to chat.
 	private int max_listings_per_player; // The maximum listings each player is allowed.
 	private int listing_duration; // The length of each listing.
 	private double min_price_1_IV; // The minimum price of a pokemon with one full stat (31 IVs)
@@ -29,6 +30,7 @@ public class Config {
 	 * Constructor to create a default config file.
 	 */
 	public Config() {
+		broadcastListings = true;
 		max_listings_per_player = 8;
 		listing_duration = 72;
 		min_price_1_IV = 10000;
@@ -43,6 +45,14 @@ public class Config {
 		min_item_prices.add(new ItemPrices());
 		banned_items = new ArrayList<>();
 		banned_items.add("cobblemon:lucky_egg");
+	}
+
+	/**
+	 * Method to determine if new listings should be broadcasted to all online players.
+	 * @return True if listings should be broadcasted.
+	 */
+	public boolean isBroadcastListings() {
+		return broadcastListings;
 	}
 
 	/**
@@ -149,6 +159,7 @@ public class Config {
 				el -> {
 					Gson gson = Utils.newGson();
 					Config cfg = gson.fromJson(el, Config.class);
+					broadcastListings = cfg.isBroadcastListings();
 					max_listings_per_player = cfg.getMax_listings_per_player();
 					listing_duration = cfg.getListing_duration();
 					min_price_1_IV = cfg.getMin_price_1_IV();

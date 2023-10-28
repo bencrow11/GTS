@@ -8,6 +8,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -24,6 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -329,7 +332,14 @@ public abstract class Utils {
 	}
 
 	public static void broadcastClickable(String message, String command) {
-		Component.literal(message).setStyle(Style.EMPTY.withClickEvent(
+		Component component = Component.literal(message).setStyle(Style.EMPTY.withClickEvent(
 				new ClickEvent(ClickEvent.Action.RUN_COMMAND, command)));
+
+		MinecraftServer server = Gts.server;
+		ArrayList<ServerPlayer> players = new ArrayList<>(server.getPlayerList().getPlayers());
+
+		for (ServerPlayer pl : players) {
+			pl.sendSystemMessage(component);
+		}
 	}
 }

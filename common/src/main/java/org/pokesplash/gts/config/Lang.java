@@ -46,6 +46,7 @@ public class Lang {
 	private String sort_price_button; // The material for the sort by price button.
 	private String sort_newest_button; // The material for the sort by newest button.
 	private String sort_name_button; // The material for the sort by name button.
+	private String broadcast_message; // Message sent when a new listing is added.
 
 
 	/**
@@ -84,6 +85,7 @@ public class Lang {
 		sort_name_button = "minecraft:oak_sign";
 		expired_listing_display = "cobblemon:link_cable";
 		remove_listing_button = "minecraft:orange_stained_glass_pane";
+		broadcast_message = "§e{seller} §2has just added a §e{listing} §2to GTS.";
 	}
 
 	/**
@@ -185,6 +187,9 @@ public class Lang {
 	public String getRemove_listing_button() {
 		return remove_listing_button;
 	}
+	public String getBroadcast_message() {
+		return broadcast_message;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -226,6 +231,7 @@ public class Lang {
 					sort_name_button = lang.getSort_name_button();
 					expired_listing_display = lang.getExpired_listing_display();
 					remove_listing_button = lang.getRemove_listing_button();
+					broadcast_message = lang.getBroadcast_message();
 		});
 
 		if (!futureRead.join()) {

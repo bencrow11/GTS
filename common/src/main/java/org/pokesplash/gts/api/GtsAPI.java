@@ -15,6 +15,7 @@ import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
 import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.util.ImpactorService;
+import org.pokesplash.gts.util.Utils;
 
 import java.util.UUID;
 
@@ -70,6 +71,13 @@ public abstract class GtsAPI {
 			return false;
 		}
 		GtsEvents.ADD.trigger(new AddEvent(listing, player));
+
+		if (Gts.config.isBroadcastListings()) {
+			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getBroadcast_message(), 0,
+							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
+					"/gts " + listing.getId());
+		}
+
 		return true;
 	}
 
@@ -85,7 +93,15 @@ public abstract class GtsAPI {
 			return false;
 		}
 		player.getMainHandItem().setCount(player.getMainHandItem().getCount() - listing.getListing().getCount());
+
 		GtsEvents.ADD.trigger(new AddEvent(listing, player));
+
+		if (Gts.config.isBroadcastListings()) {
+			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getBroadcast_message(), 0,
+							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
+					"/gts " + listing.getId());
+		}
+
 		return true;
 	}
 

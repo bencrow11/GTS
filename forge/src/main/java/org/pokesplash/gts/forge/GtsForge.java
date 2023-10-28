@@ -2,6 +2,7 @@ package org.pokesplash.gts.forge;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -26,4 +27,8 @@ public class GtsForge {
         Utils.removeAllTimers();
     }
 
+    @SubscribeEvent
+    public void worldLoadEvent(LevelEvent.Load event) {
+        Gts.server = event.getLevel().getServer();
+    }
 }
