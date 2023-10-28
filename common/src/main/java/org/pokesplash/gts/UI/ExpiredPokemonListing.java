@@ -31,17 +31,17 @@ public class ExpiredPokemonListing {
 	 */
 	public Page getPage(PokemonListing listing) {
 
-		Collection<String> lore = new ArrayList<>();
+		Collection<Component> lore = new ArrayList<>();
 
-		lore.add("§9Seller: §b" + listing.getSellerName());
-		lore.add("§9Price: §b" + listing.getPrice());
-		lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+		lore.add(Component.literal("§9Seller: §b" + listing.getSellerName()));
+		lore.add(Component.literal("§9Price: §b" + listing.getPrice()));
+		lore.add(Component.literal("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 		lore.addAll(PokemonInfo.parse(listing));
 
 		Button pokemon = GooeyButton.builder()
 				.display(PokemonItem.from(listing.getListing(), 1))
 				.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
-				.lore(lore)
+				.lore(Component.class, lore)
 				.build();
 
 		Button receiveListing = GooeyButton.builder()

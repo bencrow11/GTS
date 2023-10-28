@@ -12,6 +12,7 @@ import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -85,17 +86,17 @@ public class ManageListings {
 		List<Button> pokemonButtons = new ArrayList<>();
 		if (pkmListings != null) {
 			for (PokemonListing listing : pkmListings) {
-				Collection<String> lore = new ArrayList<>();
+				Collection<Component> lore = new ArrayList<>();
 
-				lore.add("§9Seller: §b" + listing.getSellerName());
-				lore.add("§9Price: §b" + listing.getPrice());
-				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+				lore.add(Component.literal("§9Seller: §b" + listing.getSellerName()));
+				lore.add(Component.literal("§9Price: §b" + listing.getPrice()));
+				lore.add(Component.literal("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 				lore.addAll(PokemonInfo.parse(listing));
 
 				Button button = GooeyButton.builder()
 						.display(PokemonItem.from(listing.getListing(), 1))
 						.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
-						.lore(lore)
+						.lore(Component.class, lore)
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
 							Page page = new SinglePokemonListing().getPage(sender, listing);

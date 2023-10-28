@@ -31,17 +31,19 @@ public class SinglePokemonListing {
 	 */
 	public Page getPage(ServerPlayer viewer, PokemonListing listing) {
 
-		Collection<String> lore = new ArrayList<>();
 
-		lore.add("§9Seller: §b" + listing.getSellerName());
-		lore.add("§9Price: §b" + listing.getPrice());
-		lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+
+		Collection<Component> lore = new ArrayList<>();
+
+		lore.add(Component.literal("§9Seller: §b" + listing.getSellerName()));
+		lore.add(Component.literal("§9Price: §b" + listing.getPrice()));
+		lore.add(Component.literal("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 		lore.addAll(PokemonInfo.parse(listing));
 
 		Button pokemon = GooeyButton.builder()
 				.display(PokemonItem.from(listing.getListing(), 1))
-				.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
-				.lore(lore)
+				.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().getName()))
+				.lore(Component.class, lore)
 				.build();
 
 		Button purchase = GooeyButton.builder()

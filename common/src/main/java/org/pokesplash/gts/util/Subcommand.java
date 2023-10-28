@@ -1,6 +1,7 @@
 package org.pokesplash.gts.util;
 
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
@@ -35,7 +36,7 @@ public abstract class Subcommand {
 	 * Method to override to create the command.
 	 * @return
 	 */
-	public abstract LiteralCommandNode<CommandSourceStack> build();
+	public abstract CommandNode<CommandSourceStack> build();
 
 	/**
 	 * Method to override where the logic of the command goes.

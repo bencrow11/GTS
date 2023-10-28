@@ -265,6 +265,22 @@ public class ListingsProvider {
 		return writeToFile();
 	}
 
+	public Listing getListingById(UUID id) {
+		for (PokemonListing listing : pokemonListings) {
+			if (listing.getId().equals(id)) {
+				return listing;
+			}
+		}
+
+		for (ItemListing listing : itemListings) {
+			if (listing.getId().equals(id)) {
+				return listing;
+			}
+		}
+
+		return null;
+	}
+
 	public List<PokemonListing> getExpiredPokemonListings(UUID playerId) {
 		return expiredPokemonListings.get(playerId);
 	}

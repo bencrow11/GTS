@@ -27,7 +27,7 @@ public abstract class ImpactorService {
 
 	public static Account getAccount(UUID uuid) {
 		if (!service.hasAccount(uuid).join()) {
-			return null;
+			return service.account(uuid).join();
 		}
 		return service.account(currency, uuid).join();
 	}

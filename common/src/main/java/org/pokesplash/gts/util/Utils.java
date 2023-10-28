@@ -5,6 +5,9 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -323,5 +326,10 @@ public abstract class Utils {
 		for (ItemListing listing : Gts.timers.getItemTimers()) {
 			Gts.timers.deleteTimer(listing);
 		}
+	}
+
+	public static void broadcastClickable(String message, String command) {
+		Component.literal(message).setStyle(Style.EMPTY.withClickEvent(
+				new ClickEvent(ClickEvent.Action.RUN_COMMAND, command)));
 	}
 }
