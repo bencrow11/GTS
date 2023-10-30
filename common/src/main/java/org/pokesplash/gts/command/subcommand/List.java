@@ -49,9 +49,13 @@ public class List extends Subcommand {
 								.executes(this::showPokemonUsage)
 								.then(Commands.argument("price", FloatArgumentType.floatArg())
 										.suggests((ctx, builder) -> {
-											for (int i = 1; i <= 11; i++) {;
-												builder.suggest(i * 10000);
+
+											for (double price : Gts.config.getAllPokemonPrices()) {
+												if (price > 0) {
+													builder.suggest((int) price);
+												}
 											}
+
 											return builder.buildFuture();
 										})
 										.executes(this::run))))
@@ -60,7 +64,7 @@ public class List extends Subcommand {
 						.then(Commands.argument("price", FloatArgumentType.floatArg())
 								.suggests((ctx, builder) -> {
 									for (int i = 1; i <= 11; i++) {;
-										builder.suggest(i * 10000);
+										builder.suggest(i * 100);
 									}
 									return builder.buildFuture();
 								})

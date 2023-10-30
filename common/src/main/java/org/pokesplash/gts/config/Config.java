@@ -5,6 +5,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -149,6 +150,20 @@ public class Config {
 	 */
 	public List<String> getBanned_items() {
 		return banned_items;
+	}
+
+	public HashSet<Double> getAllPokemonPrices() {
+		HashSet<Double> prices = new HashSet<>();
+
+		prices.add(min_price_1_IV);
+		prices.add(min_price_2_IV);
+		prices.add(min_price_3_IV);
+		prices.add(min_price_4_IV);
+		prices.add(min_price_5_IV);
+		prices.add(min_price_6_IV);
+		prices.add(min_price_HA);
+
+		return prices;
 	}
 
 	/**
