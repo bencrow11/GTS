@@ -89,7 +89,7 @@ public class ManageListings {
 				Collection<Component> lore = new ArrayList<>();
 
 				lore.add(Component.literal("§9Seller: §b" + listing.getSellerName()));
-				lore.add(Component.literal("§9Price: §b" + listing.getPrice()));
+				lore.add(Component.literal("§9Price: §b" + listing.getPriceAsString()));
 				lore.add(Component.literal("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 				lore.addAll(PokemonInfo.parse(listing));
 
@@ -113,7 +113,7 @@ public class ManageListings {
 				Collection<String> lore = new ArrayList<>();
 
 				lore.add("§9Seller: §b" + listing.getSellerName());
-				lore.add("§9Price: §b" + listing.getPrice());
+				lore.add("§9Price: §b" + listing.getPriceAsString());
 				lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 				Button button = GooeyButton.builder()

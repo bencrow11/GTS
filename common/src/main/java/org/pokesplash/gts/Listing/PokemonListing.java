@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
 import org.pokesplash.gts.Gts;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -59,6 +60,12 @@ public class PokemonListing implements Listing<Pokemon> {
 	@Override
 	public double getPrice() {
 		return price;
+	}
+
+	@Override
+	public String getPriceAsString() {
+		DecimalFormat df = new DecimalFormat("0.##");
+		return df.format(price);
 	}
 
 	@Override
