@@ -31,9 +31,9 @@ public class SingleItemListing {
 
 		Collection<String> lore = new ArrayList<>();
 
-		lore.add("§9Seller: §b" + listing.getSellerName());
-		lore.add("§9Price: §b" + listing.getPriceAsString());
-		lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+		lore.add(Gts.language.getSeller() + listing.getSellerName());
+		lore.add(Gts.language.getPrice() + listing.getPriceAsString());
+		lore.add(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 		Button pokemon = GooeyButton.builder()
 				.display(listing.getListing())
@@ -43,7 +43,7 @@ public class SingleItemListing {
 
 		Button purchase = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPurchase_button()))
-				.title("§2Confirm Purchase")
+				.title(Gts.language.getConfirm_purchase())
 				.onClick((action) -> {
 				 	boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
@@ -77,7 +77,7 @@ public class SingleItemListing {
 
 		Button cancel = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getCancel_button()))
-				.title("§cCancel Purchase")
+				.title(Gts.language.getCancel_purchase())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new AllListings().getPage();
@@ -87,7 +87,7 @@ public class SingleItemListing {
 
 		Button removeListing = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getRemove_listing_button()))
-				.title("§6Remove Listing")
+				.title(Gts.language.getRemove_listing())
 				.onClick((action) -> {
 					if (action.getPlayer().getUUID().equals(listing.getSellerUuid())) {
 						GtsAPI.cancelAndReturnListing(action.getPlayer(), listing);

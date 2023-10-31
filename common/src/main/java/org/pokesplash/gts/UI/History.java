@@ -42,7 +42,7 @@ public class History {
 		Button seePokemonListings = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
 				.hideFlags(FlagType.All)
-				.title("§9See Pokemon Listings")
+				.title(Gts.language.getSee_pokemon_listings())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
@@ -52,7 +52,7 @@ public class History {
 
 		Button seeItemListings = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getItem_listing_display()))
-				.title("§9See Item Listings")
+				.title(Gts.language.getSee_item_listings())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(ItemListings.SORT.NONE);
@@ -63,19 +63,19 @@ public class History {
 
 		LinkedPageButton nextPage = LinkedPageButton.builder()
 				.display(Utils.parseItemId(Gts.language.getNext_page_display()))
-				.title("§7Next Page")
+				.title(Gts.language.getNext_page())
 				.linkType(LinkType.Next)
 				.build();
 
 		LinkedPageButton previousPage = LinkedPageButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPrevious_page_display()))
-				.title("§7Previous Page")
+				.title(Gts.language.getPrevious_page())
 				.linkType(LinkType.Previous)
 				.build();
 
 		Button manageListings = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getManage_listing_display()))
-				.title("§dManage Listings")
+				.title(Gts.language.getManage_listings())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ManageListings().getPage(action.getPlayer().getUUID());
@@ -91,8 +91,8 @@ public class History {
 			for (PokemonListing listing : pkmListings) {
 				Collection<Component> lore = new ArrayList<>();
 
-				lore.add(Component.literal("§9Seller: §b" + listing.getSellerName()));
-				lore.add(Component.literal("§9Price: §b" + listing.getPriceAsString()));
+				lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
+				lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
 				lore.addAll(PokemonInfo.parse(listing));
 
 				Button button = GooeyButton.builder()
@@ -109,8 +109,8 @@ public class History {
 			for (ItemListing listing : itmListings) {
 				Collection<String> lore = new ArrayList<>();
 
-				lore.add("§9Seller: §b" + listing.getSellerName());
-				lore.add("§9Price: §b" + listing.getPriceAsString());
+				lore.add(Gts.language.getSeller() + listing.getSellerName());
+				lore.add(Gts.language.getPrice() + listing.getPriceAsString());
 
 				Button button = GooeyButton.builder()
 						.display(listing.getListing())

@@ -33,9 +33,9 @@ public class ExpiredPokemonListing {
 
 		Collection<Component> lore = new ArrayList<>();
 
-		lore.add(Component.literal("§9Seller: §b" + listing.getSellerName()));
-		lore.add(Component.literal("§9Price: §b" + listing.getPriceAsString()));
-		lore.add(Component.literal("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
+		lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
+		lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
+		lore.add(Component.literal(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 		lore.addAll(PokemonInfo.parse(listing));
 
 		Button pokemon = GooeyButton.builder()
@@ -46,7 +46,7 @@ public class ExpiredPokemonListing {
 
 		Button receiveListing = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPurchase_button()))
-				.title("§2Receive Listing")
+				.title(Gts.language.getReceive_listing())
 				.onClick((action) -> {
 					boolean success = GtsAPI.returnListing(action.getPlayer(), listing);
 
@@ -69,7 +69,7 @@ public class ExpiredPokemonListing {
 
 		Button cancel = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getCancel_button()))
-				.title("§cCancel Purchase")
+				.title(Gts.language.getCancel_purchase())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ExpiredListings().getPage(action.getPlayer().getUUID());

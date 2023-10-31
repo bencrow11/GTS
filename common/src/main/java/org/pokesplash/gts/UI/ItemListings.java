@@ -48,7 +48,7 @@ public class ItemListings {
 
 		Button sortByPriceButton = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getSort_price_button()))
-				.title("§eSort By Price")
+				.title(Gts.language.getSort_by_price())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(SORT.PRICE);
@@ -58,7 +58,7 @@ public class ItemListings {
 
 		Button sortByNewestButton = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getSort_newest_button()))
-				.title("§3Sort By Newest")
+				.title(Gts.language.getSort_by_newest())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(SORT.DATE);
@@ -68,7 +68,7 @@ public class ItemListings {
 
 		Button sortByNameButton = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getSort_name_button()))
-				.title("§6Sort By Name")
+				.title(Gts.language.getSort_by_name())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(SORT.NAME);
@@ -79,7 +79,7 @@ public class ItemListings {
 		Button seePokemonListings = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
 				.hideFlags(FlagType.All)
-				.title("§9See Pokemon Listings")
+				.title(Gts.language.getSee_pokemon_listings())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
@@ -89,7 +89,7 @@ public class ItemListings {
 
 		Button manageListings = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getManage_listing_display()))
-				.title("§dManage Listings")
+				.title(Gts.language.getManage_listings())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ManageListings().getPage(action.getPlayer().getUUID());
@@ -99,13 +99,13 @@ public class ItemListings {
 
 		LinkedPageButton nextPage = LinkedPageButton.builder()
 				.display(Utils.parseItemId(Gts.language.getNext_page_display()))
-				.title("§7Next Page")
+				.title(Gts.language.getNext_page())
 				.linkType(LinkType.Next)
 				.build();
 
 		LinkedPageButton previousPage = LinkedPageButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPrevious_page_display()))
-				.title("§7Previous Page")
+				.title(Gts.language.getPrevious_page())
 				.linkType(LinkType.Previous)
 				.build();
 
@@ -116,9 +116,9 @@ public class ItemListings {
 		for (ItemListing listing : Gts.listings.getItemListings()) {
 			Collection<String> lore = new ArrayList<>();
 
-			lore.add("§9Seller: §b" + listing.getSellerName());
-			lore.add("§9Price: §b" + listing.getPriceAsString());
-			lore.add("§9Time Remaining: §b" + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+			lore.add(Gts.language.getSeller() + listing.getSellerName());
+			lore.add(Gts.language.getPrice() + listing.getPriceAsString());
+			lore.add(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 			Button button = GooeyButton.builder()
 					.display(listing.getListing())
