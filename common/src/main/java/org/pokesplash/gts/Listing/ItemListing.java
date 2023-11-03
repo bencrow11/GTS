@@ -6,6 +6,7 @@ import net.minecraft.nbt.TagParser;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -60,6 +61,12 @@ public class ItemListing implements Listing<ItemStack> {
 	@Override
 	public double getPrice() {
 		return price;
+	}
+
+	@Override
+	public String getPriceAsString() {
+		DecimalFormat df = new DecimalFormat("0.##");
+		return df.format(price);
 	}
 
 	@Override

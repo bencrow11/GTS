@@ -12,6 +12,7 @@ public interface Listing<T> {
 	public UUID getSellerUuid(); // UUID of the seller.
 	public String getSellerName(); // Name of the seller.
 	public double getPrice(); // Price of the listing.
+	public String getPriceAsString(); // Price of the listing as String.
 	public long getEndTime(); // End time of the listing.
 	public T getListing(); // The object that has been listed.
 	public boolean isPokemon(); // Checks that the listing is a pokemon;

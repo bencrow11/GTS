@@ -47,6 +47,22 @@ public class Lang {
 	private String sort_newest_button; // The material for the sort by newest button.
 	private String sort_name_button; // The material for the sort by name button.
 	private String broadcast_message; // Message sent when a new listing is added.
+	private String seller; // Seller of the listing.
+	private String price; // Price of the listing.
+	private String time_remaining; // Time Remaining for the listing.
+	private String confirm_purchase; // The name of the "Confirm Purchase" button.
+	private String cancel_purchase; // The name of the "Cancel Purchase" button.
+	private String remove_listing; // The name of the "Remove Listing" button.
+	private String see_item_listings; // The name of the "See Item Listings" button.
+	private String see_pokemon_listings; // The name of the "See Pokemon Listings" button.
+	private String manage_listings; // The name of the "Manage Listings" button.
+	private String next_page; // The name of the "Next Page" button.
+	private String previous_page; // The name of the "Previous Page" button.
+	private String sort_by_price; // The name of the "Sort By Price" button.
+	private String sort_by_newest; // The name of the "Sort By Newest" button.
+	private String sort_by_pokemon; // The name of the "Sort By Pokemon" button.
+	private String sort_by_name; // The name of the "Sort By Name" button.
+	private String receive_listing; // The name of the "Receive Listing" button.
 
 
 	/**
@@ -86,6 +102,22 @@ public class Lang {
 		expired_listing_display = "cobblemon:link_cable";
 		remove_listing_button = "minecraft:orange_stained_glass_pane";
 		broadcast_message = "§e{seller} §2has just added a §e{listing} §2to GTS.";
+		seller = "§9Seller: §b";
+		price = "§9Price: §b";
+		time_remaining = "§9Time Remaining: §b";
+		confirm_purchase = "§2Confirm Purchase";
+		cancel_purchase = "§cCancel Purchase";
+		remove_listing = "§6Remove Listing";
+		see_item_listings = "§9See Item Listings";
+		see_pokemon_listings = "§9See Pokemon Listings";
+		manage_listings = "§dManage Listings";
+		next_page = "§7Next Page";
+		previous_page = "§7Previous Page";
+		sort_by_price = "§eSort By Price";
+		sort_by_newest = "§3Sort By Newest";
+		sort_by_pokemon = "§6Sort By Pokemon";
+		sort_by_name = "§6Sort By Name";
+		receive_listing = "§2Receive Listing";
 	}
 
 	/**
@@ -190,6 +222,54 @@ public class Lang {
 	public String getBroadcast_message() {
 		return broadcast_message;
 	}
+	public String getSeller() {
+		return seller;
+	}
+	public String getPrice() {
+		return price;
+	}
+	public String getTime_remaining() {
+		return time_remaining;
+	}
+	public String getConfirm_purchase() {
+		return confirm_purchase;
+	}
+	public String getCancel_purchase() {
+		return cancel_purchase;
+	}
+	public String getRemove_listing() {
+		return remove_listing;
+	}
+	public String getSee_item_listings() {
+		return see_item_listings;
+	}
+	public String getSee_pokemon_listings() {
+		return see_pokemon_listings;
+	}
+	public String getManage_listings() {
+		return manage_listings;
+	}
+	public String getNext_page() {
+		return next_page;
+	}
+	public String getPrevious_page() {
+		return previous_page;
+	}
+	public String getSort_by_price() {
+		return sort_by_price;
+	}
+	public String getSort_by_newest() {
+		return sort_by_newest;
+	}
+	public String getSort_by_pokemon() {
+		return sort_by_pokemon;
+	}
+	public String getSort_by_name() {
+		return sort_by_name;
+	}
+	public String getReceive_listing() {
+		return receive_listing;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -232,6 +312,22 @@ public class Lang {
 					expired_listing_display = lang.getExpired_listing_display();
 					remove_listing_button = lang.getRemove_listing_button();
 					broadcast_message = lang.getBroadcast_message();
+					seller = lang.getSeller();
+					price = lang.getPrice();
+					time_remaining = lang.getTime_remaining();
+					confirm_purchase = lang.getConfirm_purchase();
+					cancel_purchase = lang.getCancel_purchase();
+					remove_listing = lang.getRemove_listing();
+					see_item_listings = lang.getSee_item_listings();
+					see_pokemon_listings = lang.getSee_pokemon_listings();
+					manage_listings = lang.getManage_listings();
+					next_page = lang.getNext_page();
+					previous_page = lang.getPrevious_page();
+					sort_by_price = lang.getSort_by_price();
+					sort_by_newest = lang.getSort_by_newest();
+					sort_by_pokemon = lang.getSort_by_pokemon();
+					sort_by_name = lang.getSort_by_name();
+					receive_listing = lang.getReceive_listing();
 		});
 
 		if (!futureRead.join()) {
