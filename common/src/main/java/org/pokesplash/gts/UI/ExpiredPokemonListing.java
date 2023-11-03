@@ -40,7 +40,7 @@ public class ExpiredPokemonListing {
 
 		Button pokemon = GooeyButton.builder()
 				.display(PokemonItem.from(listing.getListing(), 1))
-				.title("§3" + Utils.capitaliseFirst(listing.getListing().getSpecies().toString()))
+				.title(listing.getDisplayName())
 				.lore(Component.class, lore)
 				.build();
 
