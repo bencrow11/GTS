@@ -1,6 +1,7 @@
 package org.pokesplash.gts.command.subcommand;
 
 import com.cobblemon.mod.common.Cobblemon;
+import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.mojang.brigadier.arguments.FloatArgumentType;
@@ -88,7 +89,19 @@ public class List extends Subcommand {
 	@Override
 	public int run(CommandContext<CommandSourceStack> context) {
 		if (!context.getSource().isPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			context.getSource().sendSystemMessage(Component.literal(
+					"This command must be ran by a player."
+			));
+			return 1;
+		}
+
+		PokemonBattle battle =
+				Cobblemon.INSTANCE.getBattleRegistry().getBattleByParticipatingPlayer(context.getSource().getPlayer());
+
+		if (battle != null) {
+			context.getSource().sendSystemMessage(Component.literal(
+					"§cYou can not list to GTS while in a battle."
+			));
 			return 1;
 		}
 
