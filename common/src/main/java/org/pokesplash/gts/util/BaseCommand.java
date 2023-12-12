@@ -58,9 +58,13 @@ public abstract class BaseCommand {
 		LiteralCommandNode<CommandSourceStack> root = Commands
 				.literal(commandString)
 				.requires(ctx -> {
-					if (ctx.isPlayer()) {
-						return Gts.permissions.hasPermission(ctx.getPlayer(),
-								permission);
+					if (Gts.config.isEnablePermissionNodes()) {
+						if (ctx.isPlayer()) {
+							return Gts.permissions.hasPermission(ctx.getPlayer(),
+									permission);
+						} else {
+							return true;
+						}
 					} else {
 						return true;
 					}

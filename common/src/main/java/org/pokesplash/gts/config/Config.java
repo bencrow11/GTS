@@ -14,6 +14,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class Config {
 	private boolean broadcastListings; // Broadcasts new listings to chat.
+	private boolean enablePermissionNodes; // Should permission nodes or levels be used.
 	private int max_listings_per_player; // The maximum listings each player is allowed.
 	private int listing_duration; // The length of each listing.
 	private double min_price_1_IV; // The minimum price of a pokemon with one full stat (31 IVs)
@@ -32,6 +33,7 @@ public class Config {
 	 */
 	public Config() {
 		broadcastListings = true;
+		enablePermissionNodes = true;
 		max_listings_per_player = 8;
 		listing_duration = 72;
 		min_price_1_IV = 10000;
@@ -152,6 +154,10 @@ public class Config {
 		return banned_items;
 	}
 
+	public boolean isEnablePermissionNodes() {
+		return enablePermissionNodes;
+	}
+
 	public HashSet<Double> getAllPokemonPrices() {
 		HashSet<Double> prices = new HashSet<>();
 
@@ -187,6 +193,7 @@ public class Config {
 					maximum_price = cfg.getMaximum_price();
 					min_item_prices = cfg.getMin_item_prices();
 					banned_items = cfg.getBanned_items();
+					enablePermissionNodes = cfg.isEnablePermissionNodes();
 				});
 
 		if (!futureRead.join()) {
