@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * Class that holds a single listing.
  */
-public class ItemListing implements Listing<ItemStack> {
+public class ItemListing extends Listing<ItemStack> {
 	// Unique id.
 	private final UUID id;
 	// The UUID of the person selling the Pokemon.
@@ -34,7 +34,7 @@ public class ItemListing implements Listing<ItemStack> {
 	 * @param price The price the Pokemon is selling for.
 	 * @param item The item to sell.
 	 */
-	public ItemListing(UUID sellerUuid, String sellerName, double price, int amount, ItemStack item) {
+	public ItemListing(UUID sellerUuid, String sellerName, double price, ItemStack item) {
 		this.id = UUID.randomUUID();
 		this.sellerUuid = sellerUuid;
 		this.sellerName = sellerName;

@@ -7,13 +7,14 @@ import net.impactdev.impactor.api.economy.accounts.Account;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.event.GtsEvents;
 import org.pokesplash.gts.api.event.events.AddEvent;
 import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
-import org.pokesplash.gts.history.PlayerHistory;
+import org.pokesplash.gts.history.PlayerHistoryOld;
 import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
 
@@ -25,10 +26,24 @@ import java.util.UUID;
 public abstract class GtsAPI {
 
 	/**
+	 * Cancel method that cancels a listing.
+	 * @param listing The listing to cancel.
+	 * @return true if the listing was successfully cancelled.
+	 */
+	public static boolean cancelListing(Listing listing) {
+		boolean success = Gts.listings.removeListing(listing);
+		Gts.listings.addExpiredListing(listing);
+		GtsEvents.CANCEL.trigger(new CancelEvent(listing));
+		return success;
+	}
+
+
+	/**
 	 * Cancel method that cancels a pokemon listing.
 	 * @param listing The Pokemon listing to cancel.
 	 * @return true if the listing was successfully cancelled.
 	 */
+	@Deprecated
 	public static boolean cancelListing(PokemonListing listing) {
 		boolean success = Gts.listings.removePokemonListing(listing);
 		Gts.listings.addExpiredPokemonListing(listing);
@@ -41,6 +56,7 @@ public abstract class GtsAPI {
 	 * @param listing The item listing to cancel.
 	 * @return true if the listing was successfully cancelled.
 	 */
+	@Deprecated
 	public static boolean cancelListing(ItemListing listing) {
 		boolean success = Gts.listings.removeItemListing(listing);
 		Gts.listings.addExpiredItemListing(listing);
@@ -54,7 +70,7 @@ public abstract class GtsAPI {
 	 * @return true if the listing was successfully added.
 	 */
 	public static boolean addListing(PokemonListing listing, ServerPlayer player, int slot) {
-		boolean success = Gts.listings.addPokemonListing(listing);
+		boolean success = Gts.listings.addListing(listing);
 		PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 		boolean removeSuccess = party.remove(new PartyPosition(slot));
 
@@ -62,7 +78,7 @@ public abstract class GtsAPI {
 			Gts.LOGGER.error("Could not list pokemon " + listing.getListing().getSpecies() + " for player: " + player.getUUID());
 
 			if (success) {
-				Gts.listings.removePokemonListing(listing);
+				Gts.listings.removeListing(listing);
 			}
 
 			if (removeSuccess) {
@@ -87,7 +103,7 @@ public abstract class GtsAPI {
 	 * @return true if the listing was successfully added.
 	 */
 	public static boolean addListing(ServerPlayer player, ItemListing listing) {
-		boolean success = Gts.listings.addItemListing(listing);
+		boolean success = Gts.listings.addListing(listing);
 		if (!success) {
 			Gts.LOGGER.error("Could not list item " + listing.getListing().getDisplayName().getString() + " for player: " + player.getUUID());
 			return false;
@@ -113,7 +129,7 @@ public abstract class GtsAPI {
 	 * @return true if the transaction was successful.
 	 */
 	public static boolean sale(UUID seller, ServerPlayer buyer, PokemonListing listing) {
-		boolean listingsSuccess = Gts.listings.removePokemonListing(listing);
+		boolean listingsSuccess = Gts.listings.removeListing(listing);
 		Account sellerAccount = ImpactorService.getAccount(seller);
 		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
 
@@ -121,7 +137,7 @@ public abstract class GtsAPI {
 
 		// If listing failed to be removed, cancel the transaction.
 		if (!listingsSuccess) {
-			Gts.listings.addPokemonListing(listing);
+			Gts.listings.addListing(listing);
 
 			if (impactorSuccess) {
 				ImpactorService.transfer(sellerAccount, buyerAccount, listing.getPrice());
@@ -131,7 +147,7 @@ public abstract class GtsAPI {
 
 		// If transaction failed, revert the pokemon listing.
 		if (!impactorSuccess) {
-			Gts.listings.addPokemonListing(listing);
+			Gts.listings.addListing(listing);
 			return false;
 		}
 
@@ -139,9 +155,9 @@ public abstract class GtsAPI {
 		party.add(listing.getListing());
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			new PlayerHistory(seller);
+			new PlayerHistoryOld(seller);
 		}
-		Gts.history.getPlayerHistory(seller).addPokemonListing(listing);
+		Gts.history.getPlayerHistory(seller).addListing(listing);
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
 
@@ -156,7 +172,7 @@ public abstract class GtsAPI {
 	 * @return true if the transaction was successful.
 	 */
 	public static boolean sale(UUID seller, ServerPlayer buyer, ItemListing listing) {
-		boolean listingsSuccess = Gts.listings.removeItemListing(listing);
+		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
 
 
@@ -167,7 +183,7 @@ public abstract class GtsAPI {
 
 		// If listing failed to be removed, cancel the transaction.
 		if (!listingsSuccess) {
-			Gts.listings.addItemListing(listing);
+			Gts.listings.addListing(listing);
 
 			if (impactorSuccess) {
 				ImpactorService.transfer(sellerAccount, buyerAccount, listing.getPrice());
@@ -177,16 +193,16 @@ public abstract class GtsAPI {
 
 		// If transaction failed, revert the pokemon listing.
 		if (!impactorSuccess) {
-			Gts.listings.addItemListing(listing);
+			Gts.listings.addListing(listing);
 			return false;
 		}
 
 		buyer.getInventory().add(listing.getListing());
 
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			new PlayerHistory(seller);
+			new PlayerHistoryOld(seller);
 		}
-		Gts.history.getPlayerHistory(seller).addItemListing(listing);
+		Gts.history.getPlayerHistory(seller).addListing(listing);
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
 		return true;
@@ -199,7 +215,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean returnListing(ServerPlayer player, PokemonListing listing) {
 
-		if (Gts.listings.removeExpiredPokemonListing(listing)) {
+		if (Gts.listings.removeExpiredListing(listing)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
@@ -215,7 +231,7 @@ public abstract class GtsAPI {
 	 * @param listing The item to be returned.
 	 */
 	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
-		if (Gts.listings.removeExpiredItemListing(listing)) {
+		if (Gts.listings.removeExpiredListing(listing)) {
 			player.getInventory().add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
@@ -231,7 +247,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean cancelAndReturnListing(ServerPlayer player, PokemonListing listing) {
 
-		if (Gts.listings.removePokemonListing(listing)) {
+		if (Gts.listings.removeListing(listing)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
 			GtsEvents.CANCEL.trigger(new CancelEvent(listing));
@@ -249,7 +265,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean cancelAndReturnListing(ServerPlayer player, ItemListing listing) {
 
-		if (Gts.listings.removeItemListing(listing)) {
+		if (Gts.listings.removeListing(listing)) {
 			player.getInventory().add(listing.getListing());
 			GtsEvents.CANCEL.trigger(new CancelEvent(listing));
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));

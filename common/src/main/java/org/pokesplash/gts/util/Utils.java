@@ -106,6 +106,24 @@ public abstract class Utils {
 		}
 	}
 
+	public static boolean deleteFile(String filePath, String filename) {
+		try {
+			Path path = Paths.get(new File("").getAbsolutePath() + filePath, filename);
+			File file = path.toFile();
+
+			if (!file.exists()) {
+				return true;
+			}
+
+			file.delete();
+
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 
 	/**
 	 * Method to read a file asynchronously

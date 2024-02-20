@@ -14,6 +14,8 @@ import org.pokesplash.gts.util.Permissions;
 public class Gts
 {
 	public static final String MOD_ID = "gts";
+	public static final String LISTING_FILE_VERSION = "2.0";
+	public static final String HISTORY_FILE_VERSION = "2.0";
 	public static Config config;
 	public static final Permissions permissions = new Permissions();
 	public static ListingsProvider listings;

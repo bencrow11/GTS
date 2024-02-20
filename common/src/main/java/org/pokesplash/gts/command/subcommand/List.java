@@ -64,7 +64,7 @@ public class List extends Subcommand {
 						.executes(this::showItemUsage)
 						.then(Commands.argument("price", FloatArgumentType.floatArg())
 								.suggests((ctx, builder) -> {
-									for (int i = 1; i <= 11; i++) {;
+									for (int i = 1; i <= 11; i++) {
 										builder.suggest(i * 100);
 									}
 									return builder.buildFuture();
@@ -72,7 +72,7 @@ public class List extends Subcommand {
 								.executes(this::showItemUsage)
 								.then(Commands.argument("amount", IntegerArgumentType.integer())
 										.suggests((ctx, builder) -> {
-											for (int i = 0; i <= 64; i++) {;
+											for (int i = 0; i <= 64; i++) {
 												builder.suggest(i + 1);
 											}
 											return builder.buildFuture();
@@ -281,7 +281,7 @@ public class List extends Subcommand {
 			ItemStack listingItem = item.copy();
 			listingItem.setCount(amount);
 
-			ItemListing listing = new ItemListing(player.getUUID(), player.getName().getString(), price, amount,
+			ItemListing listing = new ItemListing(player.getUUID(), player.getName().getString(), price,
 					listingItem);
 
 			boolean success = GtsAPI.addListing(player, listing);

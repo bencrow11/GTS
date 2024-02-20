@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * Class that holds a single listing.
  */
-public class PokemonListing implements Listing<Pokemon> {
+public class PokemonListing extends Listing<Pokemon> {
 	// The unique ID of the listing.
 
 	private final UUID id;

@@ -1,7 +1,12 @@
 package org.pokesplash.gts.history;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.Listing;
+import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
 
 import java.io.File;
@@ -69,7 +74,7 @@ public class HistoryProvider {
 	 * Method to initialize the HistoryProvider object with all PlayerHistory in file.
 	 */
 	public void init() {
-		File dir = Utils.checkForDirectory("/config/gts/history/");
+		File dir = Utils.checkForDirectory(filePath);
 
 		String[] list = dir.list();
 
@@ -79,9 +84,25 @@ public class HistoryProvider {
 
 		for (String file : list) {
 			Utils.readFileAsync(filePath, file, el -> {
-				Gson gson = Utils.newGson();
+				GsonBuilder builder = new GsonBuilder();
+				// Type adapters help gson deserialize the listings interface.
+				builder.registerTypeAdapter(Listing.class, new Deserializer(PokemonListing.class));
+				builder.registerTypeAdapter(Listing.class, new Deserializer(ItemListing.class));
+				Gson gson = builder.create();
+
 				PlayerHistory player = gson.fromJson(el, PlayerHistory.class);
-				history.put(player.getPlayer(), player);
+
+				// If the file version doesn't exist or isn't correct, update it.
+				if (player.version() == null || !player.version().equals(Gts.HISTORY_FILE_VERSION)) {
+					PlayerHistoryOld oldPlayer = gson.fromJson(el, PlayerHistoryOld.class); // Load from old class.
+					PlayerHistory newPlayer = new PlayerHistory(oldPlayer);
+					Utils.deleteFile(filePath, file); // Delete the old file.
+					Utils.writeFileAsync(filePath, file, gson.toJson(newPlayer)); // Write the new file.
+					history.put(oldPlayer.getPlayer(), newPlayer);
+				} else {
+					// Otherwise just add to history.
+					history.put(player.getPlayer(), player);
+				}
 			});
 		}
 	}
