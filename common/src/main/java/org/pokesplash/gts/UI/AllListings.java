@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.util.Utils;
@@ -82,47 +83,50 @@ public class AllListings {
 
 		PlaceholderButton placeholder = new PlaceholderButton();
 
-		List<Button> pokemonButtons = new ArrayList<>();
-		for (PokemonListing listing : Gts.listings.getPokemonListings()) {
+		List<Button> buttons = new ArrayList<>();
+
+		for (Listing listing : Gts.listings.getListings()) {
 			Collection<Component> lore = new ArrayList<>();
 
 			lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
 			lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
 			lore.add(Component.literal(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
-			lore.addAll(PokemonInfo.parse(listing));
 
-			Button button = GooeyButton.builder()
-					.display(PokemonItem.from(listing.getListing(), 1))
-					.title(listing.getDisplayName())
-					.lore(Component.class, lore)
-					.onClick((action) -> {
-						ServerPlayer sender = action.getPlayer();
-						Page page = new SinglePokemonListing().getPage(sender, listing);
-						UIManager.openUIForcefully(sender, page);
-					})
-					.build();
-			pokemonButtons.add(button);
-		}
+			Button button;
 
-		List<Button> itemButtons = new ArrayList<>();
-		for (ItemListing listing : Gts.listings.getItemListings()) {
-			Collection<String> lore = new ArrayList<>();
+			if (listing instanceof PokemonListing) {
 
-			lore.add(Gts.language.getSeller() + listing.getSellerName());
-			lore.add(Gts.language.getPrice() + listing.getPriceAsString());
-			lore.add(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+				PokemonListing pokemonListing = (PokemonListing) listing;
 
-			Button button = GooeyButton.builder()
-					.display(listing.getListing())
-					.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
-					.lore(lore)
-					.onClick((action) -> {
-						ServerPlayer sender = action.getPlayer();
-						Page page = new SingleItemListing().getPage(sender, listing);
-						UIManager.openUIForcefully(sender, page);
-					})
-					.build();
-			itemButtons.add(button);
+				lore.addAll(PokemonInfo.parse(pokemonListing));
+
+				button = GooeyButton.builder()
+						.display(PokemonItem.from(pokemonListing.getListing(), 1))
+						.title(pokemonListing.getDisplayName())
+						.lore(Component.class, lore)
+						.onClick((action) -> {
+							ServerPlayer sender = action.getPlayer();
+							Page page = new SinglePokemonListing().getPage(sender, pokemonListing);
+							UIManager.openUIForcefully(sender, page);
+						})
+						.build();
+			} else {
+
+				ItemListing itemListing = (ItemListing) listing;
+
+				button = GooeyButton.builder()
+						.display(itemListing.getListing())
+						.title("§3" + Utils.capitaliseFirst(itemListing.getListing().getDisplayName().getString()))
+						.lore(Component.class, lore)
+						.onClick((action) -> {
+							ServerPlayer sender = action.getPlayer();
+							Page page = new SingleItemListing().getPage(sender, itemListing);
+							UIManager.openUIForcefully(sender, page);
+						})
+						.build();
+			}
+
+			buttons.add(button);
 		}
 
 		Button filler = GooeyButton.builder()
@@ -142,9 +146,7 @@ public class AllListings {
 				.set(45, previousPage)
 				.build();
 
-		pokemonButtons.addAll(itemButtons);
-
-		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
+		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
 		page.setTitle("§3" + Gts.language.getTitle());
 
 		setPageTitle(page);

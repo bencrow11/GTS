@@ -44,8 +44,6 @@ public class PlayerHistory implements History {
         listings.addAll(playerHistoryOld.getPokemonListings());
 		listings.addAll(playerHistoryOld.getItemListings());
 
-		// TODO Delete old file.
-
 		Gts.history.updatePlayerHistory(this);
 	}
 

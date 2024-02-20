@@ -465,7 +465,6 @@ public class ListingsProvider {
 	 * Method to write this object to the file.
 	 * @return true if the file was successfully written.
 	 */
-	@Deprecated
 	private boolean writeToFile() {
 
 		Gson gson = Utils.newGson();
@@ -479,7 +478,6 @@ public class ListingsProvider {
 	/**
 	 * Method to load the listings from file.
 	 */
-	@Deprecated
 	public void init() {
 		try {
 			CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/", "listings.json", el -> {
