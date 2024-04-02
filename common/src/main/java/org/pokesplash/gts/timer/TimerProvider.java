@@ -37,7 +37,9 @@ public class TimerProvider {
 	 */
 	public void deleteTimer(Listing listing) {
 		Timer timer = timers.remove(listing);
-		timer.cancel();
+		if (timer != null) {
+			timer.cancel();
+		}
 	}
 
 	/**
@@ -86,48 +88,5 @@ public class TimerProvider {
 	public void deleteTimer(ItemListing listing) {
 		Timer timer = itemTimers.remove(listing);
 		timer.cancel();
-	}
-
-	@Deprecated
-	public void addTimer(PokemonListing listing) {
-		long timeDiff = listing.getEndTime() - new Date().getTime();
-
-		if (timeDiff > 0) {
-			Timer timer = new Timer();
-
-			timer.schedule(new TimerTask() {
-				@Override
-				public void run() {
-					Gts.listings.removePokemonListing(listing);
-					Gts.listings.addExpiredPokemonListing(listing);
-				}
-			}, timeDiff);
-			pokemonTimers.put(listing, timer);
-		} else {
-			Gts.listings.removePokemonListing(listing);
-			Gts.listings.addExpiredPokemonListing(listing);
-		}
-	}
-
-	@Deprecated
-	public void addTimer(ItemListing listing) {
-
-		long timeDiff = listing.getEndTime() - new Date().getTime();
-
-		if (timeDiff > 0) {
-			Timer timer = new Timer();
-
-			timer.schedule(new TimerTask() {
-				@Override
-				public void run() {
-					Gts.listings.removeItemListing(listing);
-					Gts.listings.addExpiredItemListing(listing);
-				}
-			}, timeDiff);
-			itemTimers.put(listing, timer);
-		} else {
-			Gts.listings.removeItemListing(listing);
-			Gts.listings.addExpiredItemListing(listing);
-		}
 	}
 }

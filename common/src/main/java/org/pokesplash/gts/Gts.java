@@ -1,6 +1,7 @@
 package org.pokesplash.gts;
 
 import net.minecraft.server.MinecraftServer;
+import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
@@ -14,8 +15,10 @@ import org.pokesplash.gts.util.Permissions;
 public class Gts
 {
 	public static final String MOD_ID = "gts";
+	public static final String LISTING_FILE_PATH = "/config/gts/listings";
 	public static final String LISTING_FILE_VERSION = "2.0";
 	public static final String HISTORY_FILE_VERSION = "2.0";
+	public static boolean isDebugMode = false;
 	public static Config config;
 	public static final Permissions permissions = new Permissions();
 	public static ListingsProvider listings;

@@ -33,7 +33,6 @@ public class ExpiredItemListing {
 
 		lore.add(Gts.language.getSeller() + listing.getSellerName());
 		lore.add(Gts.language.getPrice() + listing.getPriceAsString());
-		lore.add(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
 
 		Button pokemon = GooeyButton.builder()
 				.display(listing.getListing())

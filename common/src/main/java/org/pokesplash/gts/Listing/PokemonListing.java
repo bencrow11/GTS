@@ -44,7 +44,8 @@ public class PokemonListing extends Listing<Pokemon> {
 		this.sellerUuid = sellerUuid;
 		this.sellerName = sellerName;
 		this.price = price;
-		this.endTime = new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
+		this.endTime = Gts.isDebugMode ? new Date().getTime() + 60000L :
+			new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
 		this.pokemon = pokemon.saveToJSON(new JsonObject());
 	}
 

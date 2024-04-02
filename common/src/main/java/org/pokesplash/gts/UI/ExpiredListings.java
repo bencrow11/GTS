@@ -92,7 +92,6 @@ public class ExpiredListings {
 				Collection<Component> lore = new ArrayList<>();
 				lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
 				lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
-				lore.add(Component.literal(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 
 				Button button;
 

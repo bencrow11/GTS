@@ -5,6 +5,7 @@ import com.cobblemon.mod.common.api.storage.party.PartyPosition;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
@@ -14,6 +15,7 @@ import org.pokesplash.gts.api.event.events.AddEvent;
 import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
+import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.history.PlayerHistoryOld;
 import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
@@ -37,33 +39,6 @@ public abstract class GtsAPI {
 		return success;
 	}
 
-
-	/**
-	 * Cancel method that cancels a pokemon listing.
-	 * @param listing The Pokemon listing to cancel.
-	 * @return true if the listing was successfully cancelled.
-	 */
-	@Deprecated
-	public static boolean cancelListing(PokemonListing listing) {
-		boolean success = Gts.listings.removePokemonListing(listing);
-		Gts.listings.addExpiredPokemonListing(listing);
-		GtsEvents.CANCEL.trigger(new CancelEvent(listing));
-		return success;
-	}
-
-	/**
-	 * Cancel method that cancels an item listing.
-	 * @param listing The item listing to cancel.
-	 * @return true if the listing was successfully cancelled.
-	 */
-	@Deprecated
-	public static boolean cancelListing(ItemListing listing) {
-		boolean success = Gts.listings.removeItemListing(listing);
-		Gts.listings.addExpiredItemListing(listing);
-		GtsEvents.CANCEL.trigger(new CancelEvent(listing));
-		return success;
-	}
-
 	/**
 	 * Add method to add a new pokemon listing.
 	 * @param listing The pokemon listing to add.
@@ -79,6 +54,7 @@ public abstract class GtsAPI {
 
 			if (success) {
 				Gts.listings.removeListing(listing);
+				listing.delete(Gts.LISTING_FILE_PATH);
 			}
 
 			if (removeSuccess) {
@@ -154,8 +130,10 @@ public abstract class GtsAPI {
 		PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(buyer);
 		party.add(listing.getListing());
 
+		listing.delete(Gts.LISTING_FILE_PATH);
+
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			new PlayerHistoryOld(seller);
+			new PlayerHistory(seller);
 		}
 		Gts.history.getPlayerHistory(seller).addListing(listing);
 
@@ -173,8 +151,6 @@ public abstract class GtsAPI {
 	 */
 	public static boolean sale(UUID seller, ServerPlayer buyer, ItemListing listing) {
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
-
-
 
 		Account sellerAccount = ImpactorService.getAccount(seller);
 		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
@@ -199,8 +175,10 @@ public abstract class GtsAPI {
 
 		buyer.getInventory().add(listing.getListing());
 
+		listing.delete(Gts.LISTING_FILE_PATH);
+
 		if (Gts.history.getPlayerHistory(seller) == null) {
-			new PlayerHistoryOld(seller);
+			new PlayerHistory(seller);
 		}
 		Gts.history.getPlayerHistory(seller).addListing(listing);
 
@@ -216,6 +194,7 @@ public abstract class GtsAPI {
 	public static boolean returnListing(ServerPlayer player, PokemonListing listing) {
 
 		if (Gts.listings.removeExpiredListing(listing)) {
+			listing.delete(Gts.LISTING_FILE_PATH);
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
@@ -232,6 +211,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
 		if (Gts.listings.removeExpiredListing(listing)) {
+			listing.delete(Gts.LISTING_FILE_PATH);
 			player.getInventory().add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
@@ -248,6 +228,7 @@ public abstract class GtsAPI {
 	public static boolean cancelAndReturnListing(ServerPlayer player, PokemonListing listing) {
 
 		if (Gts.listings.removeListing(listing)) {
+			listing.delete(Gts.LISTING_FILE_PATH);
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
 			GtsEvents.CANCEL.trigger(new CancelEvent(listing));
@@ -266,6 +247,7 @@ public abstract class GtsAPI {
 	public static boolean cancelAndReturnListing(ServerPlayer player, ItemListing listing) {
 
 		if (Gts.listings.removeListing(listing)) {
+			listing.delete(Gts.LISTING_FILE_PATH);
 			player.getInventory().add(listing.getListing());
 			GtsEvents.CANCEL.trigger(new CancelEvent(listing));
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));

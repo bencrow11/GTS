@@ -23,6 +23,7 @@ public class Permissions {
 		createPermission("GtsCommand", "gts.user", 1);
 		createPermission("GtsMod", "gts.manage", 2);
 		createPermission("GtsReload", "gts.reload", 2);
+		createPermission("GtsDebug", "gts.debug", 2);
 	}
 
 	/**
