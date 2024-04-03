@@ -1,6 +1,7 @@
 package org.pokesplash.gts.util;
 
 import com.cobblemon.mod.common.api.Priority;
+import com.cobblemon.mod.common.api.abilities.PotentialAbility;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -299,7 +301,10 @@ public abstract class Utils {
 	}
 
 	public static boolean isHA(Pokemon pokemon) {
-		if (pokemon.getForm().getAbilities().getMapping().get(Priority.LOW).size() != 1) {
+
+		List<PotentialAbility> abilities = pokemon.getForm().getAbilities().getMapping().get(Priority.LOW);
+
+		if (abilities == null || abilities.size() != 1) {
 			return false;
 		}
 		String ability =
