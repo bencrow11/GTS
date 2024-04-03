@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -14,10 +16,26 @@ import java.util.concurrent.CompletableFuture;
 public abstract class Listing<T> {
 
     private String version = Gts.LISTING_FILE_VERSION;
+    // The unique ID of the listing.
+    private UUID id;
+    // The UUID of the person selling the Pokemon.
+    private UUID sellerUuid;
+    // The name of the seller.
+    private String sellerName;
+    // The price the Pokemon is selling for.
+    private double price;
+    // The time the listing ends.
+    private long endTime;
+    // Is the listings a Pokemon?
     private boolean isPokemon;
 
-
-    public Listing(boolean isPokemon) {
+    public Listing(UUID sellerUuid, String sellerName, double price, boolean isPokemon) {
+        this.id = UUID.randomUUID();
+        this.sellerUuid = sellerUuid;
+        this.sellerName = sellerName;
+        this.price = price;
+        this.endTime = Gts.isDebugMode ? new Date().getTime() + 60000L :
+                new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
         this.isPokemon = isPokemon;
     }
 
@@ -30,38 +48,35 @@ public abstract class Listing<T> {
     }
 
 	public UUID getId() { // UUID of the listing.
-		return null;
+		return id;
 	};
 
     public UUID getSellerUuid()  // UUID of the seller.
     {
-        return null;
+        return sellerUuid;
     }
 
     public String getSellerName() // Name of the seller.
     {
-        return null;
+        return sellerName;
     }
 
     public double getPrice() // Price of the listing.
     {
-        return 0;
+        return price;
     }
 
-    public String getPriceAsString() // Price of the listing as String.
-    {
-        return null;
+    public String getPriceAsString() {
+        DecimalFormat df = new DecimalFormat("0.##");
+        return df.format(price);
     }
 
     public long getEndTime() // End time of the listing.
     {
-        return 0;
+        return endTime;
     }
 
-    public T getListing() // The object that has been listed.
-    {
-        return null;
-    }
+    public abstract T getListing(); // The object that has been listed.
 
     public boolean write(String filePath) { // Writes the listing to file.
         Gson gson = Utils.newGson();

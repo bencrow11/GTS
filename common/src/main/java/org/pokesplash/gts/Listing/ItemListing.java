@@ -14,16 +14,6 @@ import java.util.UUID;
  * Class that holds a single listing.
  */
 public class ItemListing extends Listing<ItemStack> {
-	// Unique id.
-	private final UUID id;
-	// The UUID of the person selling the Pokemon.
-	private final UUID sellerUuid;
-	// The name of the seller.
-	private final String sellerName;
-	// The price the Pokemon is selling for.
-	private final double price;
-	// The time the listing ends.
-	private final long endTime;
 	// The item that is being listed.
 	private final String item;
 
@@ -35,45 +25,8 @@ public class ItemListing extends Listing<ItemStack> {
 	 * @param item The item to sell.
 	 */
 	public ItemListing(UUID sellerUuid, String sellerName, double price, ItemStack item) {
-		super(false);
-		this.id = UUID.randomUUID();
-		this.sellerUuid = sellerUuid;
-		this.sellerName = sellerName;
-		this.price = price;
-		this.endTime = Gts.isDebugMode ? new Date().getTime() + 60000L :
-				new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
+		super(sellerUuid, sellerName, price, false);
 		this.item = item.save(new CompoundTag()).getAsString();
-	}
-
-	@Override
-	public UUID getId() {
-		return id;
-	}
-
-	@Override
-	public UUID getSellerUuid() {
-		return sellerUuid;
-	}
-
-	@Override
-	public String getSellerName() {
-		return sellerName;
-	}
-
-	@Override
-	public double getPrice() {
-		return price;
-	}
-
-	@Override
-	public String getPriceAsString() {
-		DecimalFormat df = new DecimalFormat("0.##");
-		return df.format(price);
-	}
-
-	@Override
-	public long getEndTime() {
-		return endTime;
 	}
 
 	@Override

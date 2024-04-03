@@ -133,7 +133,7 @@ public abstract class GtsAPI {
 		if (Gts.history.getPlayerHistory(seller) == null) {
 			new PlayerHistory(seller);
 		}
-		Gts.history.getPlayerHistory(seller).addListing(listing);
+		Gts.history.getPlayerHistory(seller).addListing(listing, buyer.getName().getString());
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
 
@@ -178,7 +178,7 @@ public abstract class GtsAPI {
 		if (Gts.history.getPlayerHistory(seller) == null) {
 			new PlayerHistory(seller);
 		}
-		Gts.history.getPlayerHistory(seller).addListing(listing);
+		Gts.history.getPlayerHistory(seller).addListing(listing, buyer.getName().getString());
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
 		return true;

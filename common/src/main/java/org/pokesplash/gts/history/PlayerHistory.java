@@ -20,7 +20,7 @@ public class PlayerHistory implements History {
 	private UUID player;
 
 	// History of sold listings
-	private List<Listing> listings;
+	private List<HistoryItem> listings;
 
 	/**
 	 * Constructor for a new player.
@@ -39,11 +39,20 @@ public class PlayerHistory implements History {
 	 * @param playerHistoryOld The old player history object to convert.
 	 */
 	public PlayerHistory(PlayerHistoryOld playerHistoryOld) {
+		version = Gts.HISTORY_FILE_VERSION;
+
 		player = playerHistoryOld.getPlayer();
 		listings = new ArrayList<>();
 
-        listings.addAll(playerHistoryOld.getPokemonListings());
-		listings.addAll(playerHistoryOld.getItemListings());
+		for (PokemonListing listing : playerHistoryOld.getPokemonListings()) {
+			listing.update(true);
+			listings.add(new PokemonHistoryItem(listing, "Unknown"));
+		}
+
+		for (ItemListing listing : playerHistoryOld.getItemListings()) {
+			listing.update(false);
+			listings.add(new ItemHistoryItem(listing, "Unknown"));
+		}
 
 		Gts.history.updatePlayerHistory(this);
 	}
@@ -66,7 +75,7 @@ public class PlayerHistory implements History {
 	 * Getter for the players sales.
 	 * @return List of listings that have been sold.
 	 */
-	public List<Listing> getListings() {
+	public List<HistoryItem> getListings() {
 		return listings;
 	}
 
@@ -74,13 +83,13 @@ public class PlayerHistory implements History {
 	 * Getter for the players pokemon sales.
 	 * @return List of pokemon that have been sold.
 	 */
-	public List<PokemonListing> getPokemonListings() {
+	public List<PokemonHistoryItem> getPokemonListings() {
 
-		ArrayList<PokemonListing> pokemonListings = new ArrayList<>();
+		ArrayList<PokemonHistoryItem> pokemonListings = new ArrayList<>();
 
-		for (Listing listing : listings) {
-			if (listing instanceof PokemonListing) {
-				pokemonListings.add((PokemonListing) listing);
+		for (HistoryItem listing : listings) {
+			if (listing.isPokemon()) {
+				pokemonListings.add((PokemonHistoryItem) listing);
 			}
 		}
 
@@ -91,13 +100,13 @@ public class PlayerHistory implements History {
 	 * Getter for the players item sales.
 	 * @return List of items that have been sold.
 	 */
-	public List<ItemListing> getItemListings() {
+	public List<ItemHistoryItem> getItemListings() {
 
-		ArrayList<ItemListing> itemListings = new ArrayList<>();
+		ArrayList<ItemHistoryItem> itemListings = new ArrayList<>();
 
-		for (Listing listing : listings) {
-			if (listing instanceof ItemListing) {
-				itemListings.add((ItemListing) listing);
+		for (HistoryItem listing : listings) {
+			if (!listing.isPokemon()) {
+				itemListings.add((ItemHistoryItem) listing);
 			}
 		}
 
@@ -108,8 +117,9 @@ public class PlayerHistory implements History {
 	 * Method to add a new listing to the players history (Once it has been sold).
 	 * @param listing The listing to add.
 	 */
-	public void addListing(Listing listing) {
-		listings.add(listing);
+	public void addListing(Listing listing, String buyerName) {
+		listings.add(listing.isPokemon() ? new PokemonHistoryItem((PokemonListing) listing, buyerName) :
+				new ItemHistoryItem((ItemListing) listing, buyerName));
 		Gts.history.updatePlayerHistory(this);
 	}
 }

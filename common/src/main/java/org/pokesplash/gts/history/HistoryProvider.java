@@ -87,8 +87,8 @@ public class HistoryProvider {
 			Utils.readFileAsync(filePath, file, el -> {
 				GsonBuilder builder = new GsonBuilder();
 				// Type adapters help gson deserialize the listings interface.
-				builder.registerTypeAdapter(Listing.class, new Deserializer(PokemonListing.class));
-				builder.registerTypeAdapter(Listing.class, new Deserializer(ItemListing.class));
+				builder.registerTypeAdapter(HistoryItem.class, new Deserializer(PokemonHistoryItem.class));
+				builder.registerTypeAdapter(HistoryItem.class, new Deserializer(ItemHistoryItem.class));
 				Gson gson = builder.create();
 
 				PlayerHistory player = gson.fromJson(el, PlayerHistory.class);

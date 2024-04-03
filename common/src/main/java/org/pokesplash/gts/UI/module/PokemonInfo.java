@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.util.Utils;
 
@@ -18,9 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class PokemonInfo {
-	public static Collection<Component> parse(PokemonListing listing) {
+	public static Collection<Component> parse(Pokemon pokemon) {
 		Collection<Component> lore = new ArrayList<>();
-		Pokemon pokemon = listing.getListing();
 		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua"));
 		Style dark_green = Style.EMPTY.withColor(TextColor.parseColor("dark_green"));
 		Style dark_purple = Style.EMPTY.withColor(TextColor.parseColor("dark_purple"));
@@ -97,4 +97,11 @@ public abstract class PokemonInfo {
 
 		return lore;
 	}
+
+	public static Collection<Component> parse(PokemonListing listing) {
+		Pokemon pokemon = listing.getListing();
+		return parse(pokemon);
+	}
+
+
 }

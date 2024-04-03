@@ -18,17 +18,6 @@ import java.util.UUID;
  * Class that holds a single listing.
  */
 public class PokemonListing extends Listing<Pokemon> {
-	// The unique ID of the listing.
-
-	private final UUID id;
-	// The UUID of the person selling the Pokemon.
-	private final UUID sellerUuid;
-	// The name of the seller.
-	private final String sellerName;
-	// The price the Pokemon is selling for.
-	private final double price;
-	// The time the listing ends.
-	private final long endTime;
 	// The Pokemon that is being listed.
 	private final JsonObject pokemon;
 
@@ -40,50 +29,17 @@ public class PokemonListing extends Listing<Pokemon> {
 	 * @param pokemon The Pokemon for sale.
 	 */
 	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {
-		super(true);
-        this.id = UUID.randomUUID();
-		this.sellerUuid = sellerUuid;
-		this.sellerName = sellerName;
-		this.price = price;
-		this.endTime = Gts.isDebugMode ? new Date().getTime() + 60000L :
-			new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
+		super(sellerUuid, sellerName, price, true);
 		this.pokemon = pokemon.saveToJSON(new JsonObject());
-	}
-
-	@Override
-	public UUID getId() {
-		return id;
-	}
-
-	@Override
-	public UUID getSellerUuid() {
-		return sellerUuid;
-	}
-
-	@Override
-	public String getSellerName() {
-		return sellerName;
-	}
-
-	@Override
-	public double getPrice() {
-		return price;
-	}
-
-	@Override
-	public String getPriceAsString() {
-		DecimalFormat df = new DecimalFormat("0.##");
-		return df.format(price);
-	}
-
-	@Override
-	public long getEndTime() {
-		return endTime;
 	}
 
 	@Override
 	public Pokemon getListing() {
 		return new Pokemon().loadFromJSON(pokemon);
+	}
+
+	public JsonObject getListingAsJsonObject() {
+		return pokemon;
 	}
 
 	public MutableComponent getDisplayName() {

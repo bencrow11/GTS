@@ -18,6 +18,8 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.history.ItemHistoryItem;
+import org.pokesplash.gts.history.PokemonHistoryItem;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -36,8 +38,8 @@ public class History {
 	 */
 	public Page getPage(UUID owner) {
 
-		List<PokemonListing> pkmListings = Gts.history.getPlayerHistory(owner).getPokemonListings();
-		List<ItemListing> itmListings = Gts.history.getPlayerHistory(owner).getItemListings();
+		List<PokemonHistoryItem> pkmListings = Gts.history.getPlayerHistory(owner).getPokemonListings();
+		List<ItemHistoryItem> itmListings = Gts.history.getPlayerHistory(owner).getItemListings();
 
 		Button seePokemonListings = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
@@ -88,16 +90,16 @@ public class History {
 
 		List<Button> pokemonButtons = new ArrayList<>();
 		if (pkmListings != null) {
-			for (PokemonListing listing : pkmListings) {
+			for (PokemonHistoryItem listing : pkmListings) {
 				Collection<Component> lore = new ArrayList<>();
 
 				lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
 				lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
-				lore.addAll(PokemonInfo.parse(listing));
+				lore.addAll(PokemonInfo.parse(listing.getListing()));
 
 				Button button = GooeyButton.builder()
 						.display(PokemonItem.from(listing.getListing(), 1))
-						.title(listing.getDisplayName())
+						.title(listing.getListing().getDisplayName())
 						.lore(Component.class, lore)
 						.build();
 				pokemonButtons.add(button);
@@ -106,7 +108,7 @@ public class History {
 
 		List<Button> itemButtons = new ArrayList<>();
 		if (itmListings != null) {
-			for (ItemListing listing : itmListings) {
+			for (ItemHistoryItem listing : itmListings) {
 				Collection<String> lore = new ArrayList<>();
 
 				lore.add(Gts.language.getSeller() + listing.getSellerName());

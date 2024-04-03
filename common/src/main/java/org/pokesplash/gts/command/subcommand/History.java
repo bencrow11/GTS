@@ -42,9 +42,15 @@ public class History extends Subcommand {
 
 		ServerPlayer sender = context.getSource().getPlayer();
 
-		Page page = new org.pokesplash.gts.UI.History().getPage(sender.getUUID());
+		try {
+			Page page = new org.pokesplash.gts.UI.History().getPage(sender.getUUID());
 
-		UIManager.openUIForcefully(sender, page);
+			UIManager.openUIForcefully(sender, page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			sender.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
+					"to check the console."));
+		}
 
 		return 1;
 	}
