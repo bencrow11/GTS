@@ -1,8 +1,9 @@
-package org.pokesplash.gts.history;
+package org.pokesplash.gts.oldVersion;
 
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.history.History;
 
 import java.io.IOException;
 import java.util.ArrayList;

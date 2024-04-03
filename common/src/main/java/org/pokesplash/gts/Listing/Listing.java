@@ -1,6 +1,7 @@
 package org.pokesplash.gts.Listing;
 
 import com.google.gson.Gson;
+import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.UUID;
@@ -11,6 +12,22 @@ import java.util.concurrent.CompletableFuture;
  * @param <T> The type of object returned from getListing(), either ItemStack or Pokemon.
  */
 public abstract class Listing<T> {
+
+    private String version = Gts.LISTING_FILE_VERSION;
+    private boolean isPokemon;
+
+
+    public Listing(boolean isPokemon) {
+        this.isPokemon = isPokemon;
+    }
+
+    public boolean isPokemon() {
+        return isPokemon;
+    }
+
+    public String getVersion() {
+        return version;
+    }
 
 	public UUID getId() { // UUID of the listing.
 		return null;
@@ -46,11 +63,6 @@ public abstract class Listing<T> {
         return null;
     }
 
-    public boolean isPokemon() // Checks that the listing is a pokemon;
-    {
-        return false;
-    }
-
     public boolean write(String filePath) { // Writes the listing to file.
         Gson gson = Utils.newGson();
         String data = gson.toJson(this);
@@ -64,4 +76,8 @@ public abstract class Listing<T> {
         return Utils.deleteFile(filePath, this.getId() + ".json");
     }
 
+    public void update(boolean isPokemon) {
+        this.version = Gts.LISTING_FILE_VERSION;
+        this.isPokemon = isPokemon;
+    }
 }

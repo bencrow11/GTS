@@ -3,6 +3,7 @@ package org.pokesplash.gts.Listing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.oldVersion.ListingsProviderOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
 
@@ -227,27 +228,81 @@ public class ListingsProvider {
 
 		String[] list = dir.list();
 
-        if (list.length == 0) {
-			return;
+        if (list.length != 0) {
+			for (String file : list) {
+				Utils.readFileAsync(Gts.LISTING_FILE_PATH, file, el -> {
+					GsonBuilder builder = new GsonBuilder();
+					// Type adapters help gson deserialize the listings interface.
+					builder.registerTypeAdapter(Listing.class, new Deserializer(PokemonListing.class));
+					builder.registerTypeAdapter(Listing.class, new Deserializer(ItemListing.class));
+					Gson gson = builder.create();
+
+					Listing listing = gson.fromJson(el, Listing.class);
+
+					listing = listing.isPokemon() ? gson.fromJson(el, PokemonListing.class) :
+							gson.fromJson(el, ItemListing.class);
+
+					if (!listing.getVersion().equals(Gts.LISTING_FILE_VERSION)) {
+						// TODO upgrade listing file (Future use).`
+					}
+
+					if (listing.getEndTime() > new Date().getTime()) {
+						listings.add(listing);
+						Gts.timers.addTimer(listing);
+					} else {
+						addExpiredListing(listing);
+					}
+				});
+			}
 		}
 
-		for (String file : list) {
-			Utils.readFileAsync(Gts.LISTING_FILE_PATH, file, el -> {
-				GsonBuilder builder = new GsonBuilder();
-				// Type adapters help gson deserialize the listings interface.
-				builder.registerTypeAdapter(Listing.class, new Deserializer(PokemonListing.class));
-				builder.registerTypeAdapter(Listing.class, new Deserializer(ItemListing.class));
-				Gson gson = builder.create();
+		// TODO Temporary code to move listings from the old listings.json file to their own.
+		CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/",
+				"listings.json", el -> {
+			Gson gson = Utils.newGson();
+			ListingsProviderOld data = gson.fromJson(el, ListingsProviderOld.class);
 
-				Listing listing = gson.fromJson(el, Listing.class);
-
+			for (PokemonListing listing : data.getPokemonListings()) {
+				listing.update(true);
+				listing.write(Gts.LISTING_FILE_PATH);
 				if (listing.getEndTime() > new Date().getTime()) {
 					listings.add(listing);
 					Gts.timers.addTimer(listing);
 				} else {
 					addExpiredListing(listing);
 				}
-			});
-		}
+			}
+
+			for (ItemListing listing : data.getItemListings()) {
+				listing.update(false);
+				listing.write(Gts.LISTING_FILE_PATH);
+				if (listing.getEndTime() > new Date().getTime()) {
+					listings.add(listing);
+					Gts.timers.addTimer(listing);
+				} else {
+					addExpiredListing(listing);
+				}
+			}
+
+			HashMap<UUID, ArrayList<PokemonListing>> pokemonExpired = data.getAllExpiredPokemonListings();
+			for (UUID key : pokemonExpired.keySet()) {
+				for (PokemonListing listing : pokemonExpired.get(key)) {
+					listing.update(true);
+					listing.write(Gts.LISTING_FILE_PATH);
+					addExpiredListing(listing);
+				}
+			}
+
+			HashMap<UUID, ArrayList<ItemListing>> itemExpired = data.getAllExpiredItemListings();
+			for (UUID key : pokemonExpired.keySet()) {
+				for (ItemListing listing : itemExpired.get(key)) {
+					listing.update(false);
+					listing.write(Gts.LISTING_FILE_PATH);
+					addExpiredListing(listing);
+				}
+			}
+
+			Utils.deleteFile("/config/gts/", "listings.json");
+		});
 	}
 }

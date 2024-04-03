@@ -35,6 +35,7 @@ public class ItemListing extends Listing<ItemStack> {
 	 * @param item The item to sell.
 	 */
 	public ItemListing(UUID sellerUuid, String sellerName, double price, ItemStack item) {
+		super(false);
 		this.id = UUID.randomUUID();
 		this.sellerUuid = sellerUuid;
 		this.sellerName = sellerName;
@@ -85,10 +86,5 @@ public class ItemListing extends Listing<ItemStack> {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	@Override
-	public boolean isPokemon() {
-		return false;
 	}
 }

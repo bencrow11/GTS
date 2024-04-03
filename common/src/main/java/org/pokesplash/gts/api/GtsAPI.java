@@ -5,7 +5,6 @@ import com.cobblemon.mod.common.api.storage.party.PartyPosition;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
@@ -16,7 +15,6 @@ import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
 import org.pokesplash.gts.history.PlayerHistory;
-import org.pokesplash.gts.history.PlayerHistoryOld;
 import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
 

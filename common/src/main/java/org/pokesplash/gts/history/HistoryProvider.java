@@ -6,6 +6,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.oldVersion.PlayerHistoryOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
 

@@ -37,9 +37,15 @@ public class GtsCommand extends BaseCommand {
 
 		ServerPlayer sender = context.getSource().getPlayer();
 
-		Page page = new AllListings().getPage();
+		try {
+			Page page = new AllListings().getPage();
 
-		UIManager.openUIForcefully(sender, page);
+			UIManager.openUIForcefully(sender, page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			sender.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
+					"to check the console."));
+		}
 
 		return 1;
 	}

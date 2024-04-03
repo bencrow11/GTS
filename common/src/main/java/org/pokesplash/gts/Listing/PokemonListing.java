@@ -40,7 +40,8 @@ public class PokemonListing extends Listing<Pokemon> {
 	 * @param pokemon The Pokemon for sale.
 	 */
 	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {
-		this.id = UUID.randomUUID();
+		super(true);
+        this.id = UUID.randomUUID();
 		this.sellerUuid = sellerUuid;
 		this.sellerName = sellerName;
 		this.price = price;
@@ -109,10 +110,5 @@ public class PokemonListing extends Listing<Pokemon> {
 				break;
 		}
 		return displayName;
-	}
-
-	@Override
-	public boolean isPokemon() {
-		return true;
 	}
 }
