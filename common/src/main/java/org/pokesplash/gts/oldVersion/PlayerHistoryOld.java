@@ -34,11 +34,6 @@ public class PlayerHistoryOld implements History {
 		itemListings = new ArrayList<>();
 	}
 
-	@Override
-	public String version() {
-		return null;
-	}
-
 	/**
 	 * Getter for the player.
 	 * @return UUID of the player.

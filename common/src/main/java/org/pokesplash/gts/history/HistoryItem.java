@@ -1,5 +1,8 @@
 package org.pokesplash.gts.history;
 
+import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.util.Utils;
+
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.UUID;
@@ -9,6 +12,7 @@ import java.util.UUID;
  * @param <T> The type of item that is being sold (Pokemon, ItemStack).
  */
 public abstract class HistoryItem<T> {
+    private String version = Gts.HISTORY_FILE_VERSION;
     private boolean isPokemon; // Is the listings a Pokemon.
     private UUID id; // The listings ID.
     private UUID sellerUuid; // The seller UUID.
@@ -62,4 +66,13 @@ public abstract class HistoryItem<T> {
     }
 
     public abstract T getListing(); // The object that has been listed.
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void write() {
+        Utils.writeFileAsync(HistoryProvider.filePath + sellerUuid + "/",
+                id + ".json", Utils.newGson().toJson(this));
+    }
 }

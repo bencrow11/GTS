@@ -345,15 +345,6 @@ public abstract class Utils {
 		return ItemStack.of(tag);
 	}
 
-	public static void removeAllTimers() {
-		for (PokemonListing listing : Gts.timers.getPokemonTimers()) {
-			Gts.timers.deleteTimer(listing);
-		}
-		for (ItemListing listing : Gts.timers.getItemTimers()) {
-			Gts.timers.deleteTimer(listing);
-		}
-	}
-
 	public static void broadcastClickable(String message, String command) {
 		Component component = Component.literal(message).setStyle(Style.EMPTY.withClickEvent(
 				new ClickEvent(ClickEvent.Action.RUN_COMMAND, command)));

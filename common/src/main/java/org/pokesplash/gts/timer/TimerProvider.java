@@ -8,18 +8,9 @@ import org.pokesplash.gts.Listing.PokemonListing;
 import java.util.*;
 
 public class TimerProvider {
-	@Deprecated
-	private HashMap<PokemonListing, Timer> pokemonTimers;
-
-	@Deprecated
-	private HashMap<ItemListing, Timer> itemTimers;
-
 	private HashMap<Listing, Timer> timers;
 
 	public TimerProvider() {
-		pokemonTimers = new HashMap<>(); // TODO Remove
-		itemTimers = new HashMap<>(); // TODO Remove
-
 		timers = new HashMap<>();
 	}
 
@@ -66,27 +57,11 @@ public class TimerProvider {
 		}
 	}
 
-	@Deprecated
-	public ArrayList<PokemonListing> getPokemonTimers() {
-		ArrayList<PokemonListing> keys = new ArrayList<>(pokemonTimers.keySet());
-		return keys;
+	public void deleteAllTimers() {
+		for (Timer timer : timers.values()) {
+			timer.cancel();
+		}
+		timers.clear();
 	}
 
-	@Deprecated
-	public ArrayList<ItemListing> getItemTimers() {
-		ArrayList<ItemListing> keys = new ArrayList<>(itemTimers.keySet());
-		return keys;
-	}
-
-	@Deprecated
-	public void deleteTimer(PokemonListing listing) {
-		Timer timer = pokemonTimers.remove(listing);
-		timer.cancel();
-	}
-
-	@Deprecated
-	public void deleteTimer(ItemListing listing) {
-		Timer timer = itemTimers.remove(listing);
-		timer.cancel();
-	}
 }

@@ -243,7 +243,7 @@ public class ListingsProvider {
 							gson.fromJson(el, ItemListing.class);
 
 					if (!listing.getVersion().equals(Gts.LISTING_FILE_VERSION)) {
-						// TODO upgrade listing file (Future use).`
+						// TODO upgrade listing file (Future use).
 					}
 
 					if (listing.getEndTime() > new Date().getTime()) {

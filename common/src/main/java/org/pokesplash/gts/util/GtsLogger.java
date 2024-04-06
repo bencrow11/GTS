@@ -2,6 +2,7 @@ package org.pokesplash.gts.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.pokesplash.gts.Gts;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -20,7 +21,7 @@ public class GtsLogger {
 
 	// Constructor that creates the logger.
 	public GtsLogger() {
-		logger = LogManager.getLogger();
+		logger = LogManager.getLogger(Gts.MOD_ID);
 	}
 
 	/**

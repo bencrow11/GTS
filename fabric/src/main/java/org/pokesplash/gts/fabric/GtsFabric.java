@@ -14,7 +14,7 @@ public class GtsFabric implements ModInitializer {
         Gts.init();
         CommandRegistrationCallback.EVENT.register(CommandsRegistry::registerCommands); // Registers Commands
         ServerLifecycleEvents.SERVER_STOPPING.register((e) -> { // Removes all timers when the server stops.
-            Utils.removeAllTimers();
+            Gts.timers.deleteAllTimers();
         });
         ServerWorldEvents.LOAD.register((t, e) -> Gts.server = t);
     }

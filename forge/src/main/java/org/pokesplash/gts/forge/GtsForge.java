@@ -24,7 +24,7 @@ public class GtsForge {
 
     @SubscribeEvent
     public void serverStopEvent(ServerStoppingEvent event) {
-        Utils.removeAllTimers();
+        Gts.timers.deleteAllTimers();
     }
 
     @SubscribeEvent
