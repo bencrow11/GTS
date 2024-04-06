@@ -63,6 +63,8 @@ public class Lang {
 	private String sort_by_pokemon; // The name of the "Sort By Pokemon" button.
 	private String sort_by_name; // The name of the "Sort By Name" button.
 	private String receive_listing; // The name of the "Receive Listing" button.
+	private String sold_date; // The date an item was sold.
+	private String buyer; // The buyer of a product.
 
 
 	/**
@@ -104,6 +106,8 @@ public class Lang {
 		broadcast_message = "§e{seller} §2has just added a §e{listing} §2to GTS.";
 		seller = "§9Seller: §b";
 		price = "§9Price: §b";
+		sold_date = "§9Sold Date: §b";
+		buyer = "§9Buyer: §b";
 		time_remaining = "§9Time Remaining: §b";
 		confirm_purchase = "§2Confirm Purchase";
 		cancel_purchase = "§cCancel Purchase";
@@ -270,6 +274,12 @@ public class Lang {
 	public String getReceive_listing() {
 		return receive_listing;
 	}
+	public String getSold_date() {
+		return sold_date;
+	}
+	public String getBuyer() {
+		return buyer;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -328,6 +338,8 @@ public class Lang {
 					sort_by_pokemon = lang.getSort_by_pokemon();
 					sort_by_name = lang.getSort_by_name();
 					receive_listing = lang.getReceive_listing();
+					sold_date = lang.getSold_date();
+					buyer = lang.getBuyer();
 		});
 
 		if (!futureRead.join()) {

@@ -18,14 +18,13 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.history.HistoryItem;
 import org.pokesplash.gts.history.ItemHistoryItem;
 import org.pokesplash.gts.history.PokemonHistoryItem;
 import org.pokesplash.gts.util.Utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * UI of the Manage Listings page.
@@ -37,10 +36,6 @@ public class History {
 	 * @return Pokemon Listings page.
 	 */
 	public Page getPage(UUID owner) {
-
-		List<PokemonHistoryItem> pkmListings = Gts.history.getPlayerHistory(owner).getPokemonListings();
-		List<ItemHistoryItem> itmListings = Gts.history.getPlayerHistory(owner).getItemListings();
-
 		Button seePokemonListings = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
 				.hideFlags(FlagType.All)
@@ -88,39 +83,55 @@ public class History {
 
 		PlaceholderButton placeholder = new PlaceholderButton();
 
-		List<Button> pokemonButtons = new ArrayList<>();
-		if (pkmListings != null) {
-			for (PokemonHistoryItem listing : pkmListings) {
-				Collection<Component> lore = new ArrayList<>();
+		// Gets all the items and sorts them by the sold date.
+		List<HistoryItem> items = Gts.history.getPlayerHistory(owner).getListings();
+		items.sort(Comparator.comparing(HistoryItem::getSoldDate));
+		Collections.reverse(items);
 
-				lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-				lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
-				lore.addAll(PokemonInfo.parse(listing.getListing()));
+		List<Button> buttons = new ArrayList<>();
 
-				Button button = GooeyButton.builder()
-						.display(PokemonItem.from(listing.getListing(), 1))
-						.title(listing.getListing().getDisplayName())
+		// For each item, create a button.
+		for (HistoryItem item : items) {
+
+			// Standard lore for any item.
+			Collection<Component> lore = new ArrayList<>();
+			lore.add(Component.literal(Gts.language.getSeller() + item.getSellerName()));
+			lore.add(Component.literal(Gts.language.getPrice() + item.getPriceAsString()));
+			lore.add(Component.literal(Gts.language.getBuyer() + item.getBuyerName()));
+
+			String pattern = "d MMMM yyyy";
+			SimpleDateFormat format = new SimpleDateFormat(pattern);
+
+			lore.add(Component.literal(Gts.language.getSold_date() +
+					format.format(new Date(item.getSoldDate()))));
+
+			Button button;
+
+			// Pokemon specific lore and button.
+			if (item.isPokemon()) {
+				PokemonHistoryItem pokemonItem = (PokemonHistoryItem) item;
+				lore.addAll(PokemonInfo.parse(pokemonItem.getListing()));
+
+				button = GooeyButton.builder()
+						.display(PokemonItem.from(pokemonItem.getListing(), 1))
+						.title(pokemonItem.getListing().getDisplayName())
 						.lore(Component.class, lore)
 						.build();
-				pokemonButtons.add(button);
 			}
-		}
+			// Item specific button.
+			else {
+				ItemHistoryItem itemHistoryItem = (ItemHistoryItem) item;
 
-		List<Button> itemButtons = new ArrayList<>();
-		if (itmListings != null) {
-			for (ItemHistoryItem listing : itmListings) {
-				Collection<String> lore = new ArrayList<>();
-
-				lore.add(Gts.language.getSeller() + listing.getSellerName());
-				lore.add(Gts.language.getPrice() + listing.getPriceAsString());
-
-				Button button = GooeyButton.builder()
-						.display(listing.getListing())
-						.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
-						.lore(lore)
+				button = GooeyButton.builder()
+						.display(itemHistoryItem.getListing())
+						.title("§3" + Utils.capitaliseFirst(
+								itemHistoryItem.getListing().getDisplayName().getString()))
+						.lore(Component.class, lore)
 						.build();
-				itemButtons.add(button);
 			}
+
+			// Adds the button to the list.
+			buttons.add(button);
 		}
 
 
@@ -141,9 +152,7 @@ public class History {
 				.set(45, previousPage)
 				.build();
 
-		pokemonButtons.addAll(itemButtons);
-
-		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
+		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
 		page.setTitle("§3" + Gts.language.getTitle() + " - History");
 
 		setPageTitle(page);
