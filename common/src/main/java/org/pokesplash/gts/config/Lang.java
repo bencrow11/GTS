@@ -14,6 +14,7 @@ public class Lang {
 	// {max_listings}
 	// {min_price}
 	// {max_price}
+	private String version; // The version of the file.
 	private String title; // Title shown on the top of the UI
 	private String purchase_message_buyer; // Message that is sent to the buyer of a listing
 	private String cancel_listing; // Message sent to the player that cancels a listing.
@@ -27,6 +28,7 @@ public class Lang {
 	private String no_pokemon_in_slot; // No listing in the given slot.
 	private String no_item_in_hand; // No item in the players hand.
 	private String item_is_banned; // The item they're trying to list is banned.
+	private String pokemon_is_banned; // The Pokemon they're trying to list is banned.
 	private String not_enough_items; // Not enough items in the players inventory
 	private String no_item_id_found; // Couldn't find the item ID of the given item.
 	private String item_amount_is_zero; // If the item amount given is 0.
@@ -71,6 +73,7 @@ public class Lang {
 	 * Constructor to generate a file if one doesn't exist.
 	 */
 	public Lang() {
+		version = Gts.LANG_FILE_VERSION;
 		title = "Gts";
 		purchase_message_buyer = "§2You have bought {listing} from {seller}!";
 		cancel_listing = "§6The {listing} listing has been cancelled!";
@@ -84,6 +87,7 @@ public class Lang {
 		no_pokemon_in_slot = "§cCould not find any Pokemon in the given slot!";
 		no_item_in_hand = "§cCould not find an item in your hand!";
 		item_is_banned = "§c{listing} is banned from GTS!";
+		pokemon_is_banned = "§c{listing} is banned from GTS!";
 		not_enough_items = "§cYou don't have enough {listing} in your inventory to list this item!";
 		no_item_id_found = "§cCould not find an item!";
 		item_amount_is_zero = "§cListing amount can not be zero!";
@@ -127,6 +131,9 @@ public class Lang {
 	/**
 	 * Bunch of getters for the fields.
 	 */
+	public String getVersion() {
+		return version;
+	}
 	public String getPurchase_message_buyer() {
 		return purchase_message_buyer;
 	}
@@ -280,6 +287,9 @@ public class Lang {
 	public String getBuyer() {
 		return buyer;
 	}
+	public String getPokemon_is_banned() {
+		return pokemon_is_banned;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -289,6 +299,12 @@ public class Lang {
 				el -> {
 					Gson gson = Utils.newGson();
 					Lang lang = gson.fromJson(el, Lang.class);
+
+					// If the lang version isn't correct, update the file.
+					if (!lang.getVersion().equals(Gts.LANG_FILE_VERSION)) {
+						// TODO Update file (Future)
+					}
+
 					title = lang.getTitle();
 					purchase_message_buyer = lang.getPurchase_message_buyer();
 					cancel_listing = lang.getCancel_listing();
@@ -302,6 +318,7 @@ public class Lang {
 					no_pokemon_in_slot = lang.getNo_pokemon_in_slot();
 					no_item_in_hand = lang.getNo_item_in_hand();
 					item_is_banned = lang.getItem_is_banned();
+					pokemon_is_banned = lang.getPokemon_is_banned();
 					not_enough_items = lang.getNot_enough_items();
 					no_item_id_found = lang.getNo_item_id_found();
 					item_amount_is_zero = lang.getItem_amount_is_zero();

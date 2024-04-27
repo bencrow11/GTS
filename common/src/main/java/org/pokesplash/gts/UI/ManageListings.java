@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.util.Utils;
 
@@ -86,11 +87,8 @@ public class ManageListings {
 		List<Button> pokemonButtons = new ArrayList<>();
 		if (pkmListings != null) {
 			for (PokemonListing listing : pkmListings) {
-				Collection<Component> lore = new ArrayList<>();
+				Collection<Component> lore = ListingInfo.parse(listing);
 
-				lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-				lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
-				lore.add(Component.literal(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 				lore.addAll(PokemonInfo.parse(listing));
 
 				Button button = GooeyButton.builder()
@@ -110,16 +108,12 @@ public class ManageListings {
 		List<Button> itemButtons = new ArrayList<>();
 		if (itmListings != null) {
 			for (ItemListing listing : itmListings) {
-				Collection<String> lore = new ArrayList<>();
-
-				lore.add(Gts.language.getSeller() + listing.getSellerName());
-				lore.add(Gts.language.getPrice() + listing.getPriceAsString());
-				lore.add(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+				Collection<Component> lore = ListingInfo.parse(listing);
 
 				Button button = GooeyButton.builder()
 						.display(listing.getListing())
 						.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
-						.lore(lore)
+						.lore(Component.class, lore)
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
 							Page page = new SingleItemListing().getPage(sender, listing);

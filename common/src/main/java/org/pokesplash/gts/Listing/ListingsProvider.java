@@ -246,7 +246,8 @@ public class ListingsProvider {
 						// TODO upgrade listing file (Future use).
 					}
 
-					if (listing.getEndTime() > new Date().getTime()) {
+					if (listing.getEndTime() > new Date().getTime() ||
+						listing.getEndTime() == -1) {
 						listings.add(listing);
 						Gts.timers.addTimer(listing);
 					} else {

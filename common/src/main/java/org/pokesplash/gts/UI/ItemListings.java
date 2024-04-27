@@ -11,9 +11,11 @@ import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
 import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.*;
@@ -114,16 +116,12 @@ public class ItemListings {
 
 		List<Button> itemButtons = new ArrayList<>();
 		for (ItemListing listing : Gts.listings.getItemListings()) {
-			Collection<String> lore = new ArrayList<>();
-
-			lore.add(Gts.language.getSeller() + listing.getSellerName());
-			lore.add(Gts.language.getPrice() + listing.getPriceAsString());
-			lore.add(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+			Collection<Component> lore = ListingInfo.parse(listing);
 
 			Button button = GooeyButton.builder()
 					.display(listing.getListing())
 					.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
-					.lore(lore)
+					.lore(Component.class, lore)
 					.onClick((action) -> {
 						ServerPlayer sender = action.getPlayer();
 						Page page = new SingleItemListing().getPage(sender, listing);

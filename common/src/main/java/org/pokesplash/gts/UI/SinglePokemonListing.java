@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
@@ -19,6 +20,7 @@ import org.pokesplash.gts.util.Utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * UI of the Item Listings page.
@@ -33,11 +35,8 @@ public class SinglePokemonListing {
 
 
 
-		Collection<Component> lore = new ArrayList<>();
+		Collection<Component> lore = ListingInfo.parse(listing);
 
-		lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-		lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
-		lore.add(Component.literal(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
 		lore.addAll(PokemonInfo.parse(listing));
 
 		Button pokemon = GooeyButton.builder()

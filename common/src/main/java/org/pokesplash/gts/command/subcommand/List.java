@@ -109,7 +109,7 @@ public class List extends Subcommand {
 				Gts.listings.getPokemonListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
 		int totalItemListings = Gts.listings.getItemListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
 
-		if (totalPokemonListings + totalItemListings >= Gts.config.getMax_listings_per_player()) {
+		if (totalPokemonListings + totalItemListings >= Gts.config.getMaxListingsPerPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
 					Utils.formatPlaceholders(Gts.language.getMaximum_listings(), 0, null,
 							context.getSource().getPlayer().getDisplayName().getString(), null)));
@@ -152,28 +152,38 @@ public class List extends Subcommand {
 		// Adds minimum price based on total full IVs.
 		switch (totalMaxIvs.get()) {
 			case 1:
-				minPrice += Gts.config.getMin_price_1_IV();
+				minPrice += Gts.config.getMinPrice1IV();
 				break;
 			case 2:
-				minPrice += Gts.config.getMin_price_2_IV();
+				minPrice += Gts.config.getMinPrice2IV();
 				break;
 			case 3:
-				minPrice += Gts.config.getMin_price_3_IV();
+				minPrice += Gts.config.getMinPrice3IV();
 				break;
 			case 4:
-				minPrice += Gts.config.getMin_price_4_IV();
+				minPrice += Gts.config.getMinPrice4IV();
 				break;
 			case 5:
-				minPrice += Gts.config.getMin_price_5_IV();
+				minPrice += Gts.config.getMinPrice5IV();
 				break;
 			case 6:
-				minPrice += Gts.config.getMin_price_6_IV();
+				minPrice += Gts.config.getMinPrice6IV();
 				break;
 		}
 
 		// If HA, add the minimum price.
 		if (Utils.isHA(pokemon)) {
-			minPrice += Gts.config.getMin_price_HA();
+			minPrice += Gts.config.getMinPriceHA();
+		}
+
+		// If Legendary, add the minimum price.
+		if (pokemon.isLegendary()) {
+			minPrice += Gts.config.getMinPriceLegendary();
+		}
+
+		// If Ultrabeast, add the minimum price.
+		if (pokemon.isUltraBeast()) {
+			minPrice += Gts.config.getMinPriceUltrabeast();
 		}
 
 		// If less than min price, cancel the command.
@@ -184,10 +194,23 @@ public class List extends Subcommand {
 		}
 
 		// If the price is above the maximum price, cancel the command.
-		if (price > Gts.config.getMaximum_price()) {
+		if (price > Gts.config.getMaximumPrice()) {
 			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMaximum_listing_price(),
 					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 			return 1;
+		}
+
+		java.util.List<String> bannedPokemon = Gts.config.getBannedPokemon();
+
+		// Checks the pokemon isn't banned.
+		for (String bannedMon : bannedPokemon) {
+			if (bannedMon.equalsIgnoreCase(pokemon.getSpecies().getName())) {
+				context.getSource().sendSystemMessage(Component.literal(
+						Utils.formatPlaceholders(Gts.language.getPokemon_is_banned(),
+						0, pokemon.getSpecies().getName(), player.getDisplayName().getString(),
+								null)));
+				return 1;
+			}
 		}
 
 		PokemonListing listing = new PokemonListing(player.getUUID(), player.getName().getString(), price, pokemon);
@@ -214,8 +237,8 @@ public class List extends Subcommand {
 		int amount = IntegerArgumentType.getInteger(context, "amount");
 		double price = FloatArgumentType.getFloat(context, "price");
 
-		java.util.List<ItemPrices> minPrices = Gts.config.getMin_item_prices();
-		java.util.List<String> bannedItems = Gts.config.getBanned_items();
+		java.util.List<ItemPrices> minPrices = Gts.config.getCustomItemPrices();
+		java.util.List<String> bannedItems = Gts.config.getBannedItems();
 
 		// Checks there's an item in the players hand
 		try {
@@ -263,7 +286,7 @@ public class List extends Subcommand {
 			}
 
 			// If the price is above the maximum price, cancel the command.
-			if (price > Gts.config.getMaximum_price()) {
+			if (price > Gts.config.getMaximumPrice()) {
 				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMaximum_listing_price(),
 						minPrice, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 				return 1;

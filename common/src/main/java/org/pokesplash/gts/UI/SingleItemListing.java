@@ -11,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
 
@@ -29,16 +30,12 @@ public class SingleItemListing {
 	 */
 	public Page getPage(ServerPlayer viewer, ItemListing listing) {
 
-		Collection<String> lore = new ArrayList<>();
-
-		lore.add(Gts.language.getSeller() + listing.getSellerName());
-		lore.add(Gts.language.getPrice() + listing.getPriceAsString());
-		lore.add(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime()));
+		Collection<Component> lore = ListingInfo.parse(listing);
 
 		Button pokemon = GooeyButton.builder()
 				.display(listing.getListing())
 				.title("§3" + Utils.capitaliseFirst(listing.getListing().getDisplayName().getString()))
-				.lore(lore)
+				.lore(Component.class, lore)
 				.build();
 
 		Button purchase = GooeyButton.builder()

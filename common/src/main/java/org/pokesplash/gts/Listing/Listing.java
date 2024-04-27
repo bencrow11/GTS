@@ -34,8 +34,18 @@ public abstract class Listing<T> {
         this.sellerUuid = sellerUuid;
         this.sellerName = sellerName;
         this.price = price;
-        this.endTime = Gts.isDebugMode ? new Date().getTime() + 60000L :
-                new Date().getTime() + (Gts.config.getListing_duration() * 3600000L);
+
+        // If debug mode, set timer to 1 minute.
+        if (Gts.isDebugMode) {
+            this.endTime = new Date().getTime() + 60000L;
+        // If duration is less than 0, no listing timer.
+        } else if (Gts.config.getListingDuration() <= 0) {
+            this.endTime = -1;
+        // Otherwise set the timer to the listing duration.
+        } else {
+            this.endTime = new Date().getTime() + (Gts.config.getListingDuration() * 3600000L);
+        }
+
         this.isPokemon = isPokemon;
     }
 

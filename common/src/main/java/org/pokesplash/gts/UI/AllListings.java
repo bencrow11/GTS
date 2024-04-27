@@ -18,6 +18,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.util.Utils;
 
@@ -86,11 +87,7 @@ public class AllListings {
 		List<Button> buttons = new ArrayList<>();
 
 		for (Listing listing : Gts.listings.getListings()) {
-			Collection<Component> lore = new ArrayList<>();
-
-			lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-			lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
-			lore.add(Component.literal(Gts.language.getTime_remaining() + Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
+			Collection<Component> lore = ListingInfo.parse(listing);
 
 			Button button;
 

@@ -13,8 +13,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
-import org.pokesplash.gts.Listing.PokemonListing;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -334,8 +332,8 @@ public abstract class Utils {
 
 		return newMessage
 				.replaceAll("\\{min_price\\}", "" + minPrice)
-				.replaceAll("\\{max_listings\\}", "" + Gts.config.getMax_listings_per_player())
-				.replaceAll("\\{max_price\\}", "" + Gts.config.getMaximum_price());
+				.replaceAll("\\{max_listings\\}", "" + Gts.config.getMaxListingsPerPlayer())
+				.replaceAll("\\{max_price\\}", "" + Gts.config.getMaximumPrice());
 	}
 
 	public static ItemStack parseItemId(String id) {

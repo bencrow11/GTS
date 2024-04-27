@@ -38,6 +38,12 @@ public class TimerProvider {
 	 * @param listing The listing to add a timer for.
 	 */
 	public void addTimer(Listing listing) {
+
+		// If end time is -1, don't set a timer.
+		if (listing.getEndTime() == -1) {
+			return;
+		}
+
 		long timeDiff = listing.getEndTime() - new Date().getTime();
 
 		if (timeDiff > 0) {
