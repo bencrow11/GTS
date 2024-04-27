@@ -68,6 +68,17 @@ public class AllListings {
 				})
 				.build();
 
+		Button relistAll = GooeyButton.builder()
+				.display(Utils.parseItemId(Gts.language.getRelistExpiredButtonItem()))
+				.title(Gts.language.getRelistExpiredButtonLabel())
+				.onClick((action) -> {
+					ServerPlayer sender = action.getPlayer();
+					Gts.listings.relistAllExpiredListings(sender.getUUID());
+					Page page = new AllListings().getPage();
+					UIManager.openUIForcefully(sender, page);
+				})
+				.build();
+
 		LinkedPageButton nextPage = LinkedPageButton.builder()
 				.display(Utils.parseItemId(Gts.language.getNextPageButtonItems()))
 				.title(Gts.language.getNextPageButtonLabel())
@@ -140,6 +151,7 @@ public class AllListings {
 				.set(50, seeItemListings)
 				.set(53, nextPage)
 				.set(45, previousPage)
+				.set(52, relistAll)
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);

@@ -107,9 +107,13 @@ public class List extends Subcommand {
 
 		int totalPokemonListings =
 				Gts.listings.getPokemonListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
-		int totalItemListings = Gts.listings.getItemListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
+		int totalItemListings = Gts.listings.getItemListingsByPlayer(
+				context.getSource().getPlayer().getUUID()).size();
+		int totalExpiredListings = Gts.listings.getExpiredListingsOfPlayer(
+				context.getSource().getPlayer().getUUID()).size();
 
-		if (totalPokemonListings + totalItemListings >= Gts.config.getMaxListingsPerPlayer()) {
+		if (totalPokemonListings + totalItemListings + totalExpiredListings >=
+				Gts.config.getMaxListingsPerPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
 					Utils.formatPlaceholders(Gts.language.getMaximumListings(), 0, null,
 							context.getSource().getPlayer().getDisplayName().getString(), null)));

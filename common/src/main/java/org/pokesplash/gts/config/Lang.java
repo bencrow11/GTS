@@ -59,6 +59,7 @@ public class Lang {
 	private String sortByPokemonButtonLabel; // The name of the "Sort By Pokemon" button.
 	private String sortByNameButtonLabel; // The name of the "Sort By Name" button.
 	private String receiveListingButtonLabel; // The name of the "Receive Listing" button.
+	private String relistExpiredButtonLabel; // The label of the button that relists all expired listings.
 
 	/**
 	 * Button Materials
@@ -77,6 +78,7 @@ public class Lang {
 	private String sortByPriceButtonItem; // The material for the sort by price button.
 	private String sortByNewestButtonItem; // The material for the sort by newest button.
 	private String sortByNameButtonItem; // The material for the sort by name button.
+	private String relistExpiredButtonItem; // The material for the relist button.
 
 	/**
 	 * Placeholders
@@ -97,6 +99,8 @@ public class Lang {
 		version = Gts.LANG_FILE_VERSION;
 		title = "Gts";
 		purchaseMessageBuyer = "§2You have bought {listing} from {seller}!";
+		relistExpiredButtonLabel = "§9Relist Expired";
+		relistExpiredButtonItem = "cobblemon:rare_candy";
 		cancelListing = "§6The {listing} listing has been cancelled!";
 		returnListingSuccess = "§2You have received the {listing} listing!";
 		returnListingFail = "§cCould not receive the {listing} listing.";
@@ -311,6 +315,12 @@ public class Lang {
 	public String getBannedPokemon() {
 		return bannedPokemon;
 	}
+	public String getRelistExpiredButtonLabel() {
+		return relistExpiredButtonLabel;
+	}
+	public String getRelistExpiredButtonItem() {
+		return relistExpiredButtonItem;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -329,6 +339,8 @@ public class Lang {
 					title = lang.getTitle();
 					purchaseMessageBuyer = lang.getPurchaseMessageBuyer();
 					cancelListing = lang.getCancelListing();
+					relistExpiredButtonItem = lang.getRelistExpiredButtonItem();
+					relistExpiredButtonLabel = lang.getRelistExpiredButtonLabel();
 					returnListingSuccess = lang.getReturnListingSuccess();
 					returnListingFail = lang.getReturnListingFail();
 					maximumListings = lang.getMaximumListings();

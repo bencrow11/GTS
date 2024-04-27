@@ -86,6 +86,19 @@ public abstract class Listing<T> {
         return endTime;
     }
 
+    public void renewEndTime() {
+        // If debug mode, set timer to 1 minute.
+        if (Gts.isDebugMode) {
+            this.endTime = new Date().getTime() + 60000L;
+            // If duration is less than 0, no listing timer.
+        } else if (Gts.config.getListingDuration() <= 0) {
+            this.endTime = -1;
+            // Otherwise set the timer to the listing duration.
+        } else {
+            this.endTime = new Date().getTime() + (Gts.config.getListingDuration() * 3600000L);
+        }
+    }
+
     public abstract T getListing(); // The object that has been listed.
 
     public boolean write(String filePath) { // Writes the listing to file.

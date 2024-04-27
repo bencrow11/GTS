@@ -28,6 +28,25 @@ public class ListingsProvider {
 	}
 
 	/**
+	 * Relists all expired listings of a player.
+	 * @param player The player that the expired listings should be relisted.
+	 */
+	public void relistAllExpiredListings(UUID player) {
+		ArrayList<Listing> expired = expiredListings.get(player);
+
+		if (expired == null) {
+			return;
+		}
+
+		for (Listing listing : expired) {
+			listing.renewEndTime();
+			addListing(listing);
+		}
+
+		expiredListings.remove(player);
+	}
+
+	/**
 	 * Method that returns all active listings.
 	 * @return A list of active listings.
 	 */

@@ -136,6 +136,17 @@ public class ExpiredListings {
 				.title("")
 				.build();
 
+		Button relistAll = GooeyButton.builder()
+				.display(Utils.parseItemId(Gts.language.getRelistExpiredButtonItem()))
+				.title(Gts.language.getRelistExpiredButtonLabel())
+				.onClick((action) -> {
+					ServerPlayer sender = action.getPlayer();
+					Gts.listings.relistAllExpiredListings(sender.getUUID());
+					Page page = new ExpiredListings().getPage(sender.getUUID());
+					UIManager.openUIForcefully(sender, page);
+				})
+				.build();
+
 		ChestTemplate template = ChestTemplate.builder(6)
 				.rectangle(0, 0, 5, 9, placeholder)
 				.fill(filler)
@@ -144,6 +155,7 @@ public class ExpiredListings {
 				.set(50, seeItemListings)
 				.set(53, nextPage)
 				.set(45, previousPage)
+				.set(52, relistAll)
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
