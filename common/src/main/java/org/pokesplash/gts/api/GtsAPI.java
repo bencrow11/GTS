@@ -14,7 +14,6 @@ import org.pokesplash.gts.api.event.events.AddEvent;
 import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
-import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
 
@@ -63,7 +62,7 @@ public abstract class GtsAPI {
 		GtsEvents.ADD.trigger(new AddEvent(listing, player));
 
 		if (Gts.config.isBroadcastListings()) {
-			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getBroadcast_message(), 0,
+			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getNewListingBroadcast(), 0,
 							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
 					"/gts " + listing.getId());
 		}
@@ -87,7 +86,7 @@ public abstract class GtsAPI {
 		GtsEvents.ADD.trigger(new AddEvent(listing, player));
 
 		if (Gts.config.isBroadcastListings()) {
-			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getBroadcast_message(), 0,
+			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getNewListingBroadcast(), 0,
 							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
 					"/gts " + listing.getId());
 		}

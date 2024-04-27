@@ -16,7 +16,6 @@ import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * UI of the Expired Item Listing page.
@@ -41,22 +40,22 @@ public class ExpiredItemListing {
 				.build();
 
 		Button receiveListing = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPurchase_button()))
-				.title(Gts.language.getReceive_listing())
+				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
+				.title(Gts.language.getReceiveListingButtonLabel())
 				.onClick((action) -> {
 					boolean success = GtsAPI.returnListing(action.getPlayer(), listing);
 
 					String message = "";
 
 					if (success) {
-						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_success(),
+						message = Utils.formatPlaceholders(Gts.language.getReturnListingSuccess(),
 								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 
 
 					} else {
-						message = Utils.formatPlaceholders(Gts.language.getReturn_listing_fail(),
+						message = Utils.formatPlaceholders(Gts.language.getReturnListingFail(),
 								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
@@ -67,8 +66,8 @@ public class ExpiredItemListing {
 				.build();
 
 		Button cancel = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getCancel_button()))
-				.title(Gts.language.getCancel_purchase())
+				.display(Utils.parseItemId(Gts.language.getCancelButtonItem()))
+				.title(Gts.language.getCancelPurchaseButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ExpiredListings().getPage(action.getPlayer().getUUID());
@@ -77,7 +76,7 @@ public class ExpiredItemListing {
 				.build();
 
 		Button filler = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.display(Utils.parseItemId(Gts.language.getFillerItem()))
 				.hideFlags(FlagType.All)
 				.lore(new ArrayList<>())
 				.title("")

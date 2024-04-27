@@ -19,7 +19,6 @@ import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.PokemonInfo;
-import org.pokesplash.gts.util.GtsLogger;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.*;
@@ -36,9 +35,9 @@ public class ExpiredListings {
 	public Page getPage(UUID owner) {
 
 		Button seePokemonListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
+				.display(Utils.parseItemId(Gts.language.getPokemonListingsButtonItem()))
 				.hideFlags(FlagType.All)
-				.title(Gts.language.getSee_pokemon_listings())
+				.title(Gts.language.getPokemonListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
@@ -47,8 +46,8 @@ public class ExpiredListings {
 				.build();
 
 		Button seeItemListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getItem_listing_display()))
-				.title(Gts.language.getSee_item_listings())
+				.display(Utils.parseItemId(Gts.language.getItemListingsButtonItem()))
+				.title(Gts.language.getItemListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(ItemListings.SORT.NONE);
@@ -57,8 +56,8 @@ public class ExpiredListings {
 				.build();
 
 		Button manageListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getManage_listing_display()))
-				.title(Gts.language.getManage_listings())
+				.display(Utils.parseItemId(Gts.language.getManageListingsButtonItem()))
+				.title(Gts.language.getManageListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ManageListings().getPage(action.getPlayer().getUUID());
@@ -68,14 +67,14 @@ public class ExpiredListings {
 
 
 		LinkedPageButton nextPage = LinkedPageButton.builder()
-				.display(Utils.parseItemId(Gts.language.getNext_page_display()))
-				.title(Gts.language.getNext_page())
+				.display(Utils.parseItemId(Gts.language.getNextPageButtonItems()))
+				.title(Gts.language.getNextPageButtonLabel())
 				.linkType(LinkType.Next)
 				.build();
 
 		LinkedPageButton previousPage = LinkedPageButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPrevious_page_display()))
-				.title(Gts.language.getPrevious_page())
+				.display(Utils.parseItemId(Gts.language.getPreviousPageButtonItems()))
+				.title(Gts.language.getPreviousPageButtonLabel())
 				.linkType(LinkType.Previous)
 				.build();
 
@@ -131,7 +130,7 @@ public class ExpiredListings {
 		}
 
 		Button filler = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.display(Utils.parseItemId(Gts.language.getFillerItem()))
 				.hideFlags(FlagType.All)
 				.lore(new ArrayList<>())
 				.title("")

@@ -1,6 +1,5 @@
 package org.pokesplash.gts.UI.module;
 
-import com.cobblemon.mod.common.pokemon.Pokemon;
 import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.Listing;
@@ -18,7 +17,7 @@ public abstract class ListingInfo {
         lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
 
         if (listing.getEndTime() != -1) {
-            lore.add(Component.literal(Gts.language.getTime_remaining() +
+            lore.add(Component.literal(Gts.language.getRemainingTime() +
                     Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
         }
 

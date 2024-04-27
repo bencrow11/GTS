@@ -14,59 +14,80 @@ public class Lang {
 	// {max_listings}
 	// {min_price}
 	// {max_price}
+
 	private String version; // The version of the file.
 	private String title; // Title shown on the top of the UI
-	private String purchase_message_buyer; // Message that is sent to the buyer of a listing
-	private String cancel_listing; // Message sent to the player that cancels a listing.
-	private String return_listing_success; // Message sent to the player that gets a listing returned
-	private String return_listing_fail; // Message sent to the player that gets a failed receive listing
-	private String maximum_listings; // Message for when a player exceeds their maximum amount of listings.
-	private String minimum_listing_amount; // Message to inform the player of the minimum listing amount for that
-	private String maximum_listing_price; // Message to inform player of the maximum listing amount.
-	private String listing_success; // Message to confirm a listing.
-	private String listing_fail; // Message to confirm a listing.
-	private String no_pokemon_in_slot; // No listing in the given slot.
-	private String no_item_in_hand; // No item in the players hand.
-	private String item_is_banned; // The item they're trying to list is banned.
-	private String pokemon_is_banned; // The Pokemon they're trying to list is banned.
-	private String not_enough_items; // Not enough items in the players inventory
-	private String no_item_id_found; // Couldn't find the item ID of the given item.
-	private String item_amount_is_zero; // If the item amount given is 0.
-	private String reload_message; // Message sent when reload command is executed.
-	private String insufficient_funds; // Not enough monies.
-	private String listing_bought; // Message sent to seller when their listing is bought.
-	private String item_listing_display; // The display item for the "item listings" menu.
-	private String pokemon_listing_display; // The display item for the "pokemon listings" menu.
-	private String manage_listing_display; // The display item for the "manage listings" menu.
-	private String expired_listing_display; // The material for the expired listings button.
-	private String next_page_display; // The display item for the "next page" button.
-	private String previous_page_display; // The display item for the "previous page" button.
-	private String filler_item; // The filler item for the UI.
-	private String purchase_button; // The material for the purchase button.
-	private String cancel_button; // The material for the cancel button.
-	private String remove_listing_button; // The material for the remove listing moderation button.
-	private String sort_price_button; // The material for the sort by price button.
-	private String sort_newest_button; // The material for the sort by newest button.
-	private String sort_name_button; // The material for the sort by name button.
-	private String broadcast_message; // Message sent when a new listing is added.
+
+	/**
+	 * Messages
+	 */
+	private String purchaseMessageBuyer; // Message that is sent to the buyer of a listing
+	private String cancelListing; // Message sent to the player that cancels a listing.
+	private String returnListingSuccess; // Message sent to the player that gets a listing returned
+	private String returnListingFail; // Message sent to the player that gets a failed receive listing
+	private String maximumListings; // Message for when a player exceeds their maximum amount of listings.
+	private String minimumListingPrice; // Message to inform the player of the minimum listing amount for that
+	private String maximumListingPrice; // Message to inform player of the maximum listing amount.
+	private String listingSuccess; // Message to confirm a listing.
+	private String listingFail; // Message to confirm a listing.
+	private String noPokemonInSlot; // No listing in the given slot.
+	private String noItemInHand; // No item in the players hand.
+	private String bannedItem; // The item they're trying to list is banned.
+	private String bannedPokemon; // The Pokemon they're trying to list is banned.
+	private String insufficientItems; // Not enough items in the players inventory
+	private String itemIdNotFound; // Couldn't find the item ID of the given item.
+	private String zeroItemAmount; // If the item amount given is 0.
+	private String reloadMessage; // Message sent when reload command is executed.
+	private String insufficientFunds; // Not enough monies.
+	private String listingBought; // Message sent to seller when their listing is bought.
+	private String newListingBroadcast; // Message sent when a new listing is added.
+
+	/**
+	 *  Button Labels
+	 */
+
+	private String confirmPurchaseButtonLabel; // The name of the "Confirm Purchase" button.
+	private String cancelPurchaseButtonLabel; // The name of the "Cancel Purchase" button.
+	private String removeListingButtonLabel; // The name of the "Remove Listing" button.
+	private String itemListingsButtonLabel; // The name of the "See Item Listings" button.
+	private String pokemonListingsButtonLabel; // The name of the "See Pokemon Listings" button.
+	private String manageListingsButtonLabel; // The name of the "Manage Listings" button.
+	private String nextPageButtonLabel; // The name of the "Next Page" button.
+	private String previousPageButtonLabel; // The name of the "Previous Page" button.
+	private String sortByPriceButtonLabel; // The name of the "Sort By Price" button.
+	private String sortByNewestButtonLabel; // The name of the "Sort By Newest" button.
+	private String sortByPokemonButtonLabel; // The name of the "Sort By Pokemon" button.
+	private String sortByNameButtonLabel; // The name of the "Sort By Name" button.
+	private String receiveListingButtonLabel; // The name of the "Receive Listing" button.
+
+	/**
+	 * Button Materials
+	 */
+
+	private String itemListingsButtonItem; // The display item for the "item listings" menu.
+	private String pokemonListingsButtonItem; // The display item for the "pokemon listings" menu.
+	private String manageListingsButtonItem; // The display item for the "manage listings" menu.
+	private String expiredListingsButtonItem; // The material for the expired listings button.
+	private String nextPageButtonItems; // The display item for the "next page" button.
+	private String previousPageButtonItems; // The display item for the "previous page" button.
+	private String fillerItem; // The filler item for the UI.
+	private String purchaseButtonItem; // The material for the purchase button.
+	private String cancelButtonItem; // The material for the cancel button.
+	private String removeListingButtonItem; // The material for the remove listing moderation button.
+	private String sortByPriceButtonItem; // The material for the sort by price button.
+	private String sortByNewestButtonItem; // The material for the sort by newest button.
+	private String sortByNameButtonItem; // The material for the sort by name button.
+
+	/**
+	 * Placeholders
+	 */
+
 	private String seller; // Seller of the listing.
 	private String price; // Price of the listing.
-	private String time_remaining; // Time Remaining for the listing.
-	private String confirm_purchase; // The name of the "Confirm Purchase" button.
-	private String cancel_purchase; // The name of the "Cancel Purchase" button.
-	private String remove_listing; // The name of the "Remove Listing" button.
-	private String see_item_listings; // The name of the "See Item Listings" button.
-	private String see_pokemon_listings; // The name of the "See Pokemon Listings" button.
-	private String manage_listings; // The name of the "Manage Listings" button.
-	private String next_page; // The name of the "Next Page" button.
-	private String previous_page; // The name of the "Previous Page" button.
-	private String sort_by_price; // The name of the "Sort By Price" button.
-	private String sort_by_newest; // The name of the "Sort By Newest" button.
-	private String sort_by_pokemon; // The name of the "Sort By Pokemon" button.
-	private String sort_by_name; // The name of the "Sort By Name" button.
-	private String receive_listing; // The name of the "Receive Listing" button.
+	private String remainingTime; // Time Remaining for the listing.
 	private String sold_date; // The date an item was sold.
 	private String buyer; // The buyer of a product.
+
 
 
 	/**
@@ -75,57 +96,57 @@ public class Lang {
 	public Lang() {
 		version = Gts.LANG_FILE_VERSION;
 		title = "Gts";
-		purchase_message_buyer = "§2You have bought {listing} from {seller}!";
-		cancel_listing = "§6The {listing} listing has been cancelled!";
-		return_listing_success = "§2You have received the {listing} listing!";
-		return_listing_fail = "§cCould not receive the {listing} listing.";
-		maximum_listings = "§cYou can only have a total of {max_listings} listings.";
-		minimum_listing_amount = "§cYour listing must meet the minimum price of {min_price}";
-		maximum_listing_price = "§cYour listing must be below the maximum price of {max_price}";
-		listing_success = "§2Successfully added your {listing} to GTS!";
-		listing_fail = "§cFailed to add your {listing} to GTS!";
-		no_pokemon_in_slot = "§cCould not find any Pokemon in the given slot!";
-		no_item_in_hand = "§cCould not find an item in your hand!";
-		item_is_banned = "§c{listing} is banned from GTS!";
-		pokemon_is_banned = "§c{listing} is banned from GTS!";
-		not_enough_items = "§cYou don't have enough {listing} in your inventory to list this item!";
-		no_item_id_found = "§cCould not find an item!";
-		item_amount_is_zero = "§cListing amount can not be zero!";
-		reload_message = "§2Reloaded Configs!";
-		insufficient_funds = "§cYou do not have enough money to purchase this listing!";
-		listing_bought = "§2Your {listing} has been bought by {buyer}";
-		item_listing_display = "cobblemon:assault_vest";
-		pokemon_listing_display = "cobblemon:poke_ball";
-		manage_listing_display = "cobblemon:sachet";
-		next_page_display = "minecraft:arrow";
-		previous_page_display = "cobblemon:poison_barb";
-		filler_item = "minecraft:white_stained_glass_pane";
-		purchase_button = "minecraft:green_stained_glass_pane";
-		cancel_button = "minecraft:red_stained_glass_pane";
-		sort_price_button = "minecraft:gold_nugget";
-		sort_newest_button = "minecraft:clock";
-		sort_name_button = "minecraft:oak_sign";
-		expired_listing_display = "cobblemon:link_cable";
-		remove_listing_button = "minecraft:orange_stained_glass_pane";
-		broadcast_message = "§e{seller} §2has just added a §e{listing} §2to GTS.";
+		purchaseMessageBuyer = "§2You have bought {listing} from {seller}!";
+		cancelListing = "§6The {listing} listing has been cancelled!";
+		returnListingSuccess = "§2You have received the {listing} listing!";
+		returnListingFail = "§cCould not receive the {listing} listing.";
+		maximumListings = "§cYou can only have a total of {max_listings} listings.";
+		minimumListingPrice = "§cYour listing must meet the minimum price of {min_price}";
+		maximumListingPrice = "§cYour listing must be below the maximum price of {max_price}";
+		listingSuccess = "§2Successfully added your {listing} to GTS!";
+		listingFail = "§cFailed to add your {listing} to GTS!";
+		noPokemonInSlot = "§cCould not find any Pokemon in the given slot!";
+		noItemInHand = "§cCould not find an item in your hand!";
+		bannedItem = "§c{listing} is banned from GTS!";
+		bannedPokemon = "§c{listing} is banned from GTS!";
+		insufficientItems = "§cYou don't have enough {listing} in your inventory to list this item!";
+		itemIdNotFound = "§cCould not find an item!";
+		zeroItemAmount = "§cListing amount can not be zero!";
+		reloadMessage = "§2Reloaded Configs!";
+		insufficientFunds = "§cYou do not have enough money to purchase this listing!";
+		listingBought = "§2Your {listing} has been bought by {buyer}";
+		itemListingsButtonItem = "cobblemon:assault_vest";
+		pokemonListingsButtonItem = "cobblemon:poke_ball";
+		manageListingsButtonItem = "cobblemon:sachet";
+		nextPageButtonItems = "minecraft:arrow";
+		previousPageButtonItems = "cobblemon:poison_barb";
+		fillerItem = "minecraft:white_stained_glass_pane";
+		purchaseButtonItem = "minecraft:green_stained_glass_pane";
+		cancelButtonItem = "minecraft:red_stained_glass_pane";
+		sortByPriceButtonItem = "minecraft:gold_nugget";
+		sortByNewestButtonItem = "minecraft:clock";
+		sortByNameButtonItem = "minecraft:oak_sign";
+		expiredListingsButtonItem = "cobblemon:link_cable";
+		removeListingButtonItem = "minecraft:orange_stained_glass_pane";
+		newListingBroadcast = "§e{seller} §2has just added a §e{listing} §2to GTS.";
 		seller = "§9Seller: §b";
 		price = "§9Price: §b";
 		sold_date = "§9Sold Date: §b";
 		buyer = "§9Buyer: §b";
-		time_remaining = "§9Time Remaining: §b";
-		confirm_purchase = "§2Confirm Purchase";
-		cancel_purchase = "§cCancel Purchase";
-		remove_listing = "§6Remove Listing";
-		see_item_listings = "§9See Item Listings";
-		see_pokemon_listings = "§9See Pokemon Listings";
-		manage_listings = "§dManage Listings";
-		next_page = "§7Next Page";
-		previous_page = "§7Previous Page";
-		sort_by_price = "§eSort By Price";
-		sort_by_newest = "§3Sort By Newest";
-		sort_by_pokemon = "§6Sort By Pokemon";
-		sort_by_name = "§6Sort By Name";
-		receive_listing = "§2Receive Listing";
+		remainingTime = "§9Time Remaining: §b";
+		confirmPurchaseButtonLabel = "§2Confirm Purchase";
+		cancelPurchaseButtonLabel = "§cCancel Purchase";
+		removeListingButtonLabel = "§6Remove Listing";
+		itemListingsButtonLabel = "§9See Item Listings";
+		pokemonListingsButtonLabel = "§9See Pokemon Listings";
+		manageListingsButtonLabel = "§dManage Listings";
+		nextPageButtonLabel = "§7Next Page";
+		previousPageButtonLabel = "§7Previous Page";
+		sortByPriceButtonLabel = "§eSort By Price";
+		sortByNewestButtonLabel = "§3Sort By Newest";
+		sortByPokemonButtonLabel = "§6Sort By Pokemon";
+		sortByNameButtonLabel = "§6Sort By Name";
+		receiveListingButtonLabel = "§2Receive Listing";
 	}
 
 	/**
@@ -134,104 +155,104 @@ public class Lang {
 	public String getVersion() {
 		return version;
 	}
-	public String getPurchase_message_buyer() {
-		return purchase_message_buyer;
+	public String getPurchaseMessageBuyer() {
+		return purchaseMessageBuyer;
 	}
 	public String getTitle() {
 		return title;
 	}
-	public String getCancel_listing() {
-		return cancel_listing;
+	public String getCancelListing() {
+		return cancelListing;
 	}
-	public String getReturn_listing_success() {
-		return return_listing_success;
+	public String getReturnListingSuccess() {
+		return returnListingSuccess;
 	}
-	public String getReturn_listing_fail() {
-		return return_listing_fail;
+	public String getReturnListingFail() {
+		return returnListingFail;
 	}
-	public String getMaximum_listings() {
-		return maximum_listings;
+	public String getMaximumListings() {
+		return maximumListings;
 	}
-	public String getMinimum_listing_amount() {
-		return minimum_listing_amount;
+	public String getMinimumListingPrice() {
+		return minimumListingPrice;
 	}
-	public String getMaximum_listing_price() {
-		return maximum_listing_price;
+	public String getMaximumListingPrice() {
+		return maximumListingPrice;
 	}
-	public String getListing_success() {
-		return listing_success;
+	public String getListingSuccess() {
+		return listingSuccess;
 	}
-	public String getListing_fail() {
-		return listing_fail;
+	public String getListingFail() {
+		return listingFail;
 	}
-	public String getNo_pokemon_in_slot() {
-		return no_pokemon_in_slot;
+	public String getNoPokemonInSlot() {
+		return noPokemonInSlot;
 	}
-	public String getNo_item_in_hand() {
-		return no_item_in_hand;
+	public String getNoItemInHand() {
+		return noItemInHand;
 	}
-	public String getItem_is_banned() {
-		return item_is_banned;
+	public String getBannedItem() {
+		return bannedItem;
 	}
-	public String getNot_enough_items() {
-		return not_enough_items;
+	public String getInsufficientItems() {
+		return insufficientItems;
 	}
-	public String getNo_item_id_found() {
-		return no_item_id_found;
+	public String getItemIdNotFound() {
+		return itemIdNotFound;
 	}
-	public String getItem_amount_is_zero() {
-		return item_amount_is_zero;
+	public String getZeroItemAmount() {
+		return zeroItemAmount;
 	}
-	public String getReload_message() {
-		return reload_message;
+	public String getReloadMessage() {
+		return reloadMessage;
 	}
-	public String getInsufficient_funds() {
-		return insufficient_funds;
+	public String getInsufficientFunds() {
+		return insufficientFunds;
 	}
-	public String getListing_bought() {
-		return listing_bought;
+	public String getListingBought() {
+		return listingBought;
 	}
-	public String getItem_listing_display() {
-		return item_listing_display;
+	public String getItemListingsButtonItem() {
+		return itemListingsButtonItem;
 	}
-	public String getPokemon_listing_display() {
-		return pokemon_listing_display;
+	public String getPokemonListingsButtonItem() {
+		return pokemonListingsButtonItem;
 	}
-	public String getManage_listing_display() {
-		return manage_listing_display;
+	public String getManageListingsButtonItem() {
+		return manageListingsButtonItem;
 	}
-	public String getNext_page_display() {
-		return next_page_display;
+	public String getNextPageButtonItems() {
+		return nextPageButtonItems;
 	}
-	public String getPrevious_page_display() {
-		return previous_page_display;
+	public String getPreviousPageButtonItems() {
+		return previousPageButtonItems;
 	}
-	public String getFiller_item() {
-		return filler_item;
+	public String getFillerItem() {
+		return fillerItem;
 	}
-	public String getPurchase_button() {
-		return purchase_button;
+	public String getPurchaseButtonItem() {
+		return purchaseButtonItem;
 	}
-	public String getCancel_button() {
-		return cancel_button;
+	public String getCancelButtonItem() {
+		return cancelButtonItem;
 	}
-	public String getSort_price_button() {
-		return sort_price_button;
+	public String getSortByPriceButtonItem() {
+		return sortByPriceButtonItem;
 	}
-	public String getSort_newest_button() {
-		return sort_newest_button;
+	public String getSortByNewestButtonItem() {
+		return sortByNewestButtonItem;
 	}
-	public String getSort_name_button() {
-		return sort_name_button;
+	public String getSortByNameButtonItem() {
+		return sortByNameButtonItem;
 	}
-	public String getExpired_listing_display() {
-		return expired_listing_display;
+	public String getExpiredListingsButtonItem() {
+		return expiredListingsButtonItem;
 	}
-	public String getRemove_listing_button() {
-		return remove_listing_button;
+	public String getRemoveListingButtonItem() {
+		return removeListingButtonItem;
 	}
-	public String getBroadcast_message() {
-		return broadcast_message;
+	public String getNewListingBroadcast() {
+		return newListingBroadcast;
 	}
 	public String getSeller() {
 		return seller;
@@ -239,47 +260,47 @@ public class Lang {
 	public String getPrice() {
 		return price;
 	}
-	public String getTime_remaining() {
-		return time_remaining;
+	public String getRemainingTime() {
+		return remainingTime;
 	}
-	public String getConfirm_purchase() {
-		return confirm_purchase;
+	public String getConfirmPurchaseButtonLabel() {
+		return confirmPurchaseButtonLabel;
 	}
-	public String getCancel_purchase() {
-		return cancel_purchase;
+	public String getCancelPurchaseButtonLabel() {
+		return cancelPurchaseButtonLabel;
 	}
-	public String getRemove_listing() {
-		return remove_listing;
+	public String getRemoveListingButtonLabel() {
+		return removeListingButtonLabel;
 	}
-	public String getSee_item_listings() {
-		return see_item_listings;
+	public String getItemListingsButtonLabel() {
+		return itemListingsButtonLabel;
 	}
-	public String getSee_pokemon_listings() {
-		return see_pokemon_listings;
+	public String getPokemonListingsButtonLabel() {
+		return pokemonListingsButtonLabel;
 	}
-	public String getManage_listings() {
-		return manage_listings;
+	public String getManageListingsButtonLabel() {
+		return manageListingsButtonLabel;
 	}
-	public String getNext_page() {
-		return next_page;
+	public String getNextPageButtonLabel() {
+		return nextPageButtonLabel;
 	}
-	public String getPrevious_page() {
-		return previous_page;
+	public String getPreviousPageButtonLabel() {
+		return previousPageButtonLabel;
 	}
-	public String getSort_by_price() {
-		return sort_by_price;
+	public String getSortByPriceButtonLabel() {
+		return sortByPriceButtonLabel;
 	}
-	public String getSort_by_newest() {
-		return sort_by_newest;
+	public String getSortByNewestButtonLabel() {
+		return sortByNewestButtonLabel;
 	}
-	public String getSort_by_pokemon() {
-		return sort_by_pokemon;
+	public String getSortByPokemonButtonLabel() {
+		return sortByPokemonButtonLabel;
 	}
-	public String getSort_by_name() {
-		return sort_by_name;
+	public String getSortByNameButtonLabel() {
+		return sortByNameButtonLabel;
 	}
-	public String getReceive_listing() {
-		return receive_listing;
+	public String getReceiveListingButtonLabel() {
+		return receiveListingButtonLabel;
 	}
 	public String getSold_date() {
 		return sold_date;
@@ -287,8 +308,8 @@ public class Lang {
 	public String getBuyer() {
 		return buyer;
 	}
-	public String getPokemon_is_banned() {
-		return pokemon_is_banned;
+	public String getBannedPokemon() {
+		return bannedPokemon;
 	}
 
 	/**
@@ -306,55 +327,55 @@ public class Lang {
 					}
 
 					title = lang.getTitle();
-					purchase_message_buyer = lang.getPurchase_message_buyer();
-					cancel_listing = lang.getCancel_listing();
-					return_listing_success = lang.getReturn_listing_success();
-					return_listing_fail = lang.getReturn_listing_fail();
-					maximum_listings = lang.getMaximum_listings();
-					minimum_listing_amount = lang.getMinimum_listing_amount();
-					maximum_listing_price = lang.getMaximum_listing_price();
-					listing_success = lang.getListing_success();
-					listing_fail = lang.getListing_fail();
-					no_pokemon_in_slot = lang.getNo_pokemon_in_slot();
-					no_item_in_hand = lang.getNo_item_in_hand();
-					item_is_banned = lang.getItem_is_banned();
-					pokemon_is_banned = lang.getPokemon_is_banned();
-					not_enough_items = lang.getNot_enough_items();
-					no_item_id_found = lang.getNo_item_id_found();
-					item_amount_is_zero = lang.getItem_amount_is_zero();
-					reload_message = lang.getReload_message();
-					insufficient_funds = lang.getInsufficient_funds();
-					listing_bought = lang.getListing_bought();
-					item_listing_display = lang.getItem_listing_display();
-					pokemon_listing_display = lang.getPokemon_listing_display();
-					manage_listing_display = lang.getManage_listing_display();
-					next_page_display = lang.getNext_page_display();
-					previous_page_display = lang.getPrevious_page_display();
-					filler_item = lang.getFiller_item();
-					purchase_button = lang.getPurchase_button();
-					cancel_button = lang.getCancel_button();
-					sort_price_button = lang.getSort_price_button();
-					sort_newest_button = lang.getSort_newest_button();
-					sort_name_button = lang.getSort_name_button();
-					expired_listing_display = lang.getExpired_listing_display();
-					remove_listing_button = lang.getRemove_listing_button();
-					broadcast_message = lang.getBroadcast_message();
+					purchaseMessageBuyer = lang.getPurchaseMessageBuyer();
+					cancelListing = lang.getCancelListing();
+					returnListingSuccess = lang.getReturnListingSuccess();
+					returnListingFail = lang.getReturnListingFail();
+					maximumListings = lang.getMaximumListings();
+					minimumListingPrice = lang.getMinimumListingPrice();
+					maximumListingPrice = lang.getMaximumListingPrice();
+					listingSuccess = lang.getListingSuccess();
+					listingFail = lang.getListingFail();
+					noPokemonInSlot = lang.getNoPokemonInSlot();
+					noItemInHand = lang.getNoItemInHand();
+					bannedItem = lang.getBannedItem();
+					bannedPokemon = lang.getBannedPokemon();
+					insufficientItems = lang.getInsufficientItems();
+					itemIdNotFound = lang.getItemIdNotFound();
+					zeroItemAmount = lang.getZeroItemAmount();
+					reloadMessage = lang.getReloadMessage();
+					insufficientFunds = lang.getInsufficientFunds();
+					listingBought = lang.getListingBought();
+					itemListingsButtonItem = lang.getItemListingsButtonItem();
+					pokemonListingsButtonItem = lang.getPokemonListingsButtonItem();
+					manageListingsButtonItem = lang.getManageListingsButtonItem();
+					nextPageButtonItems = lang.getNextPageButtonItems();
+					previousPageButtonItems = lang.getPreviousPageButtonItems();
+					fillerItem = lang.getFillerItem();
+					purchaseButtonItem = lang.getPurchaseButtonItem();
+					cancelButtonItem = lang.getCancelButtonItem();
+					sortByPriceButtonItem = lang.getSortByPriceButtonItem();
+					sortByNewestButtonItem = lang.getSortByNewestButtonItem();
+					sortByNameButtonItem = lang.getSortByNameButtonItem();
+					expiredListingsButtonItem = lang.getExpiredListingsButtonItem();
+					removeListingButtonItem = lang.getRemoveListingButtonItem();
+					newListingBroadcast = lang.getNewListingBroadcast();
 					seller = lang.getSeller();
 					price = lang.getPrice();
-					time_remaining = lang.getTime_remaining();
-					confirm_purchase = lang.getConfirm_purchase();
-					cancel_purchase = lang.getCancel_purchase();
-					remove_listing = lang.getRemove_listing();
-					see_item_listings = lang.getSee_item_listings();
-					see_pokemon_listings = lang.getSee_pokemon_listings();
-					manage_listings = lang.getManage_listings();
-					next_page = lang.getNext_page();
-					previous_page = lang.getPrevious_page();
-					sort_by_price = lang.getSort_by_price();
-					sort_by_newest = lang.getSort_by_newest();
-					sort_by_pokemon = lang.getSort_by_pokemon();
-					sort_by_name = lang.getSort_by_name();
-					receive_listing = lang.getReceive_listing();
+					remainingTime = lang.getRemainingTime();
+					confirmPurchaseButtonLabel = lang.getConfirmPurchaseButtonLabel();
+					cancelPurchaseButtonLabel = lang.getCancelPurchaseButtonLabel();
+					removeListingButtonLabel = lang.getRemoveListingButtonLabel();
+					itemListingsButtonLabel = lang.getItemListingsButtonLabel();
+					pokemonListingsButtonLabel = lang.getPokemonListingsButtonLabel();
+					manageListingsButtonLabel = lang.getManageListingsButtonLabel();
+					nextPageButtonLabel = lang.getNextPageButtonLabel();
+					previousPageButtonLabel = lang.getPreviousPageButtonLabel();
+					sortByPriceButtonLabel = lang.getSortByPriceButtonLabel();
+					sortByNewestButtonLabel = lang.getSortByNewestButtonLabel();
+					sortByPokemonButtonLabel = lang.getSortByPokemonButtonLabel();
+					sortByNameButtonLabel = lang.getSortByNameButtonLabel();
+					receiveListingButtonLabel = lang.getReceiveListingButtonLabel();
 					sold_date = lang.getSold_date();
 					buyer = lang.getBuyer();
 		});

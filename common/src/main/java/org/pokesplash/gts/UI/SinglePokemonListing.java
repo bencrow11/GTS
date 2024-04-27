@@ -19,8 +19,6 @@ import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
 
 /**
  * UI of the Item Listings page.
@@ -46,14 +44,14 @@ public class SinglePokemonListing {
 				.build();
 
 		Button purchase = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPurchase_button()))
-				.title(Gts.language.getConfirm_purchase())
+				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
+				.title(Gts.language.getConfirmPurchaseButtonLabel())
 				.onClick((action) -> {
 					boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
 					String message;
 					if (success) {
-						message = Utils.formatPlaceholders(Gts.language.getPurchase_message_buyer(),
+						message = Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
 								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 
@@ -61,13 +59,13 @@ public class SinglePokemonListing {
 								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
 						if (seller != null) {
-							seller.sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListing_bought(),
+							seller.sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingBought(),
 									0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 									action.getPlayer().getName().getString())));
 						}
 
 					} else {
-						message = Utils.formatPlaceholders(Gts.language.getInsufficient_funds(),
+						message = Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
 								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 					}
@@ -78,8 +76,8 @@ public class SinglePokemonListing {
 				.build();
 
 		Button cancel = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getCancel_button()))
-				.title(Gts.language.getCancel_purchase())
+				.display(Utils.parseItemId(Gts.language.getCancelButtonItem()))
+				.title(Gts.language.getCancelPurchaseButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new AllListings().getPage();
@@ -88,8 +86,8 @@ public class SinglePokemonListing {
 				.build();
 
 		Button removeListing = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getRemove_listing_button()))
-				.title(Gts.language.getRemove_listing())
+				.display(Utils.parseItemId(Gts.language.getRemoveListingButtonItem()))
+				.title(Gts.language.getRemoveListingButtonLabel())
 				.onClick((action) -> {
 
 
@@ -98,7 +96,7 @@ public class SinglePokemonListing {
 					} else {
 						GtsAPI.cancelListing(listing);
 					}
-					String message = Utils.formatPlaceholders(Gts.language.getCancel_listing(),
+					String message = Utils.formatPlaceholders(Gts.language.getCancelListing(),
 							0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
 
@@ -116,7 +114,7 @@ public class SinglePokemonListing {
 				.build();
 
 		Button filler = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.display(Utils.parseItemId(Gts.language.getFillerItem()))
 				.hideFlags(FlagType.All)
 				.lore(new ArrayList<>())
 				.title("")

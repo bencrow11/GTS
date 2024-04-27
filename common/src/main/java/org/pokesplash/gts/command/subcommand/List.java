@@ -111,7 +111,7 @@ public class List extends Subcommand {
 
 		if (totalPokemonListings + totalItemListings >= Gts.config.getMaxListingsPerPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
-					Utils.formatPlaceholders(Gts.language.getMaximum_listings(), 0, null,
+					Utils.formatPlaceholders(Gts.language.getMaximumListings(), 0, null,
 							context.getSource().getPlayer().getDisplayName().getString(), null)));
 			return 1;
 		}
@@ -134,7 +134,7 @@ public class List extends Subcommand {
 
 		// If no Pokemon in slot, send message to user.
 		if (pokemon == null) {
-			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNo_pokemon_in_slot(),
+			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNoPokemonInSlot(),
 					0, null, player.getDisplayName().getString(), null)));
 			return 1;
 		}
@@ -188,14 +188,14 @@ public class List extends Subcommand {
 
 		// If less than min price, cancel the command.
 		if (price < minPrice) {
-			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMinimum_listing_amount(),
+			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMinimumListingPrice(),
 					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 			return 1;
 		}
 
 		// If the price is above the maximum price, cancel the command.
 		if (price > Gts.config.getMaximumPrice()) {
-			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMaximum_listing_price(),
+			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMaximumListingPrice(),
 					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 			return 1;
 		}
@@ -206,7 +206,7 @@ public class List extends Subcommand {
 		for (String bannedMon : bannedPokemon) {
 			if (bannedMon.equalsIgnoreCase(pokemon.getSpecies().getName())) {
 				context.getSource().sendSystemMessage(Component.literal(
-						Utils.formatPlaceholders(Gts.language.getPokemon_is_banned(),
+						Utils.formatPlaceholders(Gts.language.getBannedPokemon(),
 						0, pokemon.getSpecies().getName(), player.getDisplayName().getString(),
 								null)));
 				return 1;
@@ -218,12 +218,12 @@ public class List extends Subcommand {
 		boolean success = GtsAPI.addListing(listing, player, slot);
 
 		if (success) {
-			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListing_success(),
+			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingSuccess(),
 					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 
 
 		} else {
-			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListing_fail(),
+			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingFail(),
 					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 
 
@@ -247,14 +247,14 @@ public class List extends Subcommand {
 
 			// If they aren't holding an item. Message them
 			if (itemId.equalsIgnoreCase("minecraft:air")) {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNo_item_in_hand(),
+				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNoItemInHand(),
 						0, null, player.getDisplayName().getString(), null)));
 				return 1;
 			}
 
 			// Checks the amount isn't 0.
 			if (amount <= 0) {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getItem_amount_is_zero(),
+				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getZeroItemAmount(),
 						0, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 				return 1;
 			}
@@ -262,7 +262,7 @@ public class List extends Subcommand {
 			// Checks the item isn't banned.
 			for (String bannedItem : bannedItems) {
 				if (bannedItem.equalsIgnoreCase(itemId)) {
-					context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getItem_is_banned(),
+					context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getBannedItem(),
 							0, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 					return 1;
 				}
@@ -280,21 +280,21 @@ public class List extends Subcommand {
 
 			// If less than min price, cancel the command.
 			if (price < minPrice) {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMinimum_listing_amount(),
+				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMinimumListingPrice(),
 						minPrice, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 				return 1;
 			}
 
 			// If the price is above the maximum price, cancel the command.
 			if (price > Gts.config.getMaximumPrice()) {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMaximum_listing_price(),
+				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMaximumListingPrice(),
 						minPrice, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 				return 1;
 			}
 
 			// Check there are enough items in the players inventory.
 			if (item.getCount() < amount) {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNot_enough_items(),
+				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getInsufficientItems(),
 						minPrice, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 				return 1;
 
@@ -310,12 +310,12 @@ public class List extends Subcommand {
 			boolean success = GtsAPI.addListing(player, listing);
 
 			if (success) {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListing_success(),
+				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingSuccess(),
 						minPrice, listing.getListing().getDisplayName().getString(), player.getDisplayName().getString(), null)));
 
 
 			} else {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListing_fail(),
+				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingFail(),
 						minPrice, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 
 
@@ -324,7 +324,7 @@ public class List extends Subcommand {
 
 
 		} catch (NullPointerException e) {
-			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNo_item_id_found(),
+			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getItemIdNotFound(),
 					0, null, player.getDisplayName().getString(), null)));
 			Gts.LOGGER.error("Couldn't find Item ID\n Stacktrace: ");
 			e.printStackTrace();

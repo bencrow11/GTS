@@ -38,9 +38,9 @@ public class ManageListings {
 		List<ItemListing> itmListings = Gts.listings.getItemListingsByPlayer(owner);
 
 		Button seePokemonListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPokemon_listing_display()))
+				.display(Utils.parseItemId(Gts.language.getPokemonListingsButtonItem()))
 				.hideFlags(FlagType.All)
-				.title(Gts.language.getSee_pokemon_listings())
+				.title(Gts.language.getPokemonListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
@@ -49,8 +49,8 @@ public class ManageListings {
 				.build();
 
 		Button seeItemListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getItem_listing_display()))
-				.title(Gts.language.getSee_item_listings())
+				.display(Utils.parseItemId(Gts.language.getItemListingsButtonItem()))
+				.title(Gts.language.getItemListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(ItemListings.SORT.NONE);
@@ -60,19 +60,19 @@ public class ManageListings {
 
 
 		LinkedPageButton nextPage = LinkedPageButton.builder()
-				.display(Utils.parseItemId(Gts.language.getNext_page_display()))
-				.title(Gts.language.getNext_page())
+				.display(Utils.parseItemId(Gts.language.getNextPageButtonItems()))
+				.title(Gts.language.getNextPageButtonLabel())
 				.linkType(LinkType.Next)
 				.build();
 
 		LinkedPageButton previousPage = LinkedPageButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPrevious_page_display()))
-				.title(Gts.language.getPrevious_page())
+				.display(Utils.parseItemId(Gts.language.getPreviousPageButtonItems()))
+				.title(Gts.language.getPreviousPageButtonLabel())
 				.linkType(LinkType.Previous)
 				.build();
 
 		Button expiredListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getExpired_listing_display()))
+				.display(Utils.parseItemId(Gts.language.getExpiredListingsButtonItem()))
 				.title("§cExpired Listings")
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
@@ -126,7 +126,7 @@ public class ManageListings {
 
 
 		Button filler = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getFiller_item()))
+				.display(Utils.parseItemId(Gts.language.getFillerItem()))
 				.hideFlags(FlagType.All)
 				.lore(new ArrayList<>())
 				.title("")
