@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.config.ItemPrices;
@@ -95,29 +96,39 @@ public class List extends Subcommand {
 			return 1;
 		}
 
-		PokemonBattle battle =
-				Cobblemon.INSTANCE.getBattleRegistry().getBattleByParticipatingPlayer(context.getSource().getPlayer());
+		try {
+			PokemonBattle battle =
+					Cobblemon.INSTANCE.getBattleRegistry().getBattleByParticipatingPlayer(context.getSource().getPlayer());
 
-		if (battle != null) {
-			context.getSource().sendSystemMessage(Component.literal(
-					"§cYou can not list to GTS while in a battle."
-			));
-			return 1;
-		}
+			if (battle != null) {
+				context.getSource().sendSystemMessage(Component.literal(
+						"§cYou can not list to GTS while in a battle."
+				));
+				return 1;
+			}
 
-		int totalPokemonListings =
-				Gts.listings.getPokemonListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
-		int totalItemListings = Gts.listings.getItemListingsByPlayer(
-				context.getSource().getPlayer().getUUID()).size();
-		int totalExpiredListings = Gts.listings.getExpiredListingsOfPlayer(
-				context.getSource().getPlayer().getUUID()).size();
+			int totalPokemonListings =
+					Gts.listings.getPokemonListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
+			int totalItemListings = Gts.listings.getItemListingsByPlayer(
+					context.getSource().getPlayer().getUUID()).size();
 
-		if (totalPokemonListings + totalItemListings + totalExpiredListings >=
-				Gts.config.getMaxListingsPerPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal(
-					Utils.formatPlaceholders(Gts.language.getMaximumListings(), 0, null,
-							context.getSource().getPlayer().getDisplayName().getString(), null)));
-			return 1;
+			java.util.List<Listing> expiredListings = Gts.listings.getExpiredListingsOfPlayer(
+					context.getSource().getPlayer().getUUID());
+
+			int totalExpiredListings = expiredListings == null ? 0 : expiredListings.size();
+
+			if (totalPokemonListings + totalItemListings +
+					totalExpiredListings >=
+					Gts.config.getMaxListingsPerPlayer()) {
+				context.getSource().sendSystemMessage(Component.literal(
+						Utils.formatPlaceholders(Gts.language.getMaximumListings(), 0, null,
+								context.getSource().getPlayer().getDisplayName().getString(), null)));
+				return 1;
+			}
+
+		} catch (Exception e) {
+			context.getSource().sendSystemMessage(Component.literal("§cSomething went wrong."));
+			e.printStackTrace();
 		}
 
 		if (context.getInput().contains("pokemon")) {
