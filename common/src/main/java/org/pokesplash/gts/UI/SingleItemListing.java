@@ -41,29 +41,34 @@ public class SingleItemListing {
 				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
 				.title(Gts.language.getConfirmPurchaseButtonLabel())
 				.onClick((action) -> {
-				 	boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
-
 					String message;
-					if (success) {
-						message = Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
+
+					if (action.getPlayer().getInventory().getFreeSlot() == -1)
+						message = Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
 								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
+					else {
+						boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
-						ServerPlayer seller =
-								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
+						if (success) {
+							message = Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
+									0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
+									action.getPlayer().getName().getString());
 
-						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
-							seller.sendSystemMessage(Component.literal(
-									Utils.formatPlaceholders(Gts.language.getListingBought(),
-											0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
-											action.getPlayer().getName().getString())));
+							ServerPlayer seller =
+									action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
-
+							if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
+								seller.sendSystemMessage(Component.literal(
+										Utils.formatPlaceholders(Gts.language.getListingBought(),
+												0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
+												action.getPlayer().getName().getString())));
+							}
+						} else {
+							message = Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
+									0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
+									action.getPlayer().getName().getString());
 						}
-					} else {
-						message = Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
-								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
-								action.getPlayer().getName().getString());
 					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
 
