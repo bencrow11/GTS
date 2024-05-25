@@ -22,10 +22,14 @@ public class GtsForge {
         CommandsRegistry.registerCommands(event.getDispatcher());
     }
 
+    // TODO Remove?
+//    @SubscribeEvent
+//    public void serverStopEvent(ServerStoppingEvent event) {
+//        Gts.timers.deleteAllTimers();
+//    }
+
     @SubscribeEvent
-    public void serverStopEvent(ServerStoppingEvent event) {
-        Gts.timers.deleteAllTimers();
-    }
+    public void test(LevelEvent.Unload event) { Gts.server = event.getLevel().getServer(); }
 
     @SubscribeEvent
     public void worldLoadEvent(LevelEvent.Load event) {

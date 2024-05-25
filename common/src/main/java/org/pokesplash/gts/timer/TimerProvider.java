@@ -52,14 +52,16 @@ public class TimerProvider {
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					Gts.listings.removeListing(listing);
-					Gts.listings.addExpiredListing(listing);
+					if (Gts.listings.removeListing(listing)) {
+						Gts.listings.addExpiredListing(listing);
+					}
 				}
 			}, timeDiff);
 			timers.put(listing, timer);
 		} else {
-			Gts.listings.removeListing(listing);
-			Gts.listings.addExpiredListing(listing);
+			if (Gts.listings.removeListing(listing)) {
+				Gts.listings.addExpiredListing(listing);
+			}
 		}
 	}
 

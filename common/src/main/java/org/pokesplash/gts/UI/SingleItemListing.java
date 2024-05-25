@@ -41,6 +41,15 @@ public class SingleItemListing {
 				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
 				.title(Gts.language.getConfirmPurchaseButtonLabel())
 				.onClick((action) -> {
+
+					if (Gts.listings.getListingById(listing.getId()) == null) {
+						action.getPlayer().sendSystemMessage(Component.literal(
+								"§cThis item is no longer available."
+						));
+						UIManager.closeUI(action.getPlayer());
+						return;
+					}
+
 				 	boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
 					String message;

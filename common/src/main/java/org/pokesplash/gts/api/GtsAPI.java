@@ -184,8 +184,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean returnListing(ServerPlayer player, PokemonListing listing) {
 
-		if (Gts.listings.removeExpiredListing(listing)) {
-			listing.delete(Gts.LISTING_FILE_PATH);
+		if (Gts.listings.removeExpiredListing(listing) && listing.delete(Gts.LISTING_FILE_PATH)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
@@ -201,8 +200,7 @@ public abstract class GtsAPI {
 	 * @param listing The item to be returned.
 	 */
 	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
-		if (Gts.listings.removeExpiredListing(listing)) {
-			listing.delete(Gts.LISTING_FILE_PATH);
+		if (Gts.listings.removeExpiredListing(listing) && listing.delete(Gts.LISTING_FILE_PATH)) {
 			player.getInventory().add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
