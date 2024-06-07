@@ -154,6 +154,12 @@ public class List extends Subcommand {
 			return 1;
 		}
 
+		if (!pokemon.getTradeable()) {
+			context.getSource().sendSystemMessage(Component.literal(
+					"§cThis Pokemon is not tradeable."));
+			return 1;
+		}
+
 		// Get the pokemons max ivs IVs
 		AtomicInteger totalMaxIvs = new AtomicInteger();
 		pokemon.getIvs().forEach((stat) -> {
