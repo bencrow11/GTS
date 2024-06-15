@@ -2,6 +2,7 @@ package org.pokesplash.gts.Listing;
 
 import com.google.gson.Gson;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.util.Utils;
 
 import java.text.DecimalFormat;
@@ -102,6 +103,12 @@ public abstract class Listing<T> {
     public abstract T getListing(); // The object that has been listed.
 
     public boolean write(String filePath) { // Writes the listing to file.
+
+        if (ListingAPI.getHighestPriority() != null) {
+            ListingAPI.getHighestPriority().write(this);
+            return true;
+        }
+
         Gson gson = Utils.newGson();
         String data = gson.toJson(this);
 
@@ -111,6 +118,12 @@ public abstract class Listing<T> {
     }
 
     public boolean delete(String filePath) { // Deletes the listing file.
+
+        if (ListingAPI.getHighestPriority() != null) {
+            ListingAPI.getHighestPriority().delete(this);
+            return true;
+        }
+
         return Utils.deleteFile(filePath, this.getId() + ".json");
     }
 

@@ -5,7 +5,7 @@ import com.cobblemon.mod.common.api.abilities.PotentialAbility;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.*;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 
+import java.io.DataInput;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -337,10 +338,16 @@ public abstract class Utils {
 	}
 
 	public static ItemStack parseItemId(String id) {
-		CompoundTag tag = new CompoundTag();
-		tag.putString("id", id);
-		tag.putInt("Count", 1);
-		return ItemStack.of(tag);
+
+		try	{
+			CompoundTag tag = TagParser.parseTag(id);
+			return ItemStack.of(tag);
+		} catch (Exception e) {
+			CompoundTag tag = new CompoundTag();
+			tag.putString("id", id);
+			tag.putInt("Count", 1);
+			return ItemStack.of(tag);
+		}
 	}
 
 	public static void broadcastClickable(String message, String command) {

@@ -4,7 +4,7 @@ import org.pokesplash.gts.Listing.ListingsProvider;
 
 import java.util.Map;
 
-public abstract class ListingsClassProvider {
+public abstract class ListingsProviderAPI {
     private static Map<Priority, ListingsProvider> providers = Map.of(Priority.LOWEST, new ListingsProvider());
 
     public static void add(Priority priority, ListingsProvider provider) {
@@ -25,7 +25,7 @@ public abstract class ListingsClassProvider {
         return providers.get(priority);
     }
 
-    public static ListingsProvider getHighest() {
+    public static ListingsProvider getHighestPriority() {
         if (providers.get(Priority.HIGHEST) != null) {
             return providers.get(Priority.HIGHEST);
         }

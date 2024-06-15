@@ -1,8 +1,11 @@
 package org.pokesplash.gts;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Listing.ListingsProvider;
-import org.pokesplash.gts.api.provider.ListingsClassProvider;
+import org.pokesplash.gts.api.provider.ListingsProviderAPI;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
 import org.pokesplash.gts.config.Lang;
@@ -11,6 +14,7 @@ import org.pokesplash.gts.timer.TimerProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
 import org.pokesplash.gts.util.GtsLogger;
 import org.pokesplash.gts.util.Permissions;
+import org.pokesplash.gts.util.Utils;
 
 public class Gts
 {
@@ -37,7 +41,7 @@ public class Gts
 
 	public static void reload() {
 		config = new Config();
-		listings = ListingsClassProvider.getHighest();
+		listings = ListingsProviderAPI.getHighestPriority();
 		history = new HistoryProvider();
 		language = new Lang();
 		config.init();

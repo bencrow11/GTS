@@ -4,13 +4,22 @@ import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.AllListings;
 import org.pokesplash.gts.command.subcommand.*;
 import org.pokesplash.gts.util.BaseCommand;
+import org.pokesplash.gts.util.Utils;
 
+import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.util.Arrays;
 
 /**
