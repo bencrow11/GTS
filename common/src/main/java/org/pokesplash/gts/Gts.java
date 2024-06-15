@@ -1,8 +1,8 @@
 package org.pokesplash.gts;
 
 import net.minecraft.server.MinecraftServer;
-import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.ListingsProvider;
+import org.pokesplash.gts.api.provider.ListingsClassProvider;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
 import org.pokesplash.gts.config.Lang;
@@ -37,7 +37,7 @@ public class Gts
 
 	public static void reload() {
 		config = new Config();
-		listings = new ListingsProvider();
+		listings = ListingsClassProvider.getHighest();
 		history = new HistoryProvider();
 		language = new Lang();
 		config.init();

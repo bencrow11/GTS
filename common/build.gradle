@@ -13,7 +13,6 @@ dependencies {
         transitive = false
     }
     api("net.kyori:adventure-api:${rootProject.kyori_version}")
-
 }
 
 architectury {
