@@ -6,6 +6,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.api.provider.HistoryAPI;
 import org.pokesplash.gts.oldVersion.PlayerHistoryOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
@@ -23,7 +24,7 @@ public class HistoryProvider {
 	// path the player history are written to.
 	public static final String filePath = "/config/gts/history/";
 	// Storage of player history.
-	private HashMap<UUID, PlayerHistory> history;
+	protected HashMap<UUID, PlayerHistory> history;
 
 	/**
 	 * Constructor to create the history class.
@@ -39,7 +40,12 @@ public class HistoryProvider {
 	 */
 	public PlayerHistory getPlayerHistory(UUID player) {
 		if (history.get(player) == null) {
-			new PlayerHistory(player);
+			if (HistoryAPI.getHighestPriority() == null) {
+				new PlayerHistory(player);
+			} else {
+				history.put(player, new PlayerHistory(player));
+			}
+
 		}
 		return history.get(player);
 	}

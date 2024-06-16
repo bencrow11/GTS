@@ -5,6 +5,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Listing.ListingsProvider;
+import org.pokesplash.gts.api.provider.HistoryProviderAPI;
 import org.pokesplash.gts.api.provider.ListingsProviderAPI;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
@@ -42,7 +43,7 @@ public class Gts
 	public static void reload() {
 		config = new Config();
 		listings = ListingsProviderAPI.getHighestPriority();
-		history = new HistoryProvider();
+		history = HistoryProviderAPI.getHighestPriority();
 		language = new Lang();
 		config.init();
 		listings.init();

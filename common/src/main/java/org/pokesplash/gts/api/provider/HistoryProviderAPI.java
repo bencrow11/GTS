@@ -2,34 +2,35 @@ package org.pokesplash.gts.api.provider;
 
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ListingsProvider;
+import org.pokesplash.gts.history.HistoryProvider;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class ListingsProviderAPI {
-    private static HashMap<Priority, ListingsProvider> providers = new HashMap<>();
+public abstract class HistoryProviderAPI {
+    private static HashMap<Priority, HistoryProvider> providers = new HashMap<>();
 
-    public static void add(Priority priority, ListingsProvider provider) {
+    public static void add(Priority priority, HistoryProvider provider) {
         providers.put(priority, provider);
-        Gts.listings = getHighestPriority();
-        Gts.listings.init();
+        Gts.history = getHighestPriority();
+        Gts.history.init();
     }
 
     public static void remove(Priority priority) {
         providers.remove(priority);
-        Gts.listings = getHighestPriority();
-        Gts.listings.init();
+        Gts.history = getHighestPriority();
+        Gts.history.init();
     }
 
-    public static Map<Priority, ListingsProvider> getProviders() {
+    public static Map<Priority, HistoryProvider> getProviders() {
         return providers;
     }
 
-    public static ListingsProvider get(Priority priority) {
+    public static HistoryProvider get(Priority priority) {
         return providers.get(priority);
     }
 
-    public static ListingsProvider getHighestPriority() {
+    public static HistoryProvider getHighestPriority() {
         if (providers.get(Priority.HIGHEST) != null) {
             return providers.get(Priority.HIGHEST);
         }
@@ -50,6 +51,6 @@ public abstract class ListingsProviderAPI {
             return providers.get(Priority.LOWEST);
         }
 
-        return new ListingsProvider();
+        return new HistoryProvider();
     }
 }

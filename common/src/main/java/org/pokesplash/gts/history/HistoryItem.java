@@ -1,6 +1,8 @@
 package org.pokesplash.gts.history;
 
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.api.provider.HistoryAPI;
+import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.util.Utils;
 
 import java.text.DecimalFormat;
@@ -72,6 +74,12 @@ public abstract class HistoryItem<T> {
     }
 
     public void write() {
+
+        if (HistoryAPI.getHighestPriority() != null) {
+            HistoryAPI.getHighestPriority().write(this);
+        }
+
+
         Utils.writeFileAsync(HistoryProvider.filePath + sellerUuid + "/",
                 id + ".json", Utils.newGson().toJson(this));
     }

@@ -5,9 +5,11 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.api.provider.HistoryAPI;
 import org.pokesplash.gts.oldVersion.PlayerHistoryOld;
 import org.pokesplash.gts.util.Utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +33,9 @@ public class PlayerHistory implements History {
 	public PlayerHistory(UUID playerUUID) {
 		player = playerUUID;
 		listings = new ArrayList<>();
-		Utils.checkForDirectory(HistoryProvider.filePath + playerUUID + "/");
+		if (HistoryAPI.getHighestPriority() == null) {
+			Utils.checkForDirectory(HistoryProvider.filePath + playerUUID + "/");
+		}
 	}
 
 	/**

@@ -15,9 +15,9 @@ import java.util.concurrent.CompletableFuture;
  * Manages all types of listings. Data is saved to memory here.
  */
 public class ListingsProvider {
-	private ArrayList<Listing> listings; // Active listings.
+	protected ArrayList<Listing> listings; // Active listings.
 
-	private HashMap<UUID, ArrayList<Listing>> expiredListings; // Expired listings.
+	protected HashMap<UUID, ArrayList<Listing>> expiredListings; // Expired listings.
 
 	/**
 	 * Constructor to create a new list for both hashmaps.
