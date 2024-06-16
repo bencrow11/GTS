@@ -7,7 +7,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.Subcommand;
-import org.pokesplash.gts.util.Utils;
 
 public class Debug extends Subcommand {
 

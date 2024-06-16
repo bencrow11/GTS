@@ -1,9 +1,6 @@
 package org.pokesplash.gts;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.api.provider.HistoryProviderAPI;
 import org.pokesplash.gts.api.provider.ListingsProviderAPI;
@@ -15,7 +12,6 @@ import org.pokesplash.gts.timer.TimerProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
 import org.pokesplash.gts.util.GtsLogger;
 import org.pokesplash.gts.util.Permissions;
-import org.pokesplash.gts.util.Utils;
 
 public class Gts
 {

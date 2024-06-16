@@ -2,7 +2,6 @@ package org.pokesplash.gts.history;
 
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.api.provider.HistoryAPI;
-import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.util.Utils;
 
 import java.text.DecimalFormat;

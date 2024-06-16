@@ -3,12 +3,10 @@ package org.pokesplash.gts.forge;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.CommandsRegistry;
-import org.pokesplash.gts.util.Utils;
 
 @Mod(Gts.MOD_ID)
 public class GtsForge {

@@ -2,16 +2,11 @@ package org.pokesplash.gts.Listing;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 
-import org.pokesplash.gts.Gts;
-
-import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.UUID;
 
 /**

@@ -1,9 +1,7 @@
 package org.pokesplash.gts.timer;
 
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
-import org.pokesplash.gts.Listing.PokemonListing;
 
 import java.util.*;
 

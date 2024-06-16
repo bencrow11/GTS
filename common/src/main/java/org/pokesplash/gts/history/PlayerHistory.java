@@ -1,7 +1,5 @@
 package org.pokesplash.gts.history;
 
-import net.minecraft.world.entity.player.Player;
-import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
@@ -9,7 +7,6 @@ import org.pokesplash.gts.api.provider.HistoryAPI;
 import org.pokesplash.gts.oldVersion.PlayerHistoryOld;
 import org.pokesplash.gts.util.Utils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +127,14 @@ public class PlayerHistory implements History {
 				new ItemHistoryItem((ItemListing) listing, buyerName);
 		item.write();
 		listings.add(item);
+	}
+
+	/**
+	 * Method to add a history item to memory.
+	 * @param historyItem The history item to add.
+	 */
+	public void addHistory(HistoryItem historyItem) {
+		listings.add(historyItem);
 	}
 
 	/**

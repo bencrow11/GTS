@@ -6,8 +6,6 @@ import net.minecraft.nbt.TagParser;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 
-import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.UUID;
 
 /**

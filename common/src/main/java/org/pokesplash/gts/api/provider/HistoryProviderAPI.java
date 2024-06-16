@@ -1,7 +1,6 @@
 package org.pokesplash.gts.api.provider;
 
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.history.HistoryProvider;
 
 import java.util.HashMap;
