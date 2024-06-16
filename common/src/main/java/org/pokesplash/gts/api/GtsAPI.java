@@ -144,6 +144,11 @@ public abstract class GtsAPI {
 	 * @return true if the transaction was successful.
 	 */
 	public static boolean sale(UUID seller, ServerPlayer buyer, ItemListing listing) {
+
+		if (buyer.getInventory().getFreeSlot() == -1) {
+			return false;
+		}
+
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
 		Account sellerAccount = ImpactorService.getAccount(seller);
@@ -200,6 +205,11 @@ public abstract class GtsAPI {
 	 * @param listing The item to be returned.
 	 */
 	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
+
+		if (player.getInventory().getFreeSlot() == -1) {
+			return false;
+		}
+
 		if (Gts.listings.removeExpiredListing(listing) && listing.delete(Gts.LISTING_FILE_PATH)) {
 			player.getInventory().add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
@@ -215,7 +225,6 @@ public abstract class GtsAPI {
 	 * @param listing The listing to return to the player.
 	 */
 	public static boolean cancelAndReturnListing(ServerPlayer player, PokemonListing listing) {
-
 		if (Gts.listings.removeListing(listing)) {
 			listing.delete(Gts.LISTING_FILE_PATH);
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
@@ -234,6 +243,10 @@ public abstract class GtsAPI {
 	 * @param listing The listing to return to the player.
 	 */
 	public static boolean cancelAndReturnListing(ServerPlayer player, ItemListing listing) {
+
+		if (player.getInventory().getFreeSlot() == -1) {
+			return false;
+		}
 
 		if (Gts.listings.removeListing(listing)) {
 			listing.delete(Gts.LISTING_FILE_PATH);
