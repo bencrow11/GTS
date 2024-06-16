@@ -59,6 +59,10 @@ public class HistoryProvider {
 		return null;
 	}
 
+	public void updateHistory(PlayerHistory history) {
+		this.history.put(history.getPlayer(), history);
+	}
+
 	public void addHistoryItem(Listing item, String buyerName) {
 		if (history.get(item.getSellerUuid()) == null) {
 			history.put(item.getSellerUuid(), new PlayerHistory(item.getSellerUuid()));
