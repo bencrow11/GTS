@@ -50,6 +50,18 @@ public class HistoryProvider {
 		return history.get(player);
 	}
 
+	public HistoryItem findHistoryById(UUID id) {
+		for (PlayerHistory h : history.values()) {
+			for (HistoryItem item : h.getListings()) {
+				if (item.getId().equals(id)) {
+					return item;
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public void addHistoryItem(Listing item, String buyerName) {
 		if (history.get(item.getSellerUuid()) == null) {
 			history.put(item.getSellerUuid(), new PlayerHistory(item.getSellerUuid()));

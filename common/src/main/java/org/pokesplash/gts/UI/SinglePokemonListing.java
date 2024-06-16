@@ -48,7 +48,7 @@ public class SinglePokemonListing {
 				.title(Gts.language.getConfirmPurchaseButtonLabel())
 				.onClick((action) -> {
 
-					if (Gts.listings.getListingById(listing.getId()) == null) {
+					if (Gts.listings.getActiveListingById(listing.getId()) == null) {
 						action.getPlayer().sendSystemMessage(Component.literal(
 								"§cThis Pokemon is no longer available."
 						));

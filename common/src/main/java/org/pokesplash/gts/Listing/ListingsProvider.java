@@ -217,7 +217,7 @@ public class ListingsProvider {
 		}
 	}
 
-	public Listing getListingById(UUID id) {
+	public Listing getActiveListingById(UUID id) {
 		for (Listing listing : listings) {
 			if (listing.getId().equals(id)) {
 				return listing;
@@ -225,6 +225,22 @@ public class ListingsProvider {
 		}
 
 		return null;
+	}
+
+	public Listing findListingById(UUID id) {
+		Listing listing = getActiveListingById(id);
+
+		if (listing == null) {
+			for (ArrayList<Listing> listings : expiredListings.values()) {
+				for (Listing listing2 : listings) {
+					if (listing2.getId().equals(id)) {
+						return listing2;
+					}
+				}
+			}
+		}
+
+		return listing;
 	}
 
 	public List<Listing> getExpiredListingsOfPlayer(UUID player) {

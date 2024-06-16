@@ -296,7 +296,10 @@ public class List extends Subcommand {
 
 			// Checks for a minimum price.
 			for (ItemPrices minItem : minPrices) {
-				if (minItem.getItem_name().equalsIgnoreCase(itemId)) {
+				ItemStack min = Utils.parseItemId(minItem.getItem_name());
+
+				if (min.getItem().equals(item.getItem()) &&
+						NbtUtils.compareNbt(min.getTag(), item.getTag(), true)) {
 					minPrice += minItem.getMin_price();
 					break;
 				}
