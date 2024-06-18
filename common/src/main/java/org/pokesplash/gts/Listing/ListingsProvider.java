@@ -40,9 +40,12 @@ public class ListingsProvider {
 		}
 
 		if (ListingAPI.getHighestPriority() != null) {
-			for (int x=0; x<expired.size(); x++) {
-				Listing listing = expired.get(x);
+			Iterator<Listing> iterator = expired.iterator();
+
+			while (iterator.hasNext()) {
+				Listing listing = iterator.next();
 				listing.renewEndTime();
+				iterator.remove();
 				ListingAPI.getHighestPriority().update(listing);
 			}
 			return;
