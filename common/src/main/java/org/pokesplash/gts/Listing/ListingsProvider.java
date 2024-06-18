@@ -40,12 +40,11 @@ public class ListingsProvider {
 		}
 
 		if (ListingAPI.getHighestPriority() != null) {
-			Iterator<Listing> iterator = expired.iterator();
 
-			while (iterator.hasNext()) {
-				Listing listing = iterator.next();
+			List<Listing> clonedList = expired.stream().map(Listing::deepClone).toList();
+
+			for (Listing listing : clonedList) {
 				listing.renewEndTime();
-				iterator.remove();
 				ListingAPI.getHighestPriority().update(listing);
 			}
 			return;

@@ -96,7 +96,9 @@ public class AllListings {
 
 		List<Button> buttons = new ArrayList<>();
 
-		for (Listing listing : Gts.listings.getListings()) {
+		List<Listing> clonedList = Gts.listings.getListings().stream().map(Listing::deepClone).toList();
+
+		for (Listing listing : clonedList) {
 			Collection<Component> lore = ListingInfo.parse(listing);
 
 			Button button;

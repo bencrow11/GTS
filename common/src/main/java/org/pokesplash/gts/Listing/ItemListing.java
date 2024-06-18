@@ -27,6 +27,15 @@ public class ItemListing extends Listing<ItemStack> {
 		this.item = item.save(new CompoundTag()).getAsString();
 	}
 
+	public ItemListing(ItemListing other) {
+		super(UUID.fromString(other.getSellerUuid().toString()),
+				String.copyValueOf(other.getSellerName().toCharArray()), other.getPrice(), false);
+		this.item = other.getListing().save(new CompoundTag()).getAsString();
+		super.id = UUID.fromString(other.getId().toString());
+		super.version = String.copyValueOf(other.getVersion().toCharArray());
+		super.setEndTime(other.getEndTime());
+	}
+
 	@Override
 	public ItemStack getListing() {
 		try {
@@ -37,5 +46,10 @@ public class ItemListing extends Listing<ItemStack> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public Listing deepClone() {
+		return new ItemListing(this);
 	}
 }

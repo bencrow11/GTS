@@ -28,6 +28,16 @@ public class PokemonListing extends Listing<Pokemon> {
 		this.pokemon = pokemon.saveToJSON(new JsonObject());
 	}
 
+	public PokemonListing(PokemonListing other) {
+		super(UUID.fromString(other.getSellerUuid().toString()),
+				String.copyValueOf(other.getSellerName().toCharArray()),
+				other.getPrice(), true);
+		this.pokemon = other.getListing().saveToJSON(new JsonObject());
+		super.id = UUID.fromString(other.getId().toString());
+		super.version = String.copyValueOf(other.getVersion().toCharArray());
+		super.setEndTime(other.getEndTime());
+	}
+
 	@Override
 	public Pokemon getListing() {
 		return new Pokemon().loadFromJSON(pokemon);
@@ -61,5 +71,10 @@ public class PokemonListing extends Listing<Pokemon> {
 				break;
 		}
 		return displayName;
+	}
+
+	@Override
+	public Listing deepClone() {
+		return new PokemonListing(this);
 	}
 }

@@ -16,9 +16,9 @@ import java.util.concurrent.CompletableFuture;
  */
 public abstract class Listing<T> {
 
-    private String version = Gts.LISTING_FILE_VERSION;
+    protected String version = Gts.LISTING_FILE_VERSION;
     // The unique ID of the listing.
-    private UUID id;
+    protected UUID id;
     // The UUID of the person selling the Pokemon.
     private UUID sellerUuid;
     // The name of the seller.
@@ -135,4 +135,6 @@ public abstract class Listing<T> {
         this.version = Gts.LISTING_FILE_VERSION;
         this.isPokemon = isPokemon;
     }
+
+    public abstract Listing deepClone();
 }
