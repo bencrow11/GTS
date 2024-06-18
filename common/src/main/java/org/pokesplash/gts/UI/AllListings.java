@@ -20,6 +20,7 @@ import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -96,9 +97,10 @@ public class AllListings {
 
 		List<Button> buttons = new ArrayList<>();
 
-		List<Listing> clonedList = Gts.listings.getListings().stream().map(Listing::deepClone).toList();
+		List<Listing> listings = ListingAPI.getHighestPriority() == null ? Gts.listings.getListings() :
+				Gts.listings.getListings().stream().map(Listing::deepClone).toList();
 
-		for (Listing listing : clonedList) {
+		for (Listing listing : listings) {
 			Collection<Component> lore = ListingInfo.parse(listing);
 
 			Button button;
