@@ -3,6 +3,7 @@ package org.pokesplash.gts.Listing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.oldVersion.ListingsProviderOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
@@ -35,6 +36,15 @@ public class ListingsProvider {
 		ArrayList<Listing> expired = expiredListings.get(player);
 
 		if (expired == null) {
+			return;
+		}
+
+		if (ListingAPI.getHighestPriority() != null) {
+			for (int x=0; x<expired.size(); x++) {
+				Listing listing = expired.get(x);
+				listing.renewEndTime();
+				ListingAPI.getHighestPriority().update(listing);
+			}
 			return;
 		}
 
@@ -227,21 +237,28 @@ public class ListingsProvider {
 		return null;
 	}
 
-	public Listing findListingById(UUID id) {
-		Listing listing = getActiveListingById(id);
-
-		if (listing == null) {
-			for (ArrayList<Listing> listings : expiredListings.values()) {
-				for (Listing listing2 : listings) {
-					if (listing2.getId().equals(id)) {
-						return listing2;
-					}
+	public Listing getExpiredListingById(UUID id) {
+		for (ArrayList<Listing> playerListings : expiredListings.values()) {
+			for (Listing listing : playerListings) {
+				if (listing.getId().equals(id)) {
+					return listing;
 				}
 			}
 		}
 
-		return listing;
+		return null;
 	}
+
+	public Listing getListingById(UUID id) {
+		Listing activeListing = getActiveListingById(id);
+
+		if (activeListing != null) {
+			return activeListing;
+		}
+
+        return getExpiredListingById(id);
+    }
+
 
 	public List<Listing> getExpiredListingsOfPlayer(UUID player) {
 		return expiredListings.get(player);

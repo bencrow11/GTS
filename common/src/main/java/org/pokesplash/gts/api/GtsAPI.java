@@ -14,6 +14,7 @@ import org.pokesplash.gts.api.event.events.AddEvent;
 import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
+import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
 
@@ -30,8 +31,17 @@ public abstract class GtsAPI {
 	 * @return true if the listing was successfully cancelled.
 	 */
 	public static boolean cancelListing(Listing listing) {
-		boolean success = Gts.listings.removeListing(listing);
-		Gts.listings.addExpiredListing(listing);
+
+		boolean success;
+
+		if (ListingAPI.getHighestPriority() != null) {
+			listing.setEndTime(-20);
+			ListingAPI.getHighestPriority().update(listing);
+			success = true;
+		} else {
+			success = Gts.listings.removeListing(listing);
+			Gts.listings.addExpiredListing(listing);
+		}
 		GtsEvents.CANCEL.trigger(new CancelEvent(listing));
 		return success;
 	}

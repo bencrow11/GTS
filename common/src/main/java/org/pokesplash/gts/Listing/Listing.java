@@ -87,6 +87,10 @@ public abstract class Listing<T> {
         return endTime;
     }
 
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
+    }
+
     public void renewEndTime() {
         // If debug mode, set timer to 1 minute.
         if (Gts.isDebugMode) {
