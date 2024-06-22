@@ -15,6 +15,7 @@ import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
 import org.pokesplash.gts.api.provider.ListingAPI;
+import org.pokesplash.gts.discord.Webhook;
 import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
 
@@ -77,6 +78,10 @@ public abstract class GtsAPI {
 					"/gts " + listing.getId());
 		}
 
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.newListing(listing);
+		}
+
 		return true;
 	}
 
@@ -99,6 +104,10 @@ public abstract class GtsAPI {
 			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getNewListingBroadcast(), 0,
 							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
 					"/gts " + listing.getId());
+		}
+
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.newListing(listing);
 		}
 
 		return true;
@@ -142,6 +151,10 @@ public abstract class GtsAPI {
 		Gts.history.addHistoryItem(listing, buyer.getName().getString());
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
+
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.soldListing(listing);
+		}
 
 		return true;
 	}
@@ -189,6 +202,11 @@ public abstract class GtsAPI {
 		Gts.history.addHistoryItem(listing, buyer.getName().getString());
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
+
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.soldListing(listing);
+		}
+
 		return true;
 	}
 
