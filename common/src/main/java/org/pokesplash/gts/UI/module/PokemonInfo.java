@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.util.Utils;
 
@@ -18,6 +19,7 @@ import java.util.Collection;
 
 public abstract class PokemonInfo {
 	public static Collection<Component> parse(Pokemon pokemon) {
+
 		Collection<Component> lore = new ArrayList<>();
 		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua"));
 		Style dark_green = Style.EMPTY.withColor(TextColor.parseColor("dark_green"));
@@ -92,6 +94,16 @@ public abstract class PokemonInfo {
 		for (Move move : pokemon.getMoveSet().getMoves()) {
 			lore.add(Component.translatable(move.getTemplate().getDisplayName().getString()).setStyle(white));
 		}
+
+		if (Gts.config.isShowBreedable()) {
+			if (pokemon.getPersistentData().getBoolean("breedable")) {
+				lore.add(Component.literal("§bBreedable"));
+			} else {
+				lore.add(Component.literal("§cUnbreedable"));
+			}
+		}
+
+
 
 		return lore;
 	}

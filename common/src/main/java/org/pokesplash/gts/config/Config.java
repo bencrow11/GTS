@@ -19,6 +19,7 @@ public class Config {
 	private int maxListingsPerPlayer; // The maximum listings each player is allowed.
 	private int listingDuration; // The length of each listing.
 	private Webhook discord; // Config settings for using discord webhooks.
+	private boolean showBreedable; // Should GTS look for "breedable" tag.
 	private double minPrice1IV; // The minimum price of a pokemon with one full stat (31 IVs)
 	private double minPrice2IV; // The minimum price of a pokemon with two full stat (31 IVs)
 	private double minPrice3IV; // The minimum price of a pokemon with three full stat (31 IVs)
@@ -59,6 +60,7 @@ public class Config {
 		bannedPokemon = new ArrayList<>();
 		bannedPokemon.add("magikarp");
 		discord = new Webhook();
+		showBreedable = false;
 	}
 
 	/**
@@ -88,6 +90,7 @@ public class Config {
 					bannedPokemon = cfg.getBannedPokemon();
 					enablePermissionNodes = cfg.isEnablePermissionNodes();
 					discord = cfg.getDiscord() == null ? new Webhook() : cfg.getDiscord();
+					showBreedable = cfg.isShowBreedable();
 
 					// If the config version isn't correct, update the file.
 					if (!cfg.getVersion().equals(Gts.CONFIG_FILE_VERSION)) {
@@ -288,5 +291,9 @@ public class Config {
 	 */
 	public Webhook getDiscord() {
 		return discord;
+	}
+
+	public boolean isShowBreedable() {
+		return showBreedable;
 	}
 }
