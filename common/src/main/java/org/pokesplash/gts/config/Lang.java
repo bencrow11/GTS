@@ -393,14 +393,17 @@ public class Lang {
 					receiveListingButtonLabel = lang.getReceiveListingButtonLabel();
 					sold_date = lang.getSold_date();
 					buyer = lang.getBuyer();
-					insufficientInventorySpace = lang.getInsufficientInventorySpace();
+					if (lang.getInsufficientInventorySpace() == null) {
+						write();
+					} else {
+						insufficientInventorySpace = lang.getInsufficientInventorySpace();
+					}
 		});
 
 		if (!futureRead.join()) {
 			Gts.LOGGER.info("No lang.json file found for GTS. Attempting to generate one.");
-			Gson gson = Utils.newGson();
-			String data = gson.toJson(this);
-			CompletableFuture<Boolean> futureWrite = Utils.writeFileAsync("/config/gts/", "lang.json", data);
+
+			CompletableFuture<Boolean> futureWrite = write();
 
 			if (!futureWrite.join()) {
 				Gts.LOGGER.fatal("Could not write lang.json for GTS.");
@@ -408,5 +411,11 @@ public class Lang {
 			return;
 		}
 		Gts.LOGGER.info("GTS lang file read successfully.");
+	}
+
+	private CompletableFuture<Boolean> write() {
+		Gson gson = Utils.newGson();
+		String data = gson.toJson(this);
+		return Utils.writeFileAsync("/config/gts/", "lang.json", data);
 	}
 }
