@@ -334,11 +334,6 @@ public class Lang {
 					Gson gson = Utils.newGson();
 					Lang lang = gson.fromJson(el, Lang.class);
 
-					// If the lang version isn't correct, update the file.
-					if (!lang.getVersion().equals(Gts.LANG_FILE_VERSION)) {
-						// TODO Update file (Future)
-					}
-
 					title = lang.getTitle();
 					purchaseMessageBuyer = lang.getPurchaseMessageBuyer();
 					cancelListing = lang.getCancelListing();
@@ -393,11 +388,13 @@ public class Lang {
 					receiveListingButtonLabel = lang.getReceiveListingButtonLabel();
 					sold_date = lang.getSold_date();
 					buyer = lang.getBuyer();
-					if (lang.getInsufficientInventorySpace() == null) {
+
+					// If the lang version isn't correct, update the file.
+					if (!lang.getVersion().equals(Gts.LANG_FILE_VERSION)) {
 						write();
-					} else {
-						insufficientInventorySpace = lang.getInsufficientInventorySpace();
 					}
+
+					insufficientInventorySpace = lang.getInsufficientInventorySpace();
 		});
 
 		if (!futureRead.join()) {
