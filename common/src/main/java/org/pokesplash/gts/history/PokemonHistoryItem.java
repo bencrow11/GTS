@@ -4,8 +4,6 @@ import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
 import org.pokesplash.gts.Listing.PokemonListing;
 
-import java.util.UUID;
-
 /**
  * Class that is used to save sold Pokemon.
  */

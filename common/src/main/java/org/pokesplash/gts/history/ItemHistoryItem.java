@@ -1,16 +1,11 @@
 package org.pokesplash.gts.history;
 
-import com.cobblemon.mod.common.pokemon.Pokemon;
-import com.google.gson.JsonObject;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
-
-import java.util.UUID;
 
 /**
  * Class that is used to save sold Items.

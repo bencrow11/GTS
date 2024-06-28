@@ -1,8 +1,9 @@
 package org.pokesplash.gts;
 
 import net.minecraft.server.MinecraftServer;
-import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.ListingsProvider;
+import org.pokesplash.gts.api.provider.HistoryProviderAPI;
+import org.pokesplash.gts.api.provider.ListingsProviderAPI;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
 import org.pokesplash.gts.config.Lang;
@@ -16,8 +17,13 @@ public class Gts
 {
 	public static final String MOD_ID = "gts";
 	public static final String LISTING_FILE_PATH = "/config/gts/listings";
+<<<<<<< master
 	public static final String CONFIG_FILE_VERSION = "2.0";
 	public static final String LANG_FILE_VERSION = "3.0";
+=======
+	public static final String CONFIG_FILE_VERSION = "2.1";
+	public static final String LANG_FILE_VERSION = "2.0";
+>>>>>>> master
 	public static final String LISTING_FILE_VERSION = "2.0";
 	public static final String HISTORY_FILE_VERSION = "2.0";
 	public static boolean isDebugMode = false;
@@ -37,8 +43,8 @@ public class Gts
 
 	public static void reload() {
 		config = new Config();
-		listings = new ListingsProvider();
-		history = new HistoryProvider();
+		listings = ListingsProviderAPI.getHighestPriority();
+		history = HistoryProviderAPI.getHighestPriority();
 		language = new Lang();
 		config.init();
 		listings.init();

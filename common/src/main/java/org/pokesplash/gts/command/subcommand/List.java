@@ -11,6 +11,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -154,6 +155,12 @@ public class List extends Subcommand {
 			return 1;
 		}
 
+		if (!pokemon.getTradeable()) {
+			context.getSource().sendSystemMessage(Component.literal(
+					"§cThis Pokemon is not tradeable."));
+			return 1;
+		}
+
 		// Get the pokemons max ivs IVs
 		AtomicInteger totalMaxIvs = new AtomicInteger();
 		pokemon.getIvs().forEach((stat) -> {
@@ -276,7 +283,9 @@ public class List extends Subcommand {
 
 			// Checks the item isn't banned.
 			for (String bannedItem : bannedItems) {
-				if (bannedItem.equalsIgnoreCase(itemId)) {
+				ItemStack banned = Utils.parseItemId(bannedItem);
+				if (banned.getItem().equals(item.getItem()) &&
+						NbtUtils.compareNbt(banned.getTag(), item.getTag(), true)) {
 					context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getBannedItem(),
 							0, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 					return 1;
@@ -287,7 +296,10 @@ public class List extends Subcommand {
 
 			// Checks for a minimum price.
 			for (ItemPrices minItem : minPrices) {
-				if (minItem.getItem_name().equalsIgnoreCase(itemId)) {
+				ItemStack min = Utils.parseItemId(minItem.getItem_name());
+
+				if (min.getItem().equals(item.getItem()) &&
+						NbtUtils.compareNbt(min.getTag(), item.getTag(), true)) {
 					minPrice += minItem.getMin_price();
 					break;
 				}

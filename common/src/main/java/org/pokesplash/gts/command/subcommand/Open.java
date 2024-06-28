@@ -1,11 +1,8 @@
 package org.pokesplash.gts.command.subcommand;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
-import ca.landonjw.gooeylibs2.api.page.Page;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.CommandNode;
-import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.UuidArgument;
@@ -14,9 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
-import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.UI.ExpiredListings;
 import org.pokesplash.gts.UI.SingleItemListing;
 import org.pokesplash.gts.UI.SinglePokemonListing;
 import org.pokesplash.gts.util.Subcommand;
@@ -58,7 +53,7 @@ public class Open extends Subcommand {
 
 		UUID id = UuidArgument.getUuid(context, "id");
 
-		Listing listing = Gts.listings.getListingById(id);
+		Listing listing = Gts.listings.getActiveListingById(id);
 		if (listing != null) {
 			if (listing instanceof PokemonListing) {
 				UIManager.openUIForcefully(sender, new SinglePokemonListing().getPage(sender, (PokemonListing) listing));

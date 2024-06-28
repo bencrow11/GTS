@@ -3,9 +3,8 @@ package org.pokesplash.gts.history;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
-import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.api.provider.HistoryAPI;
 import org.pokesplash.gts.oldVersion.PlayerHistoryOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
@@ -14,7 +13,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Class that provides and controls player history.
@@ -23,7 +21,7 @@ public class HistoryProvider {
 	// path the player history are written to.
 	public static final String filePath = "/config/gts/history/";
 	// Storage of player history.
-	private HashMap<UUID, PlayerHistory> history;
+	protected HashMap<UUID, PlayerHistory> history;
 
 	/**
 	 * Constructor to create the history class.
@@ -39,9 +37,30 @@ public class HistoryProvider {
 	 */
 	public PlayerHistory getPlayerHistory(UUID player) {
 		if (history.get(player) == null) {
-			new PlayerHistory(player);
+			if (HistoryAPI.getHighestPriority() == null) {
+				new PlayerHistory(player);
+			} else {
+				history.put(player, new PlayerHistory(player));
+			}
+
 		}
 		return history.get(player);
+	}
+
+	public HistoryItem findHistoryById(UUID id) {
+		for (PlayerHistory h : history.values()) {
+			for (HistoryItem item : h.getListings()) {
+				if (item.getId().equals(id)) {
+					return item;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public void updateHistory(PlayerHistory history) {
+		this.history.put(history.getPlayer(), history);
 	}
 
 	public void addHistoryItem(Listing item, String buyerName) {

@@ -14,6 +14,8 @@ import org.pokesplash.gts.api.event.events.AddEvent;
 import org.pokesplash.gts.api.event.events.CancelEvent;
 import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
+import org.pokesplash.gts.api.provider.ListingAPI;
+import org.pokesplash.gts.discord.Webhook;
 import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
 
@@ -30,8 +32,17 @@ public abstract class GtsAPI {
 	 * @return true if the listing was successfully cancelled.
 	 */
 	public static boolean cancelListing(Listing listing) {
-		boolean success = Gts.listings.removeListing(listing);
-		Gts.listings.addExpiredListing(listing);
+
+		boolean success;
+
+		if (ListingAPI.getHighestPriority() != null) {
+			listing.setEndTime(-20);
+			ListingAPI.getHighestPriority().update(listing);
+			success = true;
+		} else {
+			success = Gts.listings.removeListing(listing);
+			Gts.listings.addExpiredListing(listing);
+		}
 		GtsEvents.CANCEL.trigger(new CancelEvent(listing));
 		return success;
 	}
@@ -67,6 +78,10 @@ public abstract class GtsAPI {
 					"/gts " + listing.getId());
 		}
 
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.newListing(listing);
+		}
+
 		return true;
 	}
 
@@ -89,6 +104,10 @@ public abstract class GtsAPI {
 			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getNewListingBroadcast(), 0,
 							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
 					"/gts " + listing.getId());
+		}
+
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.newListing(listing);
 		}
 
 		return true;
@@ -133,6 +152,10 @@ public abstract class GtsAPI {
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
 
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.soldListing(listing);
+		}
+
 		return true;
 	}
 
@@ -144,6 +167,11 @@ public abstract class GtsAPI {
 	 * @return true if the transaction was successful.
 	 */
 	public static boolean sale(UUID seller, ServerPlayer buyer, ItemListing listing) {
+
+		if (buyer.getInventory().getFreeSlot() == -1) {
+			return false;
+		}
+
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
 		Account sellerAccount = ImpactorService.getAccount(seller);
@@ -174,6 +202,11 @@ public abstract class GtsAPI {
 		Gts.history.addHistoryItem(listing, buyer.getName().getString());
 
 		GtsEvents.PURCHASE.trigger(new PurchaseEvent(buyer, listing));
+
+		if (Gts.config.getDiscord().isUseWebhooks()) {
+			Webhook.soldListing(listing);
+		}
+
 		return true;
 	}
 
@@ -184,8 +217,7 @@ public abstract class GtsAPI {
 	 */
 	public static boolean returnListing(ServerPlayer player, PokemonListing listing) {
 
-		if (Gts.listings.removeExpiredListing(listing)) {
-			listing.delete(Gts.LISTING_FILE_PATH);
+		if (Gts.listings.removeExpiredListing(listing) && listing.delete(Gts.LISTING_FILE_PATH)) {
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
 			party.add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
@@ -201,8 +233,12 @@ public abstract class GtsAPI {
 	 * @param listing The item to be returned.
 	 */
 	public static boolean returnListing(ServerPlayer player, ItemListing listing) {
-		if (Gts.listings.removeExpiredListing(listing)) {
-			listing.delete(Gts.LISTING_FILE_PATH);
+
+		if (player.getInventory().getFreeSlot() == -1) {
+			return false;
+		}
+
+		if (Gts.listings.removeExpiredListing(listing) && listing.delete(Gts.LISTING_FILE_PATH)) {
 			player.getInventory().add(listing.getListing());
 			GtsEvents.RETURN.trigger(new ReturnEvent(player, listing));
 			return true;
@@ -217,7 +253,6 @@ public abstract class GtsAPI {
 	 * @param listing The listing to return to the player.
 	 */
 	public static boolean cancelAndReturnListing(ServerPlayer player, PokemonListing listing) {
-
 		if (Gts.listings.removeListing(listing)) {
 			listing.delete(Gts.LISTING_FILE_PATH);
 			PlayerPartyStore party = Cobblemon.INSTANCE.getStorage().getParty(player);
@@ -236,6 +271,10 @@ public abstract class GtsAPI {
 	 * @param listing The listing to return to the player.
 	 */
 	public static boolean cancelAndReturnListing(ServerPlayer player, ItemListing listing) {
+
+		if (player.getInventory().getFreeSlot() == -1) {
+			return false;
+		}
 
 		if (Gts.listings.removeListing(listing)) {
 			listing.delete(Gts.LISTING_FILE_PATH);

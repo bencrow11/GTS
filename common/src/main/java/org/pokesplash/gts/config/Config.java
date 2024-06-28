@@ -18,6 +18,8 @@ public class Config {
 	private boolean enablePermissionNodes; // Should permission nodes or levels be used.
 	private int maxListingsPerPlayer; // The maximum listings each player is allowed.
 	private int listingDuration; // The length of each listing.
+	private Webhook discord; // Config settings for using discord webhooks.
+	private boolean showBreedable; // Should GTS look for "breedable" tag.
 	private double minPrice1IV; // The minimum price of a pokemon with one full stat (31 IVs)
 	private double minPrice2IV; // The minimum price of a pokemon with two full stat (31 IVs)
 	private double minPrice3IV; // The minimum price of a pokemon with three full stat (31 IVs)
@@ -57,6 +59,8 @@ public class Config {
 		bannedItems.add("cobblemon:lucky_egg");
 		bannedPokemon = new ArrayList<>();
 		bannedPokemon.add("magikarp");
+		discord = new Webhook();
+		showBreedable = false;
 	}
 
 	/**
@@ -67,11 +71,6 @@ public class Config {
 				el -> {
 					Gson gson = Utils.newGson();
 					Config cfg = gson.fromJson(el, Config.class);
-
-					// If the config version isn't correct, update the file.
-					if (!cfg.getVersion().equals(Gts.CONFIG_FILE_VERSION)) {
-						// TODO Update file (Future)
-					}
 
 					broadcastListings = cfg.isBroadcastListings();
 					maxListingsPerPlayer = cfg.getMaxListingsPerPlayer();
@@ -90,6 +89,15 @@ public class Config {
 					bannedItems = cfg.getBannedItems();
 					bannedPokemon = cfg.getBannedPokemon();
 					enablePermissionNodes = cfg.isEnablePermissionNodes();
+					discord = cfg.getDiscord() == null ? new Webhook() : cfg.getDiscord();
+					showBreedable = cfg.isShowBreedable();
+
+					// If the config version isn't correct, update the file.
+					if (!cfg.getVersion().equals(Gts.CONFIG_FILE_VERSION)) {
+						Gts.LOGGER.info("GTS Config outdated, updating config...");
+						write();
+						Gts.LOGGER.info("Config successfully updated for GTS!");
+					}
 				});
 
 		if (!futureRead.join()) {
@@ -275,5 +283,17 @@ public class Config {
 	 */
 	public double getMinPriceUltrabeast() {
 		return minPriceUltrabeast;
+	}
+
+	/**
+	 * Gets the discord webhook configs.
+	 * @return The webhook config settings.
+	 */
+	public Webhook getDiscord() {
+		return discord;
+	}
+
+	public boolean isShowBreedable() {
+		return showBreedable;
 	}
 }

@@ -1,7 +1,9 @@
 package org.pokesplash.gts.UI.module;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.util.Utils;
 
@@ -19,6 +21,21 @@ public abstract class ListingInfo {
         if (listing.getEndTime() != -1) {
             lore.add(Component.literal(Gts.language.getRemainingTime() +
                     Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
+        }
+
+        if (!listing.isPokemon()) {
+            ItemListing itemListing = (ItemListing) listing;
+            CompoundTag tag = itemListing.getListing().getTag();
+
+            if (Gts.config.isShowBreedable()) {
+                if (tag != null && tag.contains("breedable")) {
+                    if (tag.getBoolean("breedable")) {
+                        lore.add(Component.literal("§bBreedable"));
+                    } else {
+                        lore.add(Component.literal("§cUnbreedable"));
+                    }
+                }
+            }
         }
 
         return lore;

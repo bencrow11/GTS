@@ -2,16 +2,11 @@ package org.pokesplash.gts.Listing;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonObject;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 
-import org.pokesplash.gts.Gts;
-
-import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -31,6 +26,16 @@ public class PokemonListing extends Listing<Pokemon> {
 	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {
 		super(sellerUuid, sellerName, price, true);
 		this.pokemon = pokemon.saveToJSON(new JsonObject());
+	}
+
+	public PokemonListing(PokemonListing other) {
+		super(UUID.fromString(other.getSellerUuid().toString()),
+				String.copyValueOf(other.getSellerName().toCharArray()),
+				other.getPrice(), true);
+		this.pokemon = other.getListing().saveToJSON(new JsonObject());
+		super.id = UUID.fromString(other.getId().toString());
+		super.version = String.copyValueOf(other.getVersion().toCharArray());
+		super.setEndTime(other.getEndTime());
 	}
 
 	@Override
@@ -66,5 +71,10 @@ public class PokemonListing extends Listing<Pokemon> {
 				break;
 		}
 		return displayName;
+	}
+
+	@Override
+	public Listing deepClone() {
+		return new PokemonListing(this);
 	}
 }

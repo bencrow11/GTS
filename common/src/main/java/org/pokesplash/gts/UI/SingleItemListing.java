@@ -42,8 +42,9 @@ public class SingleItemListing {
 				.title(Gts.language.getConfirmPurchaseButtonLabel())
 				.onClick((action) -> {
 					String message;
-
-					if (action.getPlayer().getInventory().getFreeSlot() == -1)
+          if (Gts.listings.getActiveListingById(listing.getId()) == null) {
+            message = "§cThis item is no longer available.";
+					} else if (action.getPlayer().getInventory().getFreeSlot() == -1)
 						message = Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
 								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
 								action.getPlayer().getName().getString());

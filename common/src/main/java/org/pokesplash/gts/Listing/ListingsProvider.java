@@ -3,6 +3,7 @@ package org.pokesplash.gts.Listing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.oldVersion.ListingsProviderOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
@@ -15,9 +16,9 @@ import java.util.concurrent.CompletableFuture;
  * Manages all types of listings. Data is saved to memory here.
  */
 public class ListingsProvider {
-	private ArrayList<Listing> listings; // Active listings.
+	protected ArrayList<Listing> listings; // Active listings.
 
-	private HashMap<UUID, ArrayList<Listing>> expiredListings; // Expired listings.
+	protected HashMap<UUID, ArrayList<Listing>> expiredListings; // Expired listings.
 
 	/**
 	 * Constructor to create a new list for both hashmaps.
@@ -35,6 +36,17 @@ public class ListingsProvider {
 		ArrayList<Listing> expired = expiredListings.get(player);
 
 		if (expired == null) {
+			return;
+		}
+
+		if (ListingAPI.getHighestPriority() != null) {
+
+			List<Listing> clonedList = expired.stream().map(Listing::deepClone).toList();
+
+			for (Listing listing : clonedList) {
+				listing.renewEndTime();
+				ListingAPI.getHighestPriority().update(listing);
+			}
 			return;
 		}
 
@@ -217,7 +229,7 @@ public class ListingsProvider {
 		}
 	}
 
-	public Listing getListingById(UUID id) {
+	public Listing getActiveListingById(UUID id) {
 		for (Listing listing : listings) {
 			if (listing.getId().equals(id)) {
 				return listing;
@@ -226,6 +238,29 @@ public class ListingsProvider {
 
 		return null;
 	}
+
+	public Listing getExpiredListingById(UUID id) {
+		for (ArrayList<Listing> playerListings : expiredListings.values()) {
+			for (Listing listing : playerListings) {
+				if (listing.getId().equals(id)) {
+					return listing;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public Listing getListingById(UUID id) {
+		Listing activeListing = getActiveListingById(id);
+
+		if (activeListing != null) {
+			return activeListing;
+		}
+
+        return getExpiredListingById(id);
+    }
+
 
 	public List<Listing> getExpiredListingsOfPlayer(UUID player) {
 		return expiredListings.get(player);

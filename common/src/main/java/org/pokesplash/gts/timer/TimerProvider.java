@@ -1,9 +1,7 @@
 package org.pokesplash.gts.timer;
 
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
-import org.pokesplash.gts.Listing.PokemonListing;
 
 import java.util.*;
 
@@ -52,14 +50,16 @@ public class TimerProvider {
 			timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
-					Gts.listings.removeListing(listing);
-					Gts.listings.addExpiredListing(listing);
+					if (Gts.listings.removeListing(listing)) {
+						Gts.listings.addExpiredListing(listing);
+					}
 				}
 			}, timeDiff);
 			timers.put(listing, timer);
 		} else {
-			Gts.listings.removeListing(listing);
-			Gts.listings.addExpiredListing(listing);
+			if (Gts.listings.removeListing(listing)) {
+				Gts.listings.addExpiredListing(listing);
+			}
 		}
 	}
 

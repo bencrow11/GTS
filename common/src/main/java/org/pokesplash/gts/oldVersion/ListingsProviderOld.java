@@ -1,14 +1,12 @@
 package org.pokesplash.gts.oldVersion;
 
-import com.google.gson.Gson;
-import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
-import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.util.Utils;
 
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Manages all types of listings. Data is saved to memory here.
