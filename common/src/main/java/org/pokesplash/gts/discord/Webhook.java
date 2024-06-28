@@ -18,7 +18,7 @@ public abstract class Webhook {
     private static final long soldColour = 3468102;
 
     private static final String pokemonBody = "{\n" +
-            "    \"username\": \"gts\",\n" +
+            "    \"username\": \"GTS\",\n" +
             "    \"embeds\": [\n" +
             "        {\n" +
             "            \"title\": \"%title%\",\n" +
@@ -52,7 +52,7 @@ public abstract class Webhook {
             "}";
 
     private static final String itemBody = "{\n" +
-            "    \"username\": \"gts\",\n" +
+            "    \"username\": \"GTS\",\n" +
             "    \"embeds\": [\n" +
             "        {\n" +
             "            \"title\": \"%title%\",\n" +
@@ -210,7 +210,7 @@ public abstract class Webhook {
             ItemListing itemListing = (ItemListing) listing;
 
             sendPost(itemBody
-                    .replaceAll("%title%", "Sold ListingNew Listing")
+                    .replaceAll("%title%", "Sold Listing")
                     .replaceAll("%colour%", String.valueOf(soldColour))
                     .replaceAll("%item%", itemListing.getListing().getDisplayName().getString()
                             .replaceAll("\\[", "")

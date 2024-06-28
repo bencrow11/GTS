@@ -96,15 +96,14 @@ public abstract class PokemonInfo {
 		}
 
 		if (Gts.config.isShowBreedable()) {
-			if (pokemon.getPersistentData().getBoolean("breedable")) {
-				lore.add(Component.literal("§bBreedable"));
-			} else {
+
+			if (pokemon.getPersistentData().contains("breedable") &&
+					!pokemon.getPersistentData().getBoolean("breedable")) {
 				lore.add(Component.literal("§cUnbreedable"));
+			} else {
+				lore.add(Component.literal("§bBreedable"));
 			}
 		}
-
-
-
 		return lore;
 	}
 

@@ -28,7 +28,7 @@ public abstract class ListingInfo {
             CompoundTag tag = itemListing.getListing().getTag();
 
             if (Gts.config.isShowBreedable()) {
-                if (tag != null) {
+                if (tag != null && tag.contains("breedable")) {
                     if (tag.getBoolean("breedable")) {
                         lore.add(Component.literal("§bBreedable"));
                     } else {

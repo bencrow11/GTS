@@ -18,6 +18,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.history.HistoryItem;
 import org.pokesplash.gts.history.ItemHistoryItem;
+import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.history.PokemonHistoryItem;
 import org.pokesplash.gts.util.Utils;
 
@@ -81,55 +82,59 @@ public class History {
 
 		PlaceholderButton placeholder = new PlaceholderButton();
 
-		// Gets all the items and sorts them by the sold date.
-		List<HistoryItem> items = Gts.history.getPlayerHistory(owner).getListings();
-		items.sort(Comparator.comparing(HistoryItem::getSoldDate));
-		Collections.reverse(items);
+		PlayerHistory playerHistory = Gts.history.getPlayerHistory(owner);
 
 		List<Button> buttons = new ArrayList<>();
 
-		// For each item, create a button.
-		for (HistoryItem item : items) {
+		if (playerHistory != null) {
+			// Gets all the items and sorts them by the sold date.
+			List<HistoryItem> items = playerHistory.getListings();
+			items.sort(Comparator.comparing(HistoryItem::getSoldDate));
+			Collections.reverse(items);
 
-			// Standard lore for any item.
-			Collection<Component> lore = new ArrayList<>();
-			lore.add(Component.literal(Gts.language.getSeller() + item.getSellerName()));
-			lore.add(Component.literal(Gts.language.getPrice() + item.getPriceAsString()));
-			lore.add(Component.literal(Gts.language.getBuyer() + item.getBuyerName()));
+			// For each item, create a button.
+			for (HistoryItem item : items) {
 
-			String pattern = "d MMMM yyyy";
-			SimpleDateFormat format = new SimpleDateFormat(pattern);
+				// Standard lore for any item.
+				Collection<Component> lore = new ArrayList<>();
+				lore.add(Component.literal(Gts.language.getSeller() + item.getSellerName()));
+				lore.add(Component.literal(Gts.language.getPrice() + item.getPriceAsString()));
+				lore.add(Component.literal(Gts.language.getBuyer() + item.getBuyerName()));
 
-			lore.add(Component.literal(Gts.language.getSold_date() +
-					format.format(new Date(item.getSoldDate()))));
+				String pattern = "d MMMM yyyy";
+				SimpleDateFormat format = new SimpleDateFormat(pattern);
 
-			Button button;
+				lore.add(Component.literal(Gts.language.getSold_date() +
+						format.format(new Date(item.getSoldDate()))));
 
-			// Pokemon specific lore and button.
-			if (item.isPokemon()) {
-				PokemonHistoryItem pokemonItem = (PokemonHistoryItem) item;
-				lore.addAll(PokemonInfo.parse(pokemonItem.getListing()));
+				Button button;
 
-				button = GooeyButton.builder()
-						.display(PokemonItem.from(pokemonItem.getListing(), 1))
-						.title(pokemonItem.getListing().getDisplayName())
-						.lore(Component.class, lore)
-						.build();
+				// Pokemon specific lore and button.
+				if (item.isPokemon()) {
+					PokemonHistoryItem pokemonItem = (PokemonHistoryItem) item;
+					lore.addAll(PokemonInfo.parse(pokemonItem.getListing()));
+
+					button = GooeyButton.builder()
+							.display(PokemonItem.from(pokemonItem.getListing(), 1))
+							.title(pokemonItem.getListing().getDisplayName())
+							.lore(Component.class, lore)
+							.build();
+				}
+				// Item specific button.
+				else {
+					ItemHistoryItem itemHistoryItem = (ItemHistoryItem) item;
+
+					button = GooeyButton.builder()
+							.display(itemHistoryItem.getListing())
+							.title("§3" + Utils.capitaliseFirst(
+									itemHistoryItem.getListing().getDisplayName().getString()))
+							.lore(Component.class, lore)
+							.build();
+				}
+
+				// Adds the button to the list.
+				buttons.add(button);
 			}
-			// Item specific button.
-			else {
-				ItemHistoryItem itemHistoryItem = (ItemHistoryItem) item;
-
-				button = GooeyButton.builder()
-						.display(itemHistoryItem.getListing())
-						.title("§3" + Utils.capitaliseFirst(
-								itemHistoryItem.getListing().getDisplayName().getString()))
-						.lore(Component.class, lore)
-						.build();
-			}
-
-			// Adds the button to the list.
-			buttons.add(button);
 		}
 
 
