@@ -41,6 +41,7 @@ public class Lang {
 	private String insufficientFunds; // Not enough monies.
 	private String listingBought; // Message sent to seller when their listing is bought.
 	private String newListingBroadcast; // Message sent when a new listing is added.
+	private String insufficientInventorySpace; // Message sent when a player doesn't have enough inventory space to receive a listing.
 
 	/**
 	 *  Button Labels
@@ -151,6 +152,7 @@ public class Lang {
 		sortByPokemonButtonLabel = "§6Sort By Pokemon";
 		sortByNameButtonLabel = "§6Sort By Name";
 		receiveListingButtonLabel = "§2Receive Listing";
+		insufficientInventorySpace = "§cYou do not have enough inventory space to receive this listing.";
 	}
 
 	/**
@@ -258,6 +260,7 @@ public class Lang {
 	public String getNewListingBroadcast() {
 		return newListingBroadcast;
 	}
+	public String getInsufficientInventorySpace() { return insufficientInventorySpace;	}
 	public String getSeller() {
 		return seller;
 	}
@@ -390,6 +393,7 @@ public class Lang {
 					receiveListingButtonLabel = lang.getReceiveListingButtonLabel();
 					sold_date = lang.getSold_date();
 					buyer = lang.getBuyer();
+					insufficientInventorySpace = lang.getInsufficientInventorySpace();
 		});
 
 		if (!futureRead.join()) {
