@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.enumeration.Sort;
 import org.pokesplash.gts.history.HistoryItem;
 import org.pokesplash.gts.history.ItemHistoryItem;
 import org.pokesplash.gts.history.PlayerHistory;
@@ -41,7 +42,7 @@ public class History {
 				.title(Gts.language.getPokemonListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
+					Page page = new PokemonListings().getPage(Sort.NONE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -51,7 +52,7 @@ public class History {
 				.title(Gts.language.getItemListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new ItemListings().getPage(ItemListings.SORT.NONE);
+					Page page = new ItemListings().getPage(Sort.NONE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();

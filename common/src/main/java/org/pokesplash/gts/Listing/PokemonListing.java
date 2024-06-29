@@ -77,4 +77,9 @@ public class PokemonListing extends Listing<Pokemon> {
 	public Listing deepClone() {
 		return new PokemonListing(this);
 	}
+
+	@Override
+	public String getListingName() {
+		return getListing().getSpecies().toString();
+	}
 }

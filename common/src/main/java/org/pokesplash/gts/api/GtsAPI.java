@@ -168,10 +168,6 @@ public abstract class GtsAPI {
 	 */
 	public static boolean sale(UUID seller, ServerPlayer buyer, ItemListing listing) {
 
-		if (buyer.getInventory().getFreeSlot() == -1) {
-			return false;
-		}
-
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
 		Account sellerAccount = ImpactorService.getAccount(seller);

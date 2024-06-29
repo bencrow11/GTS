@@ -18,6 +18,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.enumeration.Sort;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -30,27 +31,20 @@ import java.util.List;
  */
 public class PokemonListings {
 
-	public enum SORT {
-		DATE,
-		NAME,
-		PRICE,
-		NONE
-	}
-
 	/**
 	 * Method that returns the page.
 	 * @return Pokemon Listings page.
 	 */
-	public Page getPage(SORT sort) {
+	public Page getPage(Sort sort) {
 
 		List<PokemonListing> pkmListings = Gts.listings.getPokemonListings();
 
-		if (sort.equals(SORT.PRICE)) {
+		if (sort.equals(Sort.PRICE)) {
 			pkmListings.sort(Comparator.comparingDouble(PokemonListing::getPrice));
-		} else if (sort.equals(SORT.DATE)) {
+		} else if (sort.equals(Sort.DATE)) {
 			pkmListings.sort(Comparator.comparingLong(PokemonListing::getEndTime));
-		} else if (sort.equals(SORT.NAME)) {
-			pkmListings.sort(Comparator.comparing(o -> o.getListing().getSpecies().toString()));
+		} else if (sort.equals(Sort.NAME)) {
+			pkmListings.sort(Comparator.comparing(PokemonListing::getListingName));
 		}
 
 		Button sortByPriceButton = GooeyButton.builder()
@@ -58,7 +52,7 @@ public class PokemonListings {
 				.title(Gts.language.getSortByPriceButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(SORT.PRICE);
+					Page page = new PokemonListings().getPage(Sort.PRICE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -68,7 +62,7 @@ public class PokemonListings {
 				.title(Gts.language.getSortByNewestButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(SORT.DATE);
+					Page page = new PokemonListings().getPage(Sort.DATE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -78,7 +72,7 @@ public class PokemonListings {
 				.title(Gts.language.getSortByPokemonButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(SORT.NAME);
+					Page page = new PokemonListings().getPage(Sort.NAME);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -88,7 +82,7 @@ public class PokemonListings {
 				.title(Gts.language.getItemListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new ItemListings().getPage(ItemListings.SORT.NONE);
+					Page page = new ItemListings().getPage(Sort.NONE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -119,7 +113,7 @@ public class PokemonListings {
 		PlaceholderButton placeholder = new PlaceholderButton();
 
 		List<Button> pokemonButtons = new ArrayList<>();
-		for (PokemonListing listing : Gts.listings.getPokemonListings()) {
+		for (PokemonListing listing : pkmListings) {
 			Collection<Component> lore = ListingInfo.parse(listing);
 			lore.addAll(PokemonInfo.parse(listing));
 

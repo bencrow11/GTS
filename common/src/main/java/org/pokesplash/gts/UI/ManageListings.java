@@ -19,6 +19,7 @@ import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.enumeration.Sort;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class ManageListings {
 				.title(Gts.language.getPokemonListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
+					Page page = new PokemonListings().getPage(Sort.NONE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -56,7 +57,7 @@ public class ManageListings {
 				.title(Gts.language.getItemListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new ItemListings().getPage(ItemListings.SORT.NONE);
+					Page page = new ItemListings().getPage(Sort.NONE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();

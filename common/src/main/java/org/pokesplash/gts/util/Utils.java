@@ -372,4 +372,20 @@ public abstract class Utils {
 		builder.registerTypeAdapter(Listing.class, new Deserializer(ItemListing.class));
 		return builder.create();
 	}
+
+	public static boolean hasSpace(ServerPlayer player, ItemStack stack) {
+
+		List<ItemStack> items = player.getInventory().items;
+
+		for (ItemStack item : items) {
+			if (!item.isEmpty() &&
+				ItemStack.isSameItemSameTags(item, stack) &&
+				item.isStackable() &&
+				item.getCount() + stack.getCount() <= item.getMaxStackSize()){
+				return true;
+			}
+		}
+
+		return player.getInventory().getFreeSlot() != -1;
+	}
 }

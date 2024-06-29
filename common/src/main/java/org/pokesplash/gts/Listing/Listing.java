@@ -137,4 +137,6 @@ public abstract class Listing<T> {
     }
 
     public abstract Listing deepClone();
+
+    public abstract String getListingName();
 }

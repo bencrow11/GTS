@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.UI.module.ListingInfo;
+import org.pokesplash.gts.enumeration.Sort;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -28,27 +29,20 @@ import java.util.List;
  */
 public class ItemListings {
 
-	public enum SORT {
-		DATE,
-		NAME,
-		PRICE,
-		NONE
-	}
-
 	/**
 	 * Method that returns the page.
 	 * @return Pokemon Listings page.
 	 */
-	public Page getPage(SORT sort) {
+	public Page getPage(Sort sort) {
 
 		List<ItemListing> itmListings = Gts.listings.getItemListings();
 
-		if (sort.equals(SORT.PRICE)) {
+		if (sort.equals(Sort.PRICE)) {
 			itmListings.sort(Comparator.comparingDouble(ItemListing::getPrice));
-		} else if (sort.equals(SORT.DATE)) {
+		} else if (sort.equals(Sort.DATE)) {
 			itmListings.sort(Comparator.comparingLong(ItemListing::getEndTime));
-		} else if (sort.equals(SORT.NAME)) {
-			itmListings.sort(Comparator.comparing(o -> o.getListing().getDisplayName().getString()));
+		} else if (sort.equals(Sort.NAME)) {
+			itmListings.sort(Comparator.comparing(ItemListing::getListingName));
 		}
 
 		Button sortByPriceButton = GooeyButton.builder()
@@ -56,7 +50,7 @@ public class ItemListings {
 				.title(Gts.language.getSortByPriceButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new ItemListings().getPage(SORT.PRICE);
+					Page page = new ItemListings().getPage(Sort.PRICE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -66,7 +60,7 @@ public class ItemListings {
 				.title(Gts.language.getSortByNewestButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new ItemListings().getPage(SORT.DATE);
+					Page page = new ItemListings().getPage(Sort.DATE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -76,7 +70,7 @@ public class ItemListings {
 				.title(Gts.language.getSortByNameButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new ItemListings().getPage(SORT.NAME);
+					Page page = new ItemListings().getPage(Sort.NAME);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -87,7 +81,7 @@ public class ItemListings {
 				.title(Gts.language.getPokemonListingsButtonLabel())
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(PokemonListings.SORT.NONE);
+					Page page = new PokemonListings().getPage(Sort.NONE);
 					UIManager.openUIForcefully(sender, page);
 				})
 				.build();
@@ -118,7 +112,7 @@ public class ItemListings {
 		PlaceholderButton placeholder = new PlaceholderButton();
 
 		List<Button> itemButtons = new ArrayList<>();
-		for (ItemListing listing : Gts.listings.getItemListings()) {
+		for (ItemListing listing : itmListings) {
 			Collection<Component> lore = ListingInfo.parse(listing);
 
 			Button button = GooeyButton.builder()

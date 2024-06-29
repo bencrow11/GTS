@@ -52,4 +52,9 @@ public class ItemListing extends Listing<ItemStack> {
 	public Listing deepClone() {
 		return new ItemListing(this);
 	}
+
+	@Override
+	public String getListingName() {
+		return getListing().getDisplayName().getString();
+	}
 }
