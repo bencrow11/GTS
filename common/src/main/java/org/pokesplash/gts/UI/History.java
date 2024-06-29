@@ -1,22 +1,18 @@
 package org.pokesplash.gts.UI;
 
-import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
-import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.button.PlaceholderButton;
-import ca.landonjw.gooeylibs2.api.button.linked.LinkType;
-import ca.landonjw.gooeylibs2.api.button.linked.LinkedPageButton;
 import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
 import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.UI.button.ManageListings;
+import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.PokemonInfo;
-import org.pokesplash.gts.enumeration.Sort;
 import org.pokesplash.gts.history.HistoryItem;
 import org.pokesplash.gts.history.ItemHistoryItem;
 import org.pokesplash.gts.history.PlayerHistory;
@@ -36,50 +32,6 @@ public class History {
 	 * @return Pokemon Listings page.
 	 */
 	public Page getPage(UUID owner) {
-		Button seePokemonListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPokemonListingsButtonItem()))
-				.hideFlags(FlagType.All)
-				.title(Gts.language.getPokemonListingsButtonLabel())
-				.onClick((action) -> {
-					ServerPlayer sender = action.getPlayer();
-					Page page = new PokemonListings().getPage(Sort.NONE);
-					UIManager.openUIForcefully(sender, page);
-				})
-				.build();
-
-		Button seeItemListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getItemListingsButtonItem()))
-				.title(Gts.language.getItemListingsButtonLabel())
-				.onClick((action) -> {
-					ServerPlayer sender = action.getPlayer();
-					Page page = new ItemListings().getPage(Sort.NONE);
-					UIManager.openUIForcefully(sender, page);
-				})
-				.build();
-
-
-		LinkedPageButton nextPage = LinkedPageButton.builder()
-				.display(Utils.parseItemId(Gts.language.getNextPageButtonItems()))
-				.title(Gts.language.getNextPageButtonLabel())
-				.linkType(LinkType.Next)
-				.build();
-
-		LinkedPageButton previousPage = LinkedPageButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPreviousPageButtonItems()))
-				.title(Gts.language.getPreviousPageButtonLabel())
-				.linkType(LinkType.Previous)
-				.build();
-
-		Button manageListings = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getManageListingsButtonItem()))
-				.title(Gts.language.getManageListingsButtonLabel())
-				.onClick((action) -> {
-					ServerPlayer sender = action.getPlayer();
-					Page page = new ManageListings().getPage(action.getPlayer().getUUID());
-					UIManager.openUIForcefully(sender, page);
-				})
-				.build();
-
 
 		PlaceholderButton placeholder = new PlaceholderButton();
 
@@ -138,22 +90,14 @@ public class History {
 			}
 		}
 
-
-		Button filler = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getFillerItem()))
-				.hideFlags(FlagType.All)
-				.lore(new ArrayList<>())
-				.title("")
-				.build();
-
 		ChestTemplate template = ChestTemplate.builder(6)
 				.rectangle(0, 0, 5, 9, placeholder)
-				.fill(filler)
-				.set(48, seePokemonListings)
-				.set(49, manageListings)
-				.set(50, seeItemListings)
-				.set(53, nextPage)
-				.set(45, previousPage)
+				.fill(Filler.getButton())
+				.set(48, SeePokemonListings.getButton())
+				.set(49, ManageListings.getButton())
+				.set(50, SeeItemListings.getButton())
+				.set(53, NextPage.getButton())
+				.set(45, PreviousPage.getButton())
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);

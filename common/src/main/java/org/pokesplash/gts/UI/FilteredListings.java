@@ -17,37 +17,38 @@ import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.ManageListings;
 import org.pokesplash.gts.UI.button.*;
+import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 /**
- * UI of the Manage Listings page.
+ * UI of the filtered Pokemon Listings page.
  */
-public class ExpiredListings {
+public class FilteredListings {
 
 	/**
 	 * Method that returns the page.
 	 * @return Pokemon Listings page.
 	 */
-	public Page getPage(UUID owner) {
+	public Page getPage(String searchValue) {
+
 
 		PlaceholderButton placeholder = new PlaceholderButton();
 
-		List<Listing> listings = Gts.listings.getExpiredListingsOfPlayer(owner);
-
 		List<Button> buttons = new ArrayList<>();
-		if (listings != null) {
-			for (Listing listing : listings) {
 
+		List<Listing> listings = ListingAPI.getHighestPriority() == null ? Gts.listings.getListings() :
+				Gts.listings.getListings().stream().map(Listing::deepClone).toList();
 
-				Collection<Component> lore = new ArrayList<>();
-				lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-				lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
+		for (Listing listing : listings) {
+
+			if (listing.getListingName().equalsIgnoreCase(searchValue)) {
+				Collection<Component> lore = ListingInfo.parse(listing);
 
 				Button button;
 
@@ -63,11 +64,12 @@ public class ExpiredListings {
 							.lore(Component.class, lore)
 							.onClick((action) -> {
 								ServerPlayer sender = action.getPlayer();
-								Page page = new ExpiredPokemonListing().getPage(pokemonListing);
+								Page page = new SinglePokemonListing().getPage(sender, pokemonListing);
 								UIManager.openUIForcefully(sender, page);
 							})
 							.build();
 				} else {
+
 					ItemListing itemListing = (ItemListing) listing;
 
 					button = GooeyButton.builder()
@@ -76,7 +78,7 @@ public class ExpiredListings {
 							.lore(Component.class, lore)
 							.onClick((action) -> {
 								ServerPlayer sender = action.getPlayer();
-								Page page = new ExpiredItemListing().getPage(itemListing);
+								Page page = new SingleItemListing().getPage(sender, itemListing);
 								UIManager.openUIForcefully(sender, page);
 							})
 							.build();
@@ -98,7 +100,7 @@ public class ExpiredListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle("§3" + Gts.language.getTitle() + " - Expired");
+		page.setTitle("§3" + Gts.language.getTitle());
 
 		setPageTitle(page);
 
@@ -108,7 +110,7 @@ public class ExpiredListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle() + " - Expired");
+			next.setTitle("§3" + Gts.language.getTitle());
 			setPageTitle(next);
 		}
 	}

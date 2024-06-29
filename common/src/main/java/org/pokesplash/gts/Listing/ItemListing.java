@@ -55,6 +55,8 @@ public class ItemListing extends Listing<ItemStack> {
 
 	@Override
 	public String getListingName() {
-		return getListing().getDisplayName().getString();
+		return getListing().getDisplayName().getString()
+				.replaceAll("\\[", "")
+				.replaceAll("\\]", "");
 	}
 }

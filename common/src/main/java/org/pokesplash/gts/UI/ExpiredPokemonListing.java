@@ -2,7 +2,6 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
-import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
@@ -12,6 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.UI.button.Filler;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
@@ -75,15 +75,8 @@ public class ExpiredPokemonListing {
 				})
 				.build();
 
-		Button filler = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getFillerItem()))
-				.hideFlags(FlagType.All)
-				.lore(new ArrayList<>())
-				.title("")
-				.build();
-
 		ChestTemplate.Builder template = ChestTemplate.builder(3)
-				.fill(filler)
+				.fill(Filler.getButton())
 				.set(11, receiveListing)
 				.set(13, pokemon)
 				.set(15, cancel);
