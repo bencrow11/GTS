@@ -286,24 +286,23 @@ public abstract class Utils {
 
 	public static String capitaliseFirst(String message) {
 
-		if (message.contains("[") || message.contains("]")) {
-			return message.replaceAll("\\[|\\]", "");
+		if (message.trim().isEmpty()) {
+			return message;
 		}
 
-		if (message.contains("_")) {
-			String[] messages = message.split("_");
-			String output = "";
+		String output = message.trim().replaceAll("\\[|\\]", "");
+
+		String[] messages = output.split("_| ");
+
+		if (messages.length > 1) {
+			output = "";
 			for (String msg : messages) {
-				output += capitaliseFirst(msg);
+				output += capitaliseFirst(msg) + " ";
 			}
 			return output;
 		}
 
-		if (message.length() > 1) {
-			return message.substring(0, 1).toUpperCase() + message.substring(1).toLowerCase();
-		}
-
-		return message;
+		return output.trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase();
 	}
 
 	public static boolean isHA(Pokemon pokemon) {
