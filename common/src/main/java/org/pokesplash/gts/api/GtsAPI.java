@@ -74,7 +74,7 @@ public abstract class GtsAPI {
 
 		if (Gts.config.isBroadcastListings()) {
 			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getNewListingBroadcast(), 0,
-							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
+							listing.getListingName(), listing.getSellerName(), null),
 					"/gts " + listing.getId());
 		}
 
@@ -102,7 +102,7 @@ public abstract class GtsAPI {
 
 		if (Gts.config.isBroadcastListings()) {
 			Utils.broadcastClickable(Utils.formatPlaceholders(Gts.language.getNewListingBroadcast(), 0,
-							listing.getListing().getDisplayName().getString(), listing.getSellerName(), null),
+							listing.getListingName(), listing.getSellerName(), null),
 					"/gts " + listing.getId());
 		}
 

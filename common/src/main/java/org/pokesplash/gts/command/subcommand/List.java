@@ -338,12 +338,12 @@ public class List extends Subcommand {
 
 			if (success) {
 				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingSuccess(),
-						minPrice, listing.getListing().getDisplayName().getString(), player.getDisplayName().getString(), null)));
+						minPrice, listing.getListingName(), player.getDisplayName().getString(), null)));
 
 
 			} else {
 				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingFail(),
-						minPrice, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
+						minPrice, listing.getListingName(), player.getDisplayName().getString(), null)));
 
 
 			}

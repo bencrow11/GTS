@@ -1,7 +1,9 @@
 package org.pokesplash.gts.history;
 
+import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.api.provider.HistoryAPI;
@@ -10,6 +12,8 @@ import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -71,6 +75,52 @@ public class HistoryProvider {
 		PlayerHistory playerHistory = history.get(item.getSellerUuid());
 		playerHistory.addListing(item, buyerName);
 		history.put(item.getSellerUuid(), playerHistory);
+	}
+
+	public double getAveragePrice(ItemStack itemStack) {
+
+		double total = 0;
+		int amount = 0;
+
+		for (PlayerHistory h : history.values()) {
+			for (ItemHistoryItem item : h.getItemListings()) {
+				if (ItemStack.isSameItem(item.getListing(), itemStack)) {
+					total += item.getPrice();
+					amount ++;
+				}
+			}
+		}
+
+		if (total == 0) {
+			return 0;
+		}
+
+		BigDecimal bd = BigDecimal.valueOf(total / amount);
+		bd.setScale(2, RoundingMode.HALF_UP);
+		return bd.doubleValue();
+	}
+
+	public double getAveragePrice(Pokemon pokemon) {
+		double total = 0;
+		int amount = 0;
+
+		for (PlayerHistory h : history.values()) {
+			for (PokemonHistoryItem mon : h.getPokemonListings()) {
+				if (mon.getListing().getSpecies().getNationalPokedexNumber() ==
+				pokemon.getSpecies().getNationalPokedexNumber()) {
+					total += mon.getPrice();
+					amount ++;
+				}
+			}
+		}
+
+		if (total == 0) {
+			return 0;
+		}
+
+		BigDecimal bd = BigDecimal.valueOf(total / amount);
+		bd.setScale(2, RoundingMode.HALF_UP);
+		return bd.doubleValue();
 	}
 
 	/**

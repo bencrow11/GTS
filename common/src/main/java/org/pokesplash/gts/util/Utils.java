@@ -299,7 +299,11 @@ public abstract class Utils {
 			return output;
 		}
 
-		return message.substring(0, 1).toUpperCase() + message.substring(1).toLowerCase();
+		if (message.length() > 1) {
+			return message.substring(0, 1).toUpperCase() + message.substring(1).toLowerCase();
+		}
+
+		return message;
 	}
 
 	public static boolean isHA(Pokemon pokemon) {
