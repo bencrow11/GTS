@@ -96,8 +96,7 @@ public class HistoryProvider {
 		}
 
 		BigDecimal bd = BigDecimal.valueOf(total / amount);
-		bd.setScale(2, RoundingMode.HALF_UP);
-		return bd.doubleValue();
+		return bd.setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}
 
 	public double getAveragePrice(Pokemon pokemon) {
@@ -119,8 +118,7 @@ public class HistoryProvider {
 		}
 
 		BigDecimal bd = BigDecimal.valueOf(total / amount);
-		bd.setScale(2, RoundingMode.HALF_UP);
-		return bd.doubleValue();
+		return bd.setScale(2, RoundingMode.HALF_UP).doubleValue();
 	}
 
 	/**
