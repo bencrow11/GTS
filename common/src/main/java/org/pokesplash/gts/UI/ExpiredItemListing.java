@@ -2,6 +2,7 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
+import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
@@ -36,6 +37,7 @@ public class ExpiredItemListing {
 		Button pokemon = GooeyButton.builder()
 				.display(listing.getListing())
 				.title("§3" + Utils.capitaliseFirst(listing.getListingName()))
+				.hideFlags(FlagType.All)
 				.lore(lore)
 				.build();
 

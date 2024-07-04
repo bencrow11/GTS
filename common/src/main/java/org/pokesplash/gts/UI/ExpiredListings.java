@@ -2,6 +2,7 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
+import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.button.PlaceholderButton;
 import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
@@ -74,6 +75,7 @@ public class ExpiredListings {
 							.display(itemListing.getListing())
 							.title("§3" + Utils.capitaliseFirst(itemListing.getListingName()))
 							.lore(Component.class, lore)
+							.hideFlags(FlagType.All)
 							.onClick((action) -> {
 								ServerPlayer sender = action.getPlayer();
 								Page page = new ExpiredItemListing().getPage(itemListing);

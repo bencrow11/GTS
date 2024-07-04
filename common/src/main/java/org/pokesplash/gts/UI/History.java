@@ -1,6 +1,7 @@
 package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.button.Button;
+import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.button.PlaceholderButton;
 import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
@@ -82,6 +83,7 @@ public class History {
 							.title("§3" + Utils.capitaliseFirst(
 									itemHistoryItem.getListing().getDisplayName().getString()))
 							.lore(Component.class, lore)
+							.hideFlags(FlagType.All)
 							.build();
 				}
 
