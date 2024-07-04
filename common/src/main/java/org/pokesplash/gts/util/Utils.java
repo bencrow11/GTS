@@ -17,6 +17,7 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.config.Material;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -345,15 +346,41 @@ public abstract class Utils {
 
 	public static ItemStack parseItemId(String id) {
 
+		CompoundTag tag;
+
 		try	{
-			CompoundTag tag = TagParser.parseTag(id);
-			return ItemStack.of(tag);
+			tag = TagParser.parseTag(id);
 		} catch (Exception e) {
-			CompoundTag tag = new CompoundTag();
+			tag = new CompoundTag();
 			tag.putString("id", id);
 			tag.putInt("Count", 1);
-			return ItemStack.of(tag);
 		}
+		return ItemStack.of(tag);
+	}
+
+	public static ItemStack parseItemId(Material id) {
+
+		CompoundTag tag;
+
+		try	{
+			tag = TagParser.parseTag(id.getMaterial());
+		} catch (Exception e) {
+			tag = new CompoundTag();
+			tag.putString("id", id.getMaterial());
+			tag.putInt("Count", 1);
+		}
+
+
+		try {
+			if (!id.getNBT().isEmpty()) {
+				tag.put("tag", TagParser.parseTag(id.getNBT()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		return ItemStack.of(tag);
 	}
 
 	public static void broadcastClickable(String message, String command) {
