@@ -110,7 +110,7 @@ public class PokemonListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
-		page.setTitle("§3" + Gts.language.getTitle() + " - Pokemon");
+		page.setTitle(Gts.language.getPokemonListingsTitle());
 
 		setPageTitle(page);
 
@@ -120,7 +120,7 @@ public class PokemonListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle() + " - Pokemon");
+			next.setTitle(Gts.language.getPokemonListingsTitle());
 			setPageTitle(next);
 		}
 	}

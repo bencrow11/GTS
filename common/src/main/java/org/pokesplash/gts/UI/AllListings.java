@@ -108,7 +108,7 @@ public class AllListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle());
+			next.setTitle(Gts.language.getTitle());
 			setPageTitle(next);
 		}
 	}

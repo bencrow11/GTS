@@ -102,18 +102,18 @@ public class FilteredListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle("§3" + Gts.language.getTitle());
+		page.setTitle(Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue));
 
-		setPageTitle(page);
+		setPageTitle(page, searchValue);
 
 		return page;
 	}
 
-	private void setPageTitle(LinkedPage page) {
+	private void setPageTitle(LinkedPage page, String searchValue) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle());
-			setPageTitle(next);
+			next.setTitle(Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue));
+			setPageTitle(next, searchValue);
 		}
 	}
 }

@@ -109,7 +109,7 @@ public class ItemListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, itemButtons, null);
-		page.setTitle("§3" + Gts.language.getTitle() + " - Items");
+		page.setTitle(Gts.language.getItemListingsTitle());
 
 		setPageTitle(page);
 
@@ -119,7 +119,7 @@ public class ItemListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle() + " - Items");
+			next.setTitle(Gts.language.getItemListingsTitle());
 			setPageTitle(next);
 		}
 	}

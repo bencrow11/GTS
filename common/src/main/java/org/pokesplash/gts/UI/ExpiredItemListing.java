@@ -86,7 +86,7 @@ public class ExpiredItemListing {
 
 		GooeyPage page = GooeyPage.builder()
 				.template(template.build())
-				.title("§3" + Gts.language.getTitle() + " - Pokemon")
+				.title(Gts.language.getItemTitle())
 				.build();
 
 		return page;

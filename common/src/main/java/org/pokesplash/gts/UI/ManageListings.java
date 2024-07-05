@@ -97,7 +97,7 @@ public class ManageListings {
 		pokemonButtons.addAll(itemButtons);
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
-		page.setTitle("§3" + Gts.language.getTitle() + " - Manage");
+		page.setTitle(Gts.language.getManageTitle());
 
 		setPageTitle(page);
 
@@ -107,7 +107,7 @@ public class ManageListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle() + " - Manage");
+			next.setTitle(Gts.language.getManageTitle());
 			setPageTitle(next);
 		}
 	}

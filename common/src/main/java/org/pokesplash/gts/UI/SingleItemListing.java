@@ -132,7 +132,7 @@ public class SingleItemListing {
 
 		GooeyPage page = GooeyPage.builder()
 				.template(template.build())
-				.title("§3" + Gts.language.getTitle() + " - Item")
+				.title(Gts.language.getItemTitle())
 				.build();
 
 		return page;

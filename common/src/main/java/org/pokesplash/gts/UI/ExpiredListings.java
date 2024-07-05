@@ -100,7 +100,7 @@ public class ExpiredListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle("§3" + Gts.language.getTitle() + " - Expired");
+		page.setTitle(Gts.language.getExpiredListingsTitle());
 
 		setPageTitle(page);
 
@@ -110,7 +110,7 @@ public class ExpiredListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle() + " - Expired");
+			next.setTitle(Gts.language.getExpiredListingsTitle());
 			setPageTitle(next);
 		}
 	}

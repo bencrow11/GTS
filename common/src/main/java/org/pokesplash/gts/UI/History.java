@@ -103,7 +103,7 @@ public class History {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle("§3" + Gts.language.getTitle() + " - History");
+		page.setTitle(Gts.language.getHistoryTitle());
 
 		setPageTitle(page);
 
@@ -113,7 +113,7 @@ public class History {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle("§3" + Gts.language.getTitle() + " - History");
+			next.setTitle(Gts.language.getHistoryTitle());
 			setPageTitle(next);
 		}
 	}
