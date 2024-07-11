@@ -38,7 +38,7 @@ public abstract class Listing<T> {
 
         // If debug mode, set timer to 1 minute.
         if (Gts.isDebugMode) {
-            this.endTime = new Date().getTime() + 60000L;
+            this.endTime = new Date().getTime() + (1000L * Gts.debugTime);
         // If duration is less than 0, no listing timer.
         } else if (Gts.config.getListingDuration() <= 0) {
             this.endTime = -1;
@@ -94,7 +94,7 @@ public abstract class Listing<T> {
     public void renewEndTime() {
         // If debug mode, set timer to 1 minute.
         if (Gts.isDebugMode) {
-            this.endTime = new Date().getTime() + 60000L;
+            this.endTime = new Date().getTime() + (1000L * Gts.debugTime);
             // If duration is less than 0, no listing timer.
         } else if (Gts.config.getListingDuration() <= 0) {
             this.endTime = -1;
@@ -139,4 +139,12 @@ public abstract class Listing<T> {
     public abstract Listing deepClone();
 
     public abstract String getListingName();
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Listing) {
+            return ((Listing<?>) o).getId().equals(this.getId());
+        }
+        return false;
+    }
 }

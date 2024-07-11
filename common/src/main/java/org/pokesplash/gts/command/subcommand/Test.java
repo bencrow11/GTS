@@ -1,18 +1,22 @@
 package org.pokesplash.gts.command.subcommand;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.util.Subcommand;
 
-public class Debug extends Subcommand {
+import java.util.UUID;
 
-	public Debug() {
-		super("§9Usage:\n§3- gts debug");
+public class Test extends Subcommand {
+
+	public Test() {
+		super("§9Usage:\n§3- gts test");
 	}
 
 	/**
@@ -21,13 +25,14 @@ public class Debug extends Subcommand {
 	 */
 	@Override
 	public LiteralCommandNode<CommandSourceStack> build() {
-		return Commands.literal("debug")
-				.requires(ctx -> {
+		return Commands.literal("test")
+				.requires((ctx) -> {
+
 					if (ctx.isPlayer()) {
-						return Gts.permissions.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("GtsDebug"));
+						return ctx.getPlayer().getStringUUID()
+								.equalsIgnoreCase("b5c833a0-c6f7-4e89-9ad5-d36faef37ab2");
 					} else {
-						return true;
+						return false;
 					}
 				})
 				.executes(this::run)
@@ -42,9 +47,14 @@ public class Debug extends Subcommand {
 	@Override
 	public int run(CommandContext<CommandSourceStack> context) {
 
-		Gts.isDebugMode = !Gts.isDebugMode;
-
-		context.getSource().sendSystemMessage(Component.literal("Set Debug mode to " + Gts.isDebugMode));
+		for (int x = 0; x < 10000; x ++) {
+			Gts.listings.addListing(new ItemListing(
+					UUID.fromString("b5c833a0-c6f7-4e89-9ad5-d36faef37ab2"),
+					"bencrow11",
+					1000 + (x * 10),
+					new ItemStack(Item.byId(100))
+			));
+		}
 
 		return 1;
 	}

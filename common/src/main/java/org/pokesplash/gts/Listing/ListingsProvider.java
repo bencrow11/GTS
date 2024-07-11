@@ -146,7 +146,6 @@ public class ListingsProvider {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
 		listings.add(listing);
-		Gts.timers.addTimer(listing);
 		return listing.write(Gts.LISTING_FILE_PATH);
 	}
 
@@ -161,9 +160,7 @@ public class ListingsProvider {
 			throw new IllegalArgumentException("No listing with the UUID " + listing.getId() + " exists.");
 		}
 
-		listings.remove(listing);
-		Gts.timers.deleteTimer(listing);
-		return true;
+		return listings.remove(listing);
 	}
 
 	/**
@@ -270,6 +267,22 @@ public class ListingsProvider {
 		return expiredListings;
 	}
 
+	public void check() {
+		ArrayList<Listing> toRemove = new ArrayList<>();
+
+		for (Listing listing : listings) {
+			if (listing.getEndTime() < new Date().getTime() &&
+					listing.getEndTime() != -1) {
+				toRemove.add(listing);
+			}
+		}
+
+		for (Listing listing : toRemove) {
+			boolean success = removeListing(listing);
+			addExpiredListing(listing);
+		}
+	}
+
 
 	/**
 	 * Method to load the listings from file.
@@ -303,7 +316,6 @@ public class ListingsProvider {
 					if (listing.getEndTime() > new Date().getTime() ||
 						listing.getEndTime() == -1) {
 						listings.add(listing);
-						Gts.timers.addTimer(listing);
 					} else {
 						addExpiredListing(listing);
 					}
@@ -322,7 +334,6 @@ public class ListingsProvider {
 				listing.write(Gts.LISTING_FILE_PATH);
 				if (listing.getEndTime() > new Date().getTime()) {
 					listings.add(listing);
-					Gts.timers.addTimer(listing);
 				} else {
 					addExpiredListing(listing);
 				}
@@ -333,7 +344,6 @@ public class ListingsProvider {
 				listing.write(Gts.LISTING_FILE_PATH);
 				if (listing.getEndTime() > new Date().getTime()) {
 					listings.add(listing);
-					Gts.timers.addTimer(listing);
 				} else {
 					addExpiredListing(listing);
 				}
