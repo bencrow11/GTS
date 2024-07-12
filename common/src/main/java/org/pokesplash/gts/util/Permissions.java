@@ -24,6 +24,7 @@ public class Permissions {
 		createPermission("GtsMod", "gts.manage", 2);
 		createPermission("GtsReload", "gts.reload", 2);
 		createPermission("GtsDebug", "gts.debug", 2);
+		createPermission("GtsTimeout", "gts.timeout", 2);
 	}
 
 	/**

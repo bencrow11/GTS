@@ -8,9 +8,13 @@ import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
 import org.pokesplash.gts.config.Lang;
 import org.pokesplash.gts.history.HistoryProvider;
+import org.pokesplash.gts.moderation.TimeoutProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
 import org.pokesplash.gts.util.GtsLogger;
 import org.pokesplash.gts.util.Permissions;
+
+import java.util.Date;
+import java.util.UUID;
 
 public class Gts
 {
@@ -27,7 +31,7 @@ public class Gts
 	public static final Permissions permissions = new Permissions();
 	public static ListingsProvider listings;
 	public static HistoryProvider history;
-//	public static TimerProvider timers = new TimerProvider();
+	public static TimeoutProvider timeouts;
 	public static final GtsLogger LOGGER = new GtsLogger();
 	public static Lang language;
 	public static MinecraftServer server;
@@ -42,9 +46,11 @@ public class Gts
 		listings = ListingsProviderAPI.getHighestPriority();
 		history = HistoryProviderAPI.getHighestPriority();
 		language = new Lang();
+		timeouts = new TimeoutProvider();
 		config.init();
 		listings.init();
 		history.init();
 		language.init();
+		timeouts.read();
 	}
 }

@@ -24,6 +24,7 @@ import org.pokesplash.gts.config.ItemPrices;
 import org.pokesplash.gts.util.Subcommand;
 import org.pokesplash.gts.util.Utils;
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class List extends Subcommand {
@@ -93,6 +94,17 @@ public class List extends Subcommand {
 		if (!context.getSource().isPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
 					"This command must be ran by a player."
+			));
+			return 1;
+		}
+
+		if (!Gts.timeouts.hasTimeoutExpired(context.getSource().getPlayer().getUUID())) {
+
+			long endTime = Gts.timeouts.getTimeout(context.getSource().getPlayer().getUUID());
+
+			context.getSource().sendSystemMessage(Component.literal(
+					"§cYou have been timed out for " +
+							Utils.parseLongDate(endTime - new Date().getTime())
 			));
 			return 1;
 		}
