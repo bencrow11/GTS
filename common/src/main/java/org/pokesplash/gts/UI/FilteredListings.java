@@ -48,7 +48,8 @@ public class FilteredListings {
 
 		for (Listing listing : listings) {
 
-			if (listing.getListingName().toLowerCase().contains(searchValue.toLowerCase())) {
+			if (listing.getListingName().toLowerCase().contains(searchValue.toLowerCase())
+				|| listing.getSellerName().toLowerCase().contains(searchValue.toLowerCase())) {
 				Collection<Component> lore = ListingInfo.parse(listing);
 
 				Button button;
