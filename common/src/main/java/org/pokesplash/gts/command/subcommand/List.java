@@ -10,6 +10,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
@@ -26,6 +27,8 @@ import org.pokesplash.gts.util.Utils;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class List extends Subcommand {
 
@@ -277,10 +280,9 @@ public class List extends Subcommand {
 		// Checks there's an item in the players hand
 		try {
 			ItemStack item = context.getSource().getPlayer().getMainHandItem();
-			String itemId = item.save(new CompoundTag()).get("id").getAsString();
 
 			// If they aren't holding an item. Message them
-			if (itemId.equalsIgnoreCase("minecraft:air")) {
+			if (item == null) {
 				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getNoItemInHand(),
 						0, null, player.getDisplayName().getString(), null)));
 				return 1;
@@ -297,7 +299,7 @@ public class List extends Subcommand {
 			for (String bannedItem : bannedItems) {
 				ItemStack banned = Utils.parseItemId(bannedItem);
 				if (banned.getItem().equals(item.getItem()) &&
-						NbtUtils.compareNbt(banned.getTag(), item.getTag(), true)) {
+						ItemStack.isSameItemSameComponents(banned, item)) {
 					context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getBannedItem(),
 							0, item.getDisplayName().getString(), player.getDisplayName().getString(), null)));
 					return 1;
@@ -311,7 +313,7 @@ public class List extends Subcommand {
 				ItemStack min = Utils.parseItemId(minItem.getItem_name());
 
 				if (min.getItem().equals(item.getItem()) &&
-						NbtUtils.compareNbt(min.getTag(), item.getTag(), true)) {
+						ItemStack.isSameItemSameComponents(min, item)) {
 					minPrice += minItem.getMin_price();
 					break;
 				}

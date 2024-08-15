@@ -21,16 +21,16 @@ public abstract class PokemonInfo {
 	public static Collection<Component> parse(Pokemon pokemon) {
 
 		Collection<Component> lore = new ArrayList<>();
-		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua"));
-		Style dark_green = Style.EMPTY.withColor(TextColor.parseColor("dark_green"));
-		Style dark_purple = Style.EMPTY.withColor(TextColor.parseColor("dark_purple"));
-		Style gold = Style.EMPTY.withColor(TextColor.parseColor("gold"));
-		Style gray = Style.EMPTY.withColor(TextColor.parseColor("gray"));
-		Style green = Style.EMPTY.withColor(TextColor.parseColor("green"));
-		Style red = Style.EMPTY.withColor(TextColor.parseColor("red"));
-		Style light_purple = Style.EMPTY.withColor(TextColor.parseColor("light_purple"));
-		Style yellow = Style.EMPTY.withColor(TextColor.parseColor("yellow"));
-		Style white = Style.EMPTY.withColor(TextColor.parseColor("white"));
+		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua").getOrThrow());
+		Style dark_green = Style.EMPTY.withColor(TextColor.parseColor("dark_green").getOrThrow());
+		Style dark_purple = Style.EMPTY.withColor(TextColor.parseColor("dark_purple").getOrThrow());
+		Style gold = Style.EMPTY.withColor(TextColor.parseColor("gold").getOrThrow());
+		Style gray = Style.EMPTY.withColor(TextColor.parseColor("gray").getOrThrow());
+		Style green = Style.EMPTY.withColor(TextColor.parseColor("green").getOrThrow());
+		Style red = Style.EMPTY.withColor(TextColor.parseColor("red").getOrThrow());
+		Style light_purple = Style.EMPTY.withColor(TextColor.parseColor("light_purple").getOrThrow());
+		Style yellow = Style.EMPTY.withColor(TextColor.parseColor("yellow").getOrThrow());
+		Style white = Style.EMPTY.withColor(TextColor.parseColor("white").getOrThrow());
 
 		Item ball = pokemon.getCaughtBall().item();
 		lore.add(Component.literal("§2Ball: ")

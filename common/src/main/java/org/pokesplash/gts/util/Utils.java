@@ -5,6 +5,7 @@ import com.cobblemon.mod.common.api.abilities.PotentialAbility;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.ClickEvent;
@@ -12,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -38,6 +40,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 public abstract class Utils {
 	/**
@@ -355,7 +358,7 @@ public abstract class Utils {
 			tag.putString("id", id);
 			tag.putInt("Count", 1);
 		}
-		return ItemStack.of(tag);
+		return ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), tag).get();
 	}
 
 	public static ItemStack parseItemId(Material id) {
@@ -380,7 +383,7 @@ public abstract class Utils {
 		}
 
 
-		return ItemStack.of(tag);
+		return ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), tag).get();
 	}
 
 	public static void broadcastClickable(String message, String command) {
@@ -409,7 +412,7 @@ public abstract class Utils {
 
 		for (ItemStack item : items) {
 			if (!item.isEmpty() &&
-				ItemStack.isSameItemSameTags(item, stack) &&
+				ItemStack.isSameItemSameComponents(item, stack) &&
 				item.isStackable() &&
 				item.getCount() + stack.getCount() <= item.getMaxStackSize()){
 				return true;

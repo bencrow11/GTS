@@ -48,11 +48,11 @@ public class PokemonListing extends Listing<Pokemon> {
 	}
 
 	public MutableComponent getDisplayName() {
-		Style blue = Style.EMPTY.withColor(TextColor.parseColor("blue"));
-		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua"));
-		Style red = Style.EMPTY.withColor(TextColor.parseColor("red"));
-		Style yellow = Style.EMPTY.withColor(TextColor.parseColor("yellow"));
-		Style white = Style.EMPTY.withColor(TextColor.parseColor("white"));
+		Style blue = Style.EMPTY.withColor(TextColor.parseColor("blue").getOrThrow());
+		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua").getOrThrow());
+		Style red = Style.EMPTY.withColor(TextColor.parseColor("red").getOrThrow());
+		Style yellow = Style.EMPTY.withColor(TextColor.parseColor("yellow").getOrThrow());
+		Style white = Style.EMPTY.withColor(TextColor.parseColor("white").getOrThrow());
 		Pokemon pokemon = this.getListing();
 		boolean isShiny = pokemon.getShiny();
 		MutableComponent displayName = pokemon.getDisplayName().setStyle(isShiny ? yellow : dark_aqua);

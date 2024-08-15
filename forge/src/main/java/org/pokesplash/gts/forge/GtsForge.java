@@ -1,11 +1,11 @@
 package org.pokesplash.gts.forge;
 
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.CommandsRegistry;
 
@@ -13,7 +13,7 @@ import org.pokesplash.gts.util.CommandsRegistry;
 public class GtsForge {
     public GtsForge() {
         Gts.init();
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
@@ -31,7 +31,7 @@ public class GtsForge {
     }
 
     @SubscribeEvent
-    public void tickEvent(TickEvent.ServerTickEvent event) {
+    public void tickEvent(ServerTickEvent event) {
         Gts.listings.check();
     }
 
