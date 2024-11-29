@@ -1,7 +1,11 @@
 package org.pokesplash.gts.Listing;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -14,7 +18,7 @@ import java.util.UUID;
  */
 public class PokemonListing extends Listing<Pokemon> {
 	// The Pokemon that is being listed.
-	private final JsonObject pokemon;
+	private final JsonElement pokemon;
 
 	/**
 	 * Constructor to create a new listing.
@@ -25,7 +29,8 @@ public class PokemonListing extends Listing<Pokemon> {
 	 */
 	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {
 		super(sellerUuid, sellerName, price, true);
-		this.pokemon = pokemon.saveToJSON(new JsonObject());
+		this.pokemon = Pokemon.getCODEC().encodeStart(JsonOps.INSTANCE, pokemon).getOrThrow();
+//		this.pokemon = pokemon.saveToJSON(new JsonObject());
 	}
 
 	public PokemonListing(PokemonListing other) {
@@ -40,10 +45,10 @@ public class PokemonListing extends Listing<Pokemon> {
 
 	@Override
 	public Pokemon getListing() {
-		return new Pokemon().loadFromJSON(pokemon);
+		return Pokemon.getCODEC().decode(JsonOps.INSTANCE, pokemon).getOrThrow().getFirst();
 	}
 
-	public JsonObject getListingAsJsonObject() {
+	public JsonElement getListingAsJsonObject() {
 		return pokemon;
 	}
 

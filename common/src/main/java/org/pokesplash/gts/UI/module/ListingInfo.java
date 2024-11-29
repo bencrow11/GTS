@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 public abstract class ListingInfo {
-    public static Collection<Component> parse(Listing listing) {
-        Collection<Component> lore = new ArrayList<>();
+    public static List<Component> parse(Listing listing) {
+        List<Component> lore = new ArrayList<>();
 
         lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
         lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));

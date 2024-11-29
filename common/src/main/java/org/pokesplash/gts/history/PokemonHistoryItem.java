@@ -1,7 +1,9 @@
 package org.pokesplash.gts.history;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import org.pokesplash.gts.Listing.PokemonListing;
 
 /**
@@ -9,7 +11,7 @@ import org.pokesplash.gts.Listing.PokemonListing;
  */
 public class PokemonHistoryItem extends HistoryItem<Pokemon> {
 
-    private JsonObject pokemon;
+    private JsonElement pokemon;
 
     public PokemonHistoryItem(PokemonListing listing, String buyerName) {
         super(listing.isPokemon(), listing.getSellerUuid(), listing.getSellerName(), listing.getPrice(), buyerName);
@@ -22,6 +24,6 @@ public class PokemonHistoryItem extends HistoryItem<Pokemon> {
      */
     @Override
     public Pokemon getListing() {
-        return new Pokemon().loadFromJSON(pokemon);
+        return Pokemon.getCODEC().decode(JsonOps.INSTANCE, pokemon).getOrThrow().getFirst();
     }
 }

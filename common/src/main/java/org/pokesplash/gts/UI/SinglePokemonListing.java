@@ -7,8 +7,10 @@ import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.Filler;
@@ -18,6 +20,7 @@ import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * UI of the Item Listings page.
@@ -32,19 +35,20 @@ public class SinglePokemonListing {
 
 
 
-		Collection<Component> lore = ListingInfo.parse(listing);
+		List<Component> lore = ListingInfo.parse(listing);
 
 		lore.addAll(PokemonInfo.parse(listing));
 
 		Button pokemon = GooeyButton.builder()
 				.display(PokemonItem.from(listing.getListing(), 1))
-				.title(listing.getDisplayName())
-				.lore(Component.class, lore)
+				.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
+				.with(DataComponents.LORE, new ItemLore(lore))
 				.build();
 
 		Button purchase = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
-				.title(Gts.language.getConfirmPurchaseButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getConfirmPurchaseButtonLabel()))
 				.onClick((action) -> {
 
 					if (Gts.listings.getActiveListingById(listing.getId()) == null) {
@@ -85,7 +89,8 @@ public class SinglePokemonListing {
 
 		Button cancel = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getCancelButtonItem()))
-				.title(Gts.language.getCancelPurchaseButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getCancelPurchaseButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new AllListings().getPage();
@@ -95,7 +100,8 @@ public class SinglePokemonListing {
 
 		Button removeListing = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getRemoveListingButtonItem()))
-				.title(Gts.language.getRemoveListingButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getRemoveListingButtonLabel()))
 				.onClick((action) -> {
 
 

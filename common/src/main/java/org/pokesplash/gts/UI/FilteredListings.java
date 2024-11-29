@@ -10,8 +10,11 @@ import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Unit;
+import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
@@ -50,7 +53,7 @@ public class FilteredListings {
 
 			if (listing.getListingName().toLowerCase().contains(searchValue.toLowerCase())
 				|| listing.getSellerName().toLowerCase().contains(searchValue.toLowerCase())) {
-				Collection<Component> lore = ListingInfo.parse(listing);
+				List<Component> lore = ListingInfo.parse(listing);
 
 				Button button;
 
@@ -62,8 +65,8 @@ public class FilteredListings {
 
 					button = GooeyButton.builder()
 							.display(PokemonItem.from(pokemonListing.getListing(), 1))
-							.title(pokemonListing.getDisplayName())
-							.lore(Component.class, lore)
+							.with(DataComponents.CUSTOM_NAME, pokemonListing.getDisplayName())
+							.with(DataComponents.LORE, new ItemLore(lore))
 							.onClick((action) -> {
 								ServerPlayer sender = action.getPlayer();
 								Page page = new SinglePokemonListing().getPage(sender, pokemonListing);
@@ -76,9 +79,10 @@ public class FilteredListings {
 
 					button = GooeyButton.builder()
 							.display(itemListing.getListing())
-							.title("§3" + Utils.capitaliseFirst(itemListing.getListingName()))
-							.lore(Component.class, lore)
-							.hideFlags(FlagType.All)
+							.with(DataComponents.CUSTOM_NAME,
+									Component.literal("§3" + Utils.capitaliseFirst(itemListing.getListingName())))
+							.with(DataComponents.LORE, new ItemLore(lore))
+							.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 							.onClick((action) -> {
 								ServerPlayer sender = action.getPlayer();
 								Page page = new SingleItemListing().getPage(sender, itemListing);

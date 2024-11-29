@@ -10,8 +10,11 @@ import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Unit;
+import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.PokemonListing;
@@ -45,14 +48,14 @@ public class ManageListings {
 		List<Button> pokemonButtons = new ArrayList<>();
 		if (pkmListings != null) {
 			for (PokemonListing listing : pkmListings) {
-				Collection<Component> lore = ListingInfo.parse(listing);
+				List<Component> lore = ListingInfo.parse(listing);
 
 				lore.addAll(PokemonInfo.parse(listing));
 
 				Button button = GooeyButton.builder()
 						.display(PokemonItem.from(listing.getListing(), 1))
-						.title(listing.getDisplayName())
-						.lore(Component.class, lore)
+						.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
+						.with(DataComponents.LORE, new ItemLore(lore))
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
 							Page page = new SinglePokemonListing().getPage(sender, listing);
@@ -66,13 +69,14 @@ public class ManageListings {
 		List<Button> itemButtons = new ArrayList<>();
 		if (itmListings != null) {
 			for (ItemListing listing : itmListings) {
-				Collection<Component> lore = ListingInfo.parse(listing);
+				List<Component> lore = ListingInfo.parse(listing);
 
 				Button button = GooeyButton.builder()
 						.display(listing.getListing())
-						.title("§3" + Utils.capitaliseFirst(listing.getListingName()))
-						.lore(Component.class, lore)
-						.hideFlags(FlagType.All)
+						.with(DataComponents.CUSTOM_NAME,
+								Component.literal("§3" + Utils.capitaliseFirst(listing.getListingName())))
+						.with(DataComponents.LORE, new ItemLore(lore))
+						.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
 							Page page = new SingleItemListing().getPage(sender, listing);

@@ -142,16 +142,18 @@ public class List extends Subcommand {
 				return 1;
 			}
 
+			if (context.getInput().contains("pokemon")) {
+				return runPokemon(context);
+			} else {
+				return runItem(context);
+			}
+
 		} catch (Exception e) {
 			context.getSource().sendSystemMessage(Component.literal("§cSomething went wrong."));
 			e.printStackTrace();
 		}
 
-		if (context.getInput().contains("pokemon")) {
-			return runPokemon(context);
-		} else {
-			return runItem(context);
-		}
+		return 1;
 	}
 
 	public int runPokemon(CommandContext<CommandSourceStack> context) {

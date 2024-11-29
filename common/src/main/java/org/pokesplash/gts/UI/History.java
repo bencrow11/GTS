@@ -9,7 +9,10 @@ import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Unit;
+import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.button.ManageListings;
 import org.pokesplash.gts.UI.button.*;
@@ -50,7 +53,7 @@ public class History {
 			for (HistoryItem item : items) {
 
 				// Standard lore for any item.
-				Collection<Component> lore = new ArrayList<>();
+				List<Component> lore = new ArrayList<>();
 				lore.add(Component.literal(Gts.language.getSeller() + item.getSellerName()));
 				lore.add(Component.literal(Gts.language.getPrice() + item.getPriceAsString()));
 				lore.add(Component.literal(Gts.language.getBuyer() + item.getBuyerName()));
@@ -70,8 +73,8 @@ public class History {
 
 					button = GooeyButton.builder()
 							.display(PokemonItem.from(pokemonItem.getListing(), 1))
-							.title(pokemonItem.getListing().getDisplayName())
-							.lore(Component.class, lore)
+							.with(DataComponents.CUSTOM_NAME, pokemonItem.getListing().getDisplayName())
+							.with(DataComponents.LORE, new ItemLore(lore))
 							.build();
 				}
 				// Item specific button.
@@ -80,10 +83,11 @@ public class History {
 
 					button = GooeyButton.builder()
 							.display(itemHistoryItem.getListing())
-							.title("§3" + Utils.capitaliseFirst(
-									itemHistoryItem.getListing().getDisplayName().getString()))
-							.lore(Component.class, lore)
-							.hideFlags(FlagType.All)
+							.with(DataComponents.CUSTOM_NAME,
+									Component.literal("§3" + Utils.capitaliseFirst(
+											itemHistoryItem.getListing().getDisplayName().getString())))
+							.with(DataComponents.LORE, new ItemLore(lore))
+							.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 							.build();
 				}
 

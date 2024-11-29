@@ -9,8 +9,10 @@ import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.ManageListings;
@@ -48,7 +50,8 @@ public class PokemonListings {
 
 		Button sortByPriceButton = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getSortByPriceButtonItem()))
-				.title(Gts.language.getSortByPriceButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getSortByPriceButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(Sort.PRICE);
@@ -58,7 +61,8 @@ public class PokemonListings {
 
 		Button sortByNewestButton = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getSortByNewestButtonItem()))
-				.title(Gts.language.getSortByNewestButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getSortByNewestButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(Sort.DATE);
@@ -68,7 +72,8 @@ public class PokemonListings {
 
 		Button sortByNameButton = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getSortByNameButtonItem()))
-				.title(Gts.language.getSortByPokemonButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getSortByPokemonButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(Sort.NAME);
@@ -80,13 +85,13 @@ public class PokemonListings {
 
 		List<Button> pokemonButtons = new ArrayList<>();
 		for (PokemonListing listing : pkmListings) {
-			Collection<Component> lore = ListingInfo.parse(listing);
+			List<Component> lore = ListingInfo.parse(listing);
 			lore.addAll(PokemonInfo.parse(listing));
 
 			Button button = GooeyButton.builder()
 					.display(PokemonItem.from(listing.getListing(), 1))
-					.title(listing.getDisplayName())
-					.lore(Component.class, lore)
+					.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
+					.with(DataComponents.LORE, new ItemLore(lore))
 					.onClick((action) -> {
 						ServerPlayer sender = action.getPlayer();
 						Page page = new SinglePokemonListing().getPage(sender, listing);

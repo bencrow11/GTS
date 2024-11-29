@@ -40,7 +40,7 @@ public class ItemListing extends Listing<ItemStack> {
 	@Override
 	public ItemStack getListing() {
 		try {
-			ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), TagParser.parseTag(item));
+			return ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), TagParser.parseTag(item)).get();
 		} catch (CommandSyntaxException e) {
 			Gts.LOGGER.fatal("Failed to parse item for NBT: " + item);
 			Gts.LOGGER.fatal("Stacktrace: ");

@@ -7,8 +7,10 @@ import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.Filler;
@@ -18,6 +20,7 @@ import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * UI of the Expired Pokemon Listing page.
@@ -30,7 +33,7 @@ public class ExpiredPokemonListing {
 	 */
 	public Page getPage(PokemonListing listing) {
 
-		Collection<Component> lore = new ArrayList<>();
+		List<Component> lore = new ArrayList<>();
 
 		lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
 		lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
@@ -38,13 +41,14 @@ public class ExpiredPokemonListing {
 
 		Button pokemon = GooeyButton.builder()
 				.display(PokemonItem.from(listing.getListing(), 1))
-				.title(listing.getDisplayName())
-				.lore(Component.class, lore)
+				.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
+				.with(DataComponents.LORE, new ItemLore(lore))
 				.build();
 
 		Button receiveListing = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
-				.title(Gts.language.getReceiveListingButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getReceiveListingButtonLabel()))
 				.onClick((action) -> {
 					boolean success = GtsAPI.returnListing(action.getPlayer(), listing);
 
@@ -67,7 +71,8 @@ public class ExpiredPokemonListing {
 
 		Button cancel = GooeyButton.builder()
 				.display(Utils.parseItemId(Gts.language.getCancelButtonItem()))
-				.title(Gts.language.getCancelPurchaseButtonLabel())
+				.with(DataComponents.CUSTOM_NAME,
+						Component.literal(Gts.language.getCancelPurchaseButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ExpiredListings().getPage(action.getPlayer().getUUID());
