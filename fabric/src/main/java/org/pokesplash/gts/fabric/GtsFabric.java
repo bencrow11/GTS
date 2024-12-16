@@ -10,7 +10,6 @@ import org.pokesplash.gts.util.CommandsRegistry;
 public class GtsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        Gts.init();
         CommandRegistrationCallback.EVENT.register(CommandsRegistry::registerCommands); // Registers Commands
         ServerWorldEvents.LOAD.register((t, e) -> Gts.server = t);
         ServerTickEvents.END_SERVER_TICK.register((e) -> {
@@ -18,5 +17,6 @@ public class GtsFabric implements ModInitializer {
                 Gts.listings.check();
             }
         });
+        Gts.init();
     }
 }

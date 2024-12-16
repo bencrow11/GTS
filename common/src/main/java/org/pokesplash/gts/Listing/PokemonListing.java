@@ -30,7 +30,6 @@ public class PokemonListing extends Listing<Pokemon> {
 	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {
 		super(sellerUuid, sellerName, price, true);
 		this.pokemon = Pokemon.getCODEC().encodeStart(JsonOps.INSTANCE, pokemon).getOrThrow();
-//		this.pokemon = pokemon.saveToJSON(new JsonObject());
 	}
 
 	public PokemonListing(PokemonListing other) {

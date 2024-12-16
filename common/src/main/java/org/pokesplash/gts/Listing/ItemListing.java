@@ -1,20 +1,21 @@
 package org.pokesplash.gts.Listing;
 
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.TagParser;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 
 import java.util.UUID;
-import java.util.stream.Stream;
 
 /**
  * Class that holds a single listing.
  */
 public class ItemListing extends Listing<ItemStack> {
 	// The item that is being listed.
-	private final String item;
+	private final JsonElement item;
 
 	/**
 	 * Constructor to create a new listing.
@@ -25,13 +26,15 @@ public class ItemListing extends Listing<ItemStack> {
 	 */
 	public ItemListing(UUID sellerUuid, String sellerName, double price, ItemStack item) {
 		super(sellerUuid, sellerName, price, false);
-		this.item = item.save(HolderLookup.Provider.create(Stream.empty())).getAsString();
+		this.item = ItemStack.CODEC.encodeStart(
+				Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE), item).getOrThrow();
 	}
 
 	public ItemListing(ItemListing other) {
 		super(UUID.fromString(other.getSellerUuid().toString()),
 				String.copyValueOf(other.getSellerName().toCharArray()), other.getPrice(), false);
-		this.item = other.getListing().save(HolderLookup.Provider.create(Stream.empty())).getAsString();
+		this.item = ItemStack.CODEC.encodeStart(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
+				other.getListing()).getOrThrow();
 		super.id = UUID.fromString(other.getId().toString());
 		super.version = String.copyValueOf(other.getVersion().toCharArray());
 		super.setEndTime(other.getEndTime());
@@ -40,9 +43,11 @@ public class ItemListing extends Listing<ItemStack> {
 	@Override
 	public ItemStack getListing() {
 		try {
-			return ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), TagParser.parseTag(item)).get();
-		} catch (CommandSyntaxException e) {
-			Gts.LOGGER.fatal("Failed to parse item for NBT: " + item);
+			ItemStack itemStack = ItemStack.CODEC.decode(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
+					item).getOrThrow().getFirst();
+			return itemStack;
+		} catch (IllegalStateException e) {
+			Gts.LOGGER.fatal("Failed to parse item for " + item);
 			Gts.LOGGER.fatal("Stacktrace: ");
 			e.printStackTrace();
 		}

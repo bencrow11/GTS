@@ -1,5 +1,7 @@
 package org.pokesplash.gts;
 
+import com.mojang.serialization.JsonOps;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.MinecraftServer;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.api.provider.HistoryProviderAPI;
@@ -40,6 +42,7 @@ public class Gts
 		CommandsRegistry.addCommand(new GtsCommand());
 		reload();
 	}
+
 
 	public static void reload() {
 		config = new Config();

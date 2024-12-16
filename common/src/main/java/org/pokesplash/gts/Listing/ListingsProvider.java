@@ -322,52 +322,5 @@ public class ListingsProvider {
 				});
 			}
 		}
-
-		// TODO Temporary code to move listings from the old listings.json file to their own.
-		CompletableFuture<Boolean> future = Utils.readFileAsync("/config/gts/",
-				"listings.json", el -> {
-			Gson gson = Utils.newGson();
-			ListingsProviderOld data = gson.fromJson(el, ListingsProviderOld.class);
-
-			for (PokemonListing listing : data.getPokemonListings()) {
-				listing.update(true);
-				listing.write(Gts.LISTING_FILE_PATH);
-				if (listing.getEndTime() > new Date().getTime()) {
-					listings.add(listing);
-				} else {
-					addExpiredListing(listing);
-				}
-			}
-
-			for (ItemListing listing : data.getItemListings()) {
-				listing.update(false);
-				listing.write(Gts.LISTING_FILE_PATH);
-				if (listing.getEndTime() > new Date().getTime()) {
-					listings.add(listing);
-				} else {
-					addExpiredListing(listing);
-				}
-			}
-
-			HashMap<UUID, ArrayList<PokemonListing>> pokemonExpired = data.getAllExpiredPokemonListings();
-			for (UUID key : pokemonExpired.keySet()) {
-				for (PokemonListing listing : pokemonExpired.get(key)) {
-					listing.update(true);
-					listing.write(Gts.LISTING_FILE_PATH);
-					addExpiredListing(listing);
-				}
-			}
-
-			HashMap<UUID, ArrayList<ItemListing>> itemExpired = data.getAllExpiredItemListings();
-			for (UUID key : pokemonExpired.keySet()) {
-				for (ItemListing listing : itemExpired.get(key)) {
-					listing.update(false);
-					listing.write(Gts.LISTING_FILE_PATH);
-					addExpiredListing(listing);
-				}
-			}
-
-			Utils.deleteFile("/config/gts/", "listings.json");
-		});
 	}
 }
