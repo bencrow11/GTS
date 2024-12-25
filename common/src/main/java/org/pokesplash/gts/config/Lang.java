@@ -54,6 +54,7 @@ public class Lang extends Versioned {
 	private String listingBought; // Message sent to seller when their listing is bought.
 	private String newListingBroadcast; // Message sent when a new listing is added.
 	private String insufficientInventorySpace; // Message sent when a player doesn't have enough inventory space to receive a listing.
+	private String onlyOnePokemonInParty; // Message sent when a player tries to list a Pokemon when they only have one in their party.
 
 	/**
 	 *  Button Labels
@@ -173,6 +174,7 @@ public class Lang extends Versioned {
 		sortByNameButtonLabel = "§6Sort By Name";
 		receiveListingButtonLabel = "§2Receive Listing";
 		insufficientInventorySpace = "§cYou do not have enough inventory space to receive this listing.";
+		onlyOnePokemonInParty = "§cYou can not list a Pokemon to GTS if you only have less than 2 Pokemon in your party.";
 	}
 
 	/**
@@ -365,6 +367,7 @@ public class Lang extends Versioned {
 	public String getPokemonListingsTitle() {
 		return pokemonListingsTitle;
 	}
+	public String getOnlyOnePokemonInParty() { return onlyOnePokemonInParty; }
 
 	/**
 	 * Method to initialize the config.
@@ -398,28 +401,6 @@ public class Lang extends Versioned {
 					Gson gson = Utils.newGson();
 
 					Versioned versioned = gson.fromJson(el, Versioned.class);
-
-					// If the lang version isn't correct, update the file.
-					if (!versioned.getVersion().equals(Gts.LANG_FILE_VERSION)) {
-						LangOld langOld = gson.fromJson(el, LangOld.class);
-						itemListingsButtonItem = new Material(langOld.getItemListingsButtonItem(), "");
-						pokemonListingsButtonItem = new Material(langOld.getPokemonListingsButtonItem(), "");
-						manageListingsButtonItem = new Material(langOld.getManageListingsButtonItem(), "");
-						expiredListingsButtonItem = new Material(langOld.getExpiredListingsButtonItem(), "");
-						nextPageButtonItems = new Material(langOld.getNextPageButtonItems(), "");
-						previousPageButtonItems = new Material(langOld.getPreviousPageButtonItems(), "");
-						fillerItem = new Material(langOld.getFillerItem(), "");
-						purchaseButtonItem = new Material(langOld.getPurchaseButtonItem(), "");
-						cancelButtonItem = new Material(langOld.getCancelButtonItem(), "");
-						removeListingButtonItem = new Material(langOld.getRemoveListingButtonItem(), "");
-						sortByPriceButtonItem = new Material(langOld.getSortByPriceButtonItem(), "");
-						sortByNameButtonItem = new Material(langOld.getSortByNameButtonItem(), "");
-						sortByNewestButtonItem = new Material(langOld.getSortByNewestButtonItem(), "");
-						relistExpiredButtonItem = new Material(langOld.getRelistExpiredButtonItem(), "");
-						write();
-						read();
-						return;
-					}
 
 					Lang lang = gson.fromJson(el, Lang.class);
 
@@ -486,6 +467,13 @@ public class Lang extends Versioned {
 					expiredListingsButtonItem = lang.getExpiredListingsButtonItem();
 					removeListingButtonItem = lang.getRemoveListingButtonItem();
 					relistExpiredButtonItem = lang.getRelistExpiredButtonItem();
+					onlyOnePokemonInParty = lang.getOnlyOnePokemonInParty();
+
+					// If the lang version isn't correct, update the file.
+					if (!versioned.getVersion().equals(Gts.LANG_FILE_VERSION)) {
+						write();
+						read();
+					}
 				});
 	}
 }

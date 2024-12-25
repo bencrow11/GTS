@@ -23,7 +23,7 @@ public class Gts
 	public static final String MOD_ID = "gts";
 	public static final String LISTING_FILE_PATH = "/config/gts/listings";
 	public static final String CONFIG_FILE_VERSION = "2.1";
-	public static final String LANG_FILE_VERSION = "2.3";
+	public static final String LANG_FILE_VERSION = "2.4";
 	public static final String LISTING_FILE_VERSION = "2.0";
 	public static final String HISTORY_FILE_VERSION = "2.0";
 	public static boolean isDebugMode = false;

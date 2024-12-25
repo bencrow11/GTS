@@ -178,6 +178,13 @@ public class List extends Subcommand {
 			return 1;
 		}
 
+		if (party.occupied() < 2) {
+			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(
+					Gts.language.getOnlyOnePokemonInParty(),
+					0, null, player.getDisplayName().getString(), null)));
+			return 1;
+		}
+
 		// Get the pokemons max ivs IVs
 		AtomicInteger totalMaxIvs = new AtomicInteger();
 		pokemon.getIvs().forEach((stat) -> {
@@ -297,6 +304,7 @@ public class List extends Subcommand {
 				return 1;
 			}
 
+			// TODO Utils.parseItemId currently doesn't work. Fix it.
 			// Checks the item isn't banned.
 			for (String bannedItem : bannedItems) {
 				ItemStack banned = Utils.parseItemId(bannedItem);
@@ -310,6 +318,7 @@ public class List extends Subcommand {
 
 			double minPrice = 0;
 
+			// TODO Utils.parseItemId currently doesn't work. Fix it.
 			// Checks for a minimum price.
 			for (ItemPrices minItem : minPrices) {
 				ItemStack min = Utils.parseItemId(minItem.getItem_name());
