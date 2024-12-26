@@ -31,8 +31,7 @@ public class GtsForge {
     }
 
     @SubscribeEvent
-    public void tickEvent(ServerTickEvent event) {
+    public void tickEvent(ServerTickEvent.Post event) {
         Gts.listings.check();
     }
-
 }
