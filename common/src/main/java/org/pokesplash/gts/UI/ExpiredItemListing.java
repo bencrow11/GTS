@@ -2,7 +2,6 @@ package org.pokesplash.gts.UI;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.button.Button;
-import ca.landonjw.gooeylibs2.api.button.FlagType;
 import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
@@ -19,7 +18,6 @@ import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

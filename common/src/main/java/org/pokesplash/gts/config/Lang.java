@@ -3,7 +3,6 @@ package org.pokesplash.gts.config;
 import com.google.gson.Gson;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.api.file.Versioned;
-import org.pokesplash.gts.oldVersion.LangOld;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.concurrent.CompletableFuture;

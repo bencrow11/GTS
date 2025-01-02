@@ -18,8 +18,8 @@ import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.GtsAPI;
-import org.pokesplash.gts.config.ItemPrices;
 import org.pokesplash.gts.command.superclass.Subcommand;
+import org.pokesplash.gts.config.ItemPrices;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.Date;

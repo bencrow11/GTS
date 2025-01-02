@@ -4,8 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.pokesplash.gts.Gts;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * Class for logging.
  */

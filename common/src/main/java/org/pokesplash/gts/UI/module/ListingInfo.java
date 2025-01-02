@@ -1,7 +1,5 @@
 package org.pokesplash.gts.UI.module;
 
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
@@ -11,7 +9,6 @@ import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 

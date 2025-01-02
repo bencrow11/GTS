@@ -2,7 +2,6 @@ package org.pokesplash.gts.history;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import org.pokesplash.gts.Listing.PokemonListing;
 

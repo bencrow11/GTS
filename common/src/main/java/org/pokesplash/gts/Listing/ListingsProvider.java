@@ -4,13 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.api.provider.ListingAPI;
-import org.pokesplash.gts.oldVersion.ListingsProviderOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
 
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Manages all types of listings. Data is saved to memory here.

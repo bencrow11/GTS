@@ -19,7 +19,6 @@ import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.util.Utils;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

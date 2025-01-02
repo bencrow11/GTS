@@ -1,10 +1,7 @@
 package org.pokesplash.gts;
 
-import com.mojang.serialization.JsonOps;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.MinecraftServer;
 import org.pokesplash.gts.Listing.ListingsProvider;
-import org.pokesplash.gts.api.economy.GtsEconomyProvider;
 import org.pokesplash.gts.api.provider.HistoryProviderAPI;
 import org.pokesplash.gts.api.provider.ListingsProviderAPI;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
@@ -15,9 +12,6 @@ import org.pokesplash.gts.moderation.TimeoutProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
 import org.pokesplash.gts.util.GtsLogger;
 import org.pokesplash.gts.util.Permissions;
-
-import java.util.Date;
-import java.util.UUID;
 
 public class Gts
 {
