@@ -3,12 +3,12 @@ package org.pokesplash.gts.api;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.storage.party.PartyPosition;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
-import net.impactdev.impactor.api.economy.accounts.Account;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.api.economy.GtsEconomyProvider;
 import org.pokesplash.gts.api.event.GtsEvents;
 import org.pokesplash.gts.api.event.events.AddEvent;
 import org.pokesplash.gts.api.event.events.CancelEvent;
@@ -16,7 +16,6 @@ import org.pokesplash.gts.api.event.events.PurchaseEvent;
 import org.pokesplash.gts.api.event.events.ReturnEvent;
 import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.discord.Webhook;
-import org.pokesplash.gts.util.ImpactorService;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.UUID;
@@ -122,23 +121,21 @@ public abstract class GtsAPI {
 	 */
 	public static boolean sale(UUID seller, ServerPlayer buyer, PokemonListing listing) {
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
-		Account sellerAccount = ImpactorService.getAccount(seller);
-		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
 
-		boolean impactorSuccess = ImpactorService.transfer(buyerAccount, sellerAccount, listing.getPrice());
+		boolean transactionSuccess = GtsEconomyProvider.getHighestEconomy().transfer(buyer.getUUID(), seller, listing.getPrice());
 
 		// If listing failed to be removed, cancel the transaction.
 		if (!listingsSuccess) {
 			Gts.listings.addListing(listing);
 
-			if (impactorSuccess) {
-				ImpactorService.transfer(sellerAccount, buyerAccount, listing.getPrice());
+			if (transactionSuccess) {
+				GtsEconomyProvider.getHighestEconomy().transfer(seller, buyer.getUUID(), listing.getPrice());
 			}
 			return false;
 		}
 
 		// If transaction failed, revert the pokemon listing.
-		if (!impactorSuccess) {
+		if (!transactionSuccess) {
 			Gts.listings.addListing(listing);
 			return false;
 		}
@@ -170,23 +167,21 @@ public abstract class GtsAPI {
 
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
-		Account sellerAccount = ImpactorService.getAccount(seller);
-		Account buyerAccount = ImpactorService.getAccount(buyer.getUUID());
-
-		boolean impactorSuccess = ImpactorService.transfer(buyerAccount, sellerAccount, listing.getPrice());
+		boolean transactionSuccess =
+				GtsEconomyProvider.getHighestEconomy().transfer(buyer.getUUID(), seller, listing.getPrice());
 
 		// If listing failed to be removed, cancel the transaction.
 		if (!listingsSuccess) {
 			Gts.listings.addListing(listing);
 
-			if (impactorSuccess) {
-				ImpactorService.transfer(sellerAccount, buyerAccount, listing.getPrice());
+			if (transactionSuccess) {
+				GtsEconomyProvider.getHighestEconomy().transfer(seller, buyer.getUUID(), listing.getPrice());
 			}
 			return false;
 		}
 
 		// If transaction failed, revert the pokemon listing.
-		if (!impactorSuccess) {
+		if (!transactionSuccess) {
 			Gts.listings.addListing(listing);
 			return false;
 		}

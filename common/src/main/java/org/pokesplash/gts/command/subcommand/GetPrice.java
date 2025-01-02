@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.util.Subcommand;
+import org.pokesplash.gts.command.superclass.Subcommand;
 
 public class GetPrice extends Subcommand {
 

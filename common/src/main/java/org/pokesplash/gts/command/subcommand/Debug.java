@@ -1,13 +1,12 @@
 package org.pokesplash.gts.command.subcommand;
 
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.util.Subcommand;
+import org.pokesplash.gts.command.superclass.Subcommand;
 
 public class Debug extends Subcommand {
 

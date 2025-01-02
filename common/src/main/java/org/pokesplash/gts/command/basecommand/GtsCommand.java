@@ -9,7 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.AllListings;
 import org.pokesplash.gts.command.subcommand.*;
-import org.pokesplash.gts.util.BaseCommand;
+import org.pokesplash.gts.command.superclass.BaseCommand;
 
 import java.util.Arrays;
 

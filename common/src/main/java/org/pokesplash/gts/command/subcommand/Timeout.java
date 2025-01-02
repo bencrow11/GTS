@@ -9,11 +9,9 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.util.Subcommand;
+import org.pokesplash.gts.command.superclass.Subcommand;
 import org.pokesplash.gts.util.Utils;
 
-import java.time.Duration;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 
 public class Timeout extends Subcommand {

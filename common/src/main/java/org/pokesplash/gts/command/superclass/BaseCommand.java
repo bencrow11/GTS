@@ -1,4 +1,4 @@
-package org.pokesplash.gts.util;
+package org.pokesplash.gts.command.superclass;
 
 import com.cobblemon.mod.common.api.permission.CobblemonPermission;
 import com.mojang.brigadier.CommandDispatcher;

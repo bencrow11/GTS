@@ -4,6 +4,7 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.MinecraftServer;
 import org.pokesplash.gts.Listing.ListingsProvider;
+import org.pokesplash.gts.api.economy.GtsEconomyProvider;
 import org.pokesplash.gts.api.provider.HistoryProviderAPI;
 import org.pokesplash.gts.api.provider.ListingsProviderAPI;
 import org.pokesplash.gts.command.basecommand.GtsCommand;

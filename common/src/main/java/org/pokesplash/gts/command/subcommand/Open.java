@@ -14,7 +14,7 @@ import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.SingleItemListing;
 import org.pokesplash.gts.UI.SinglePokemonListing;
-import org.pokesplash.gts.util.Subcommand;
+import org.pokesplash.gts.command.superclass.Subcommand;
 
 import java.util.UUID;
 

@@ -1,9 +1,10 @@
-package org.pokesplash.gts.util;
+package org.pokesplash.gts.impactor;
 
 import net.impactdev.impactor.api.economy.EconomyService;
 import net.impactdev.impactor.api.economy.accounts.Account;
 import net.impactdev.impactor.api.economy.currency.Currency;
 import net.impactdev.impactor.api.economy.transactions.EconomyTransaction;
+import org.pokesplash.gts.api.economy.GtsEconomy;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -11,7 +12,7 @@ import java.util.UUID;
 /**
  * Class to interact with the Impactor API
  */
-public abstract class ImpactorService {
+public class ImpactorService implements GtsEconomy {
 
 	// The impactor service
 	private static EconomyService service = EconomyService.instance();
@@ -25,7 +26,7 @@ public abstract class ImpactorService {
 	 * @return The account of the player.
 	 */
 
-	public static Account getAccount(UUID uuid) {
+	private Account getAccount(UUID uuid) {
 		if (!service.hasAccount(uuid).join()) {
 			return service.account(uuid).join();
 		}
@@ -38,8 +39,12 @@ public abstract class ImpactorService {
 	 * @param amount The amount to add.
 	 * @return true if the transaction was successful.
 	 */
-	public static boolean add(Account account, double amount) {
-		EconomyTransaction transaction = account.deposit(new BigDecimal(amount));
+	@Override
+	public boolean add(UUID account, double amount) {
+
+		Account acc = getAccount(account);
+
+		EconomyTransaction transaction = acc.deposit(new BigDecimal(amount));
 
 		return transaction.successful();
 	}
@@ -50,8 +55,12 @@ public abstract class ImpactorService {
 	 * @param amount The amount to remove from the account.
 	 * @return true if the transaction was successful.
 	 */
-	public static boolean remove(Account account, double amount) {
-		EconomyTransaction transaction = account.withdraw(new BigDecimal(amount));
+	@Override
+	public boolean remove(UUID account, double amount) {
+
+		Account acc = getAccount(account);
+
+		EconomyTransaction transaction = acc.withdraw(new BigDecimal(amount));
 
 		return transaction.successful();
 	}
@@ -63,10 +72,11 @@ public abstract class ImpactorService {
 	 * @param amount The amount to be transferred.
 	 * @return true if the transaction was successful.
 	 */
-	public static boolean transfer(Account sender, Account receiver, double amount) {
+	@Override
+	public boolean transfer(UUID sender, UUID receiver, double amount) {
+
 		boolean removedMoney = remove(sender, amount);
 		boolean addMoney = add(receiver, amount);
-//		EconomyTransferTransaction transaction = sender.transferAsync(receiver, new BigDecimal(amount)).join();
 
 		if (!removedMoney && addMoney) {
 			remove(receiver, amount);

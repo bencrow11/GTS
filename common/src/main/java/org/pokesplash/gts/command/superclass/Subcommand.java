@@ -1,9 +1,10 @@
-package org.pokesplash.gts.util;
+package org.pokesplash.gts.command.superclass;
 
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.CommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import org.pokesplash.gts.util.Utils;
 
 /**
  * Class used to create subcommands.
