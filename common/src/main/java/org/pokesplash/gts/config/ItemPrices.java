@@ -1,11 +1,18 @@
 package org.pokesplash.gts.config;
 
+import com.cobblemon.mod.common.CobblemonItems;
+import com.google.gson.JsonElement;
+import net.minecraft.world.item.ItemStack;
+import org.pokesplash.gts.oldVersion.ItemPricesOld;
+import org.pokesplash.gts.util.CodecUtils;
+import org.pokesplash.gts.util.Utils;
+
 /**
  * A single item price for the config.
  */
 public class ItemPrices {
 	// The item id.
-	private String item_name;
+	private JsonElement item;
 
 	// The price of the item.
 	private double min_price;
@@ -14,16 +21,17 @@ public class ItemPrices {
 	 * Constructor to create an example item.
 	 */
 	public ItemPrices() {
-		item_name = "cobblemon:assault_vest";
+		item = CodecUtils.encodeItem(new ItemStack(CobblemonItems.ASSAULT_VEST));
 		min_price = 10000;
 	}
 
-	/**
-	 * Getter for the item name.
-	 * @return item name as a String.
-	 */
-	public String getItem_name() {
-		return item_name;
+	public ItemPrices(ItemPricesOld old) {
+		item = CodecUtils.encodeItem(Utils.parseItemId(old.getItem_name()));
+		min_price = old.getMin_price();
+	}
+
+	public JsonElement getItem() {
+		return item;
 	}
 
 	/**

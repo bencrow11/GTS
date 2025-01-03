@@ -301,7 +301,6 @@ public class List extends Subcommand {
 				return 1;
 			}
 
-			// TODO Utils.parseItemId currently doesn't work. Fix it.
 			// Checks the item isn't banned.
 			for (JsonElement bannedItem : bannedItems) {
 				ItemStack banned = CodecUtils.decodeItem(bannedItem);
@@ -315,10 +314,9 @@ public class List extends Subcommand {
 
 			double minPrice = 0;
 
-			// TODO Utils.parseItemId currently doesn't work. Fix it.
 			// Checks for a minimum price.
 			for (ItemPrices minItem : minPrices) {
-				ItemStack min = Utils.parseItemId(minItem.getItem_name());
+				ItemStack min = CodecUtils.decodeItem(minItem.getItem());
 
 				if (min.getItem().equals(item.getItem()) &&
 						ItemStack.isSameItemSameComponents(min, item)) {

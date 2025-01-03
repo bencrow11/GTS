@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.oldVersion.ConfigOld;
+import org.pokesplash.gts.oldVersion.ItemPricesOld;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
@@ -101,11 +102,16 @@ public class Config {
 						Gts.LOGGER.info("GTS Config outdated, updating config...");
 
 						ConfigOld cfgOld = gson.fromJson(el, ConfigOld.class);
-						bannedItems.clear();
 
+						bannedItems.clear();
 						for (String item : cfgOld.getBannedItems()) {
 							ItemStack newBannedItem = Utils.parseItemId(item);
 							bannedItems.add(CodecUtils.encodeItem(newBannedItem));
+						}
+
+						customItemPrices.clear();
+						for (ItemPricesOld old : cfgOld.getCustomItemPrices()) {
+							customItemPrices.add(new ItemPrices(old));
 						}
 
 						write();

@@ -32,7 +32,7 @@ public class ConfigOld {
 	private double minPriceLegendary; // The minimum price of a legendary pokemon.
 	private double minPriceUltrabeast; // The minimum price of an ultra beast.
 	private double maximumPrice; // The maximum price of a listing
-	private List<ItemPrices> customItemPrices; // A list of items with minimum prices
+	private List<ItemPricesOld> customItemPrices; // A list of items with minimum prices
 	private List<String> bannedItems; // A list of items that can not be sold
 	private List<String> bannedPokemon; // A list of pokemon that ca not be sold.
 
@@ -56,7 +56,7 @@ public class ConfigOld {
 		minPriceUltrabeast = 30000;
 		maximumPrice = 1000000;
 		customItemPrices = new ArrayList<>();
-		customItemPrices.add(new ItemPrices());
+		customItemPrices.add(new ItemPricesOld());
 		bannedItems = new ArrayList<>();
 		bannedItems.add("cobblemon:lucky_egg");
 		bannedPokemon = new ArrayList<>();
@@ -225,7 +225,7 @@ public class ConfigOld {
 	 * Getter for the list of items that have minimum prices.
 	 * @return list of ItemPrices.
 	 */
-	public List<ItemPrices> getCustomItemPrices() {
+	public List<ItemPricesOld> getCustomItemPrices() {
 		return customItemPrices;
 	}
 
