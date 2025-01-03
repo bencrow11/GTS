@@ -4,6 +4,7 @@ import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
 import com.cobblemon.mod.common.pokemon.Pokemon;
+import com.google.gson.JsonElement;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -20,6 +21,7 @@ import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.command.superclass.Subcommand;
 import org.pokesplash.gts.config.ItemPrices;
+import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.Date;
@@ -279,7 +281,7 @@ public class List extends Subcommand {
 		double price = FloatArgumentType.getFloat(context, "price");
 
 		java.util.List<ItemPrices> minPrices = Gts.config.getCustomItemPrices();
-		java.util.List<String> bannedItems = Gts.config.getBannedItems();
+		java.util.List<JsonElement> bannedItems = Gts.config.getBannedItems();
 
 		// Checks there's an item in the players hand
 		try {
@@ -301,8 +303,8 @@ public class List extends Subcommand {
 
 			// TODO Utils.parseItemId currently doesn't work. Fix it.
 			// Checks the item isn't banned.
-			for (String bannedItem : bannedItems) {
-				ItemStack banned = Utils.parseItemId(bannedItem);
+			for (JsonElement bannedItem : bannedItems) {
+				ItemStack banned = CodecUtils.decodeItem(bannedItem);
 				if (banned.getItem().equals(item.getItem()) &&
 						ItemStack.isSameItemSameComponents(banned, item)) {
 					context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getBannedItem(),

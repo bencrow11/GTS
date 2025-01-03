@@ -1,12 +1,9 @@
-package org.pokesplash.gts.config;
+package org.pokesplash.gts.oldVersion;
 
-import com.cobblemon.mod.common.CobblemonItems;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.oldVersion.ConfigOld;
-import org.pokesplash.gts.util.CodecUtils;
+import org.pokesplash.gts.config.ItemPrices;
+import org.pokesplash.gts.config.Webhook;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -17,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Config file.
  */
-public class Config {
+public class ConfigOld {
 	private String version; // The version of the file.
 	private boolean broadcastListings; // Broadcasts new listings to chat.
 	private boolean enablePermissionNodes; // Should permission nodes or levels be used.
@@ -36,13 +33,13 @@ public class Config {
 	private double minPriceUltrabeast; // The minimum price of an ultra beast.
 	private double maximumPrice; // The maximum price of a listing
 	private List<ItemPrices> customItemPrices; // A list of items with minimum prices
-	private List<JsonElement> bannedItems; // A list of items that can not be sold
+	private List<String> bannedItems; // A list of items that can not be sold
 	private List<String> bannedPokemon; // A list of pokemon that ca not be sold.
 
 	/**
 	 * Constructor to create a default config file.
 	 */
-	public Config() {
+	public ConfigOld() {
 		version = Gts.CONFIG_FILE_VERSION;
 		broadcastListings = true;
 		enablePermissionNodes = true;
@@ -61,7 +58,7 @@ public class Config {
 		customItemPrices = new ArrayList<>();
 		customItemPrices.add(new ItemPrices());
 		bannedItems = new ArrayList<>();
-		bannedItems.add(CodecUtils.encodeItem(new ItemStack(CobblemonItems.LUCKY_EGG)));
+		bannedItems.add("cobblemon:lucky_egg");
 		bannedPokemon = new ArrayList<>();
 		bannedPokemon.add("magikarp");
 		discord = new Webhook();
@@ -75,7 +72,7 @@ public class Config {
 		CompletableFuture<Boolean> futureRead = Utils.readFileAsync("/config/gts/", "config.json",
 				el -> {
 					Gson gson = Utils.newGson();
-					Config cfg = gson.fromJson(el, Config.class);
+					ConfigOld cfg = gson.fromJson(el, ConfigOld.class);
 
 					broadcastListings = cfg.isBroadcastListings();
 					maxListingsPerPlayer = cfg.getMaxListingsPerPlayer();
@@ -91,6 +88,7 @@ public class Config {
 					minPriceUltrabeast = cfg.getMinPriceUltrabeast();
 					maximumPrice = cfg.getMaximumPrice();
 					customItemPrices = cfg.getCustomItemPrices();
+					bannedItems = cfg.getBannedItems();
 					bannedPokemon = cfg.getBannedPokemon();
 					enablePermissionNodes = cfg.isEnablePermissionNodes();
 					discord = cfg.getDiscord() == null ? new Webhook() : cfg.getDiscord();
@@ -99,19 +97,8 @@ public class Config {
 					// If the config version isn't correct, update the file.
 					if (!cfg.getVersion().equals(Gts.CONFIG_FILE_VERSION)) {
 						Gts.LOGGER.info("GTS Config outdated, updating config...");
-
-						ConfigOld cfgOld = gson.fromJson(el, ConfigOld.class);
-						bannedItems.clear();
-
-						for (String item : cfgOld.getBannedItems()) {
-							ItemStack newBannedItem = Utils.parseItemId(item);
-							bannedItems.add(CodecUtils.encodeItem(newBannedItem));
-						}
-
 						write();
 						Gts.LOGGER.info("Config successfully updated for GTS!");
-					} else {
-						bannedItems = cfg.getBannedItems();
 					}
 				});
 
@@ -246,7 +233,7 @@ public class Config {
 	 * Getter for the banned items that can not be listed.
 	 * @return List of banned items as strings.
 	 */
-	public List<JsonElement> getBannedItems() {
+	public List<String> getBannedItems() {
 		return bannedItems;
 	}
 

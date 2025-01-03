@@ -346,7 +346,6 @@ public abstract class Utils {
 				.replaceAll("\\{max_price\\}", "" + Gts.config.getMaximumPrice());
 	}
 
-	// TODO This is used in banned items list. Change it.
 	public static ItemStack parseItemId(String id) {
 
 		CompoundTag tag;

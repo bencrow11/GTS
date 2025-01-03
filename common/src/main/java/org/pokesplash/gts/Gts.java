@@ -17,7 +17,7 @@ public class Gts
 {
 	public static final String MOD_ID = "gts";
 	public static final String LISTING_FILE_PATH = "/config/gts/listings";
-	public static final String CONFIG_FILE_VERSION = "2.1";
+	public static final String CONFIG_FILE_VERSION = "2.2";
 	public static final String LANG_FILE_VERSION = "2.5";
 	public static final String LISTING_FILE_VERSION = "2.0";
 	public static final String HISTORY_FILE_VERSION = "2.0";
@@ -45,17 +45,17 @@ public class Gts
 	}
 
 	public static void reloadNonSensitive() {
-		config = new Config();
 		listings = ListingsProviderAPI.getHighestPriority();
 		history = HistoryProviderAPI.getHighestPriority();
 		timeouts = new TimeoutProvider();
-		config.init();
 		listings.init();
 		history.init();
 		timeouts.read();
 	}
 
 	public static void reloadSensitive() {
+		config = new Config();
+		config.init();
 		language = new Lang();
 		language.init();
 	}
