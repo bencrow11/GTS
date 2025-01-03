@@ -8,12 +8,11 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.util.Utils;
 
 public abstract class ManageListings {
     public static Button getButton() {
         return GooeyButton.builder()
-                .display(Utils.parseItemId(Gts.language.getManageListingsButtonItem()))
+                .display(Gts.language.getManageListingsButtonItem())
                 .with(DataComponents.CUSTOM_NAME, Component.literal(Gts.language.getManageListingsButtonLabel()))
                 .onClick((action) -> {
                     ServerPlayer sender = action.getPlayer();

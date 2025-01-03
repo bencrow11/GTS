@@ -10,12 +10,11 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.ItemListings;
 import org.pokesplash.gts.enumeration.Sort;
-import org.pokesplash.gts.util.Utils;
 
 public abstract class SeeItemListings {
     public static Button getButton() {
         return GooeyButton.builder()
-                .display(Utils.parseItemId(Gts.language.getItemListingsButtonItem()))
+                .display(Gts.language.getItemListingsButtonItem())
                 .with(DataComponents.CUSTOM_NAME,
                         Component.literal(Gts.language.getItemListingsButtonLabel()))
                 .onClick((action) -> {

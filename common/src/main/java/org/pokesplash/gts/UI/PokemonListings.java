@@ -20,7 +20,6 @@ import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.enumeration.Sort;
-import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,7 +47,7 @@ public class PokemonListings {
 		}
 
 		Button sortByPriceButton = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getSortByPriceButtonItem()))
+				.display(Gts.language.getSortByPriceButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getSortByPriceButtonLabel()))
 				.onClick((action) -> {
@@ -59,7 +58,7 @@ public class PokemonListings {
 				.build();
 
 		Button sortByNewestButton = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getSortByNewestButtonItem()))
+				.display(Gts.language.getSortByNewestButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getSortByNewestButtonLabel()))
 				.onClick((action) -> {
@@ -70,7 +69,7 @@ public class PokemonListings {
 				.build();
 
 		Button sortByNameButton = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getSortByNameButtonItem()))
+				.display(Gts.language.getSortByNameButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getSortByPokemonButtonLabel()))
 				.onClick((action) -> {

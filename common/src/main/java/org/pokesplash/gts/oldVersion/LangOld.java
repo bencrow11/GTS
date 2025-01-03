@@ -2,11 +2,13 @@ package org.pokesplash.gts.oldVersion;
 
 import com.google.gson.Gson;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.api.file.Versioned;
+import org.pokesplash.gts.config.Material;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.concurrent.CompletableFuture;
 
-public class LangOld {
+public class LangOld extends Versioned {
 	// placeholders
 	// {listing}
 	// {seller}
@@ -14,9 +16,19 @@ public class LangOld {
 	// {max_listings}
 	// {min_price}
 	// {max_price}
-
-	private String version; // The version of the file.
+	/**
+	 * Titles
+	 */
 	private String title; // Title shown on the top of the UI
+	private String itemListingsTitle; // Item only page.
+	private String pokemonListingsTitle; // Pokemon only page.
+	private String expiredListingsTitle; // Title shown for all expired listings.
+	private String pokemonTitle; // Title show for expired Pokemon.
+	private String itemTitle; // Title shown at the top of the expired item listing.
+	private String filteredListingsTitle; // Title shown when using /search
+	private String historyTitle; // Title for the history page.
+	private String manageTitle; // Title for manage listings page.
+
 
 	/**
 	 * Messages
@@ -42,6 +54,7 @@ public class LangOld {
 	private String listingBought; // Message sent to seller when their listing is bought.
 	private String newListingBroadcast; // Message sent when a new listing is added.
 	private String insufficientInventorySpace; // Message sent when a player doesn't have enough inventory space to receive a listing.
+	private String onlyOnePokemonInParty; // Message sent when a player tries to list a Pokemon when they only have one in their party.
 
 	/**
 	 *  Button Labels
@@ -66,20 +79,20 @@ public class LangOld {
 	 * Button Materials
 	 */
 
-	private String itemListingsButtonItem; // The display item for the "item listings" menu.
-	private String pokemonListingsButtonItem; // The display item for the "pokemon listings" menu.
-	private String manageListingsButtonItem; // The display item for the "manage listings" menu.
-	private String expiredListingsButtonItem; // The material for the expired listings button.
-	private String nextPageButtonItems; // The display item for the "next page" button.
-	private String previousPageButtonItems; // The display item for the "previous page" button.
-	private String fillerItem; // The filler item for the UI.
-	private String purchaseButtonItem; // The material for the purchase button.
-	private String cancelButtonItem; // The material for the cancel button.
-	private String removeListingButtonItem; // The material for the remove listing moderation button.
-	private String sortByPriceButtonItem; // The material for the sort by price button.
-	private String sortByNewestButtonItem; // The material for the sort by newest button.
-	private String sortByNameButtonItem; // The material for the sort by name button.
-	private String relistExpiredButtonItem; // The material for the relist button.
+	private Material itemListingsButtonItem; // The display item for the "item listings" menu.
+	private Material pokemonListingsButtonItem; // The display item for the "pokemon listings" menu.
+	private Material manageListingsButtonItem; // The display item for the "manage listings" menu.
+	private Material expiredListingsButtonItem; // The material for the expired listings button.
+	private Material nextPageButtonItems; // The display item for the "next page" button.
+	private Material previousPageButtonItems; // The display item for the "previous page" button.
+	private Material fillerItem; // The filler item for the UI.
+	private Material purchaseButtonItem; // The material for the purchase button.
+	private Material cancelButtonItem; // The material for the cancel button.
+	private Material removeListingButtonItem; // The material for the remove listing moderation button.
+	private Material sortByPriceButtonItem; // The material for the sort by price button.
+	private Material sortByNewestButtonItem; // The material for the sort by newest button.
+	private Material sortByNameButtonItem; // The material for the sort by name button.
+	private Material relistExpiredButtonItem; // The material for the relist button.
 
 	/**
 	 * Placeholders
@@ -97,11 +110,19 @@ public class LangOld {
 	 * Constructor to generate a file if one doesn't exist.
 	 */
 	public LangOld() {
-		version = Gts.LANG_FILE_VERSION;
-		title = "Gts";
+		super(Gts.LANG_FILE_VERSION);
+		title = "§3Gts";
+		expiredListingsTitle = "§3Gts - Expired";
+		itemTitle = "§3Gts - Item";
+		pokemonTitle = "§3Gts - Pokemon";
+		filteredListingsTitle = "§3Gts - %search%";
+		historyTitle = "§3Gts - History";
+		itemListingsTitle = "§3Gts - Items";
+		pokemonListingsTitle = "§3Gts - Pokemon";
+		manageTitle = "§3Gts - Manage";
 		purchaseMessageBuyer = "§2You have bought {listing} from {seller}!";
 		relistExpiredButtonLabel = "§9Relist Expired";
-		relistExpiredButtonItem = "cobblemon:rare_candy";
+		relistExpiredButtonItem = new Material("cobblemon:rare_candy", "");
 		cancelListing = "§6The {listing} listing has been cancelled!";
 		returnListingSuccess = "§2You have received the {listing} listing!";
 		returnListingFail = "§cCould not receive the {listing} listing.";
@@ -120,19 +141,19 @@ public class LangOld {
 		reloadMessage = "§2Reloaded Configs!";
 		insufficientFunds = "§cYou do not have enough money to purchase this listing!";
 		listingBought = "§2Your {listing} has been bought by {buyer}";
-		itemListingsButtonItem = "cobblemon:assault_vest";
-		pokemonListingsButtonItem = "cobblemon:poke_ball";
-		manageListingsButtonItem = "cobblemon:sachet";
-		nextPageButtonItems = "minecraft:arrow";
-		previousPageButtonItems = "cobblemon:poison_barb";
-		fillerItem = "minecraft:white_stained_glass_pane";
-		purchaseButtonItem = "minecraft:green_stained_glass_pane";
-		cancelButtonItem = "minecraft:red_stained_glass_pane";
-		sortByPriceButtonItem = "minecraft:gold_nugget";
-		sortByNewestButtonItem = "minecraft:clock";
-		sortByNameButtonItem = "minecraft:oak_sign";
-		expiredListingsButtonItem = "cobblemon:link_cable";
-		removeListingButtonItem = "minecraft:orange_stained_glass_pane";
+		itemListingsButtonItem = new Material("cobblemon:assault_vest", "");
+		pokemonListingsButtonItem = new Material("cobblemon:poke_ball", "");
+		manageListingsButtonItem = new Material("cobblemon:sachet", "");
+		nextPageButtonItems = new Material("minecraft:arrow", "");
+		previousPageButtonItems = new Material("cobblemon:poison_barb", "");
+		fillerItem = new Material("minecraft:white_stained_glass_pane", "");
+		purchaseButtonItem = new Material("minecraft:green_stained_glass_pane", "");
+		cancelButtonItem = new Material("minecraft:red_stained_glass_pane", "");
+		sortByPriceButtonItem = new Material("minecraft:gold_nugget", "");
+		sortByNewestButtonItem = new Material("minecraft:clock", "");
+		sortByNameButtonItem = new Material("minecraft:oak_sign", "");
+		expiredListingsButtonItem = new Material("cobblemon:link_cable", "");
+		removeListingButtonItem = new Material("minecraft:orange_stained_glass_pane", "");
 		newListingBroadcast = "§e{seller} §2has just added a §e{listing} §2to GTS.";
 		seller = "§9Seller: §b";
 		price = "§9Price: §b";
@@ -153,14 +174,12 @@ public class LangOld {
 		sortByNameButtonLabel = "§6Sort By Name";
 		receiveListingButtonLabel = "§2Receive Listing";
 		insufficientInventorySpace = "§cYou do not have enough inventory space to receive this listing.";
+		onlyOnePokemonInParty = "§cYou can not list a Pokemon to GTS if you only have less than 2 Pokemon in your party.";
 	}
 
 	/**
 	 * Bunch of getters for the fields.
 	 */
-	public String getVersion() {
-		return version;
-	}
 	public String getPurchaseMessageBuyer() {
 		return purchaseMessageBuyer;
 	}
@@ -218,43 +237,43 @@ public class LangOld {
 	public String getListingBought() {
 		return listingBought;
 	}
-	public String getItemListingsButtonItem() {
+	public Material getItemListingsButtonItem() {
 		return itemListingsButtonItem;
 	}
-	public String getPokemonListingsButtonItem() {
+	public Material getPokemonListingsButtonItem() {
 		return pokemonListingsButtonItem;
 	}
-	public String getManageListingsButtonItem() {
+	public Material getManageListingsButtonItem() {
 		return manageListingsButtonItem;
 	}
-	public String getNextPageButtonItems() {
+	public Material getNextPageButtonItems() {
 		return nextPageButtonItems;
 	}
-	public String getPreviousPageButtonItems() {
+	public Material getPreviousPageButtonItems() {
 		return previousPageButtonItems;
 	}
-	public String getFillerItem() {
+	public Material getFillerItem() {
 		return fillerItem;
 	}
-	public String getPurchaseButtonItem() {
+	public Material getPurchaseButtonItem() {
 		return purchaseButtonItem;
 	}
-	public String getCancelButtonItem() {
+	public Material getCancelButtonItem() {
 		return cancelButtonItem;
 	}
-	public String getSortByPriceButtonItem() {
+	public Material getSortByPriceButtonItem() {
 		return sortByPriceButtonItem;
 	}
-	public String getSortByNewestButtonItem() {
+	public Material getSortByNewestButtonItem() {
 		return sortByNewestButtonItem;
 	}
-	public String getSortByNameButtonItem() {
+	public Material getSortByNameButtonItem() {
 		return sortByNameButtonItem;
 	}
-	public String getExpiredListingsButtonItem() {
+	public Material getExpiredListingsButtonItem() {
 		return expiredListingsButtonItem;
 	}
-	public String getRemoveListingButtonItem() {
+	public Material getRemoveListingButtonItem() {
 		return removeListingButtonItem;
 	}
 	public String getNewListingBroadcast() {
@@ -321,23 +340,81 @@ public class LangOld {
 	public String getRelistExpiredButtonLabel() {
 		return relistExpiredButtonLabel;
 	}
-	public String getRelistExpiredButtonItem() {
+	public Material getRelistExpiredButtonItem() {
 		return relistExpiredButtonItem;
 	}
+	public String getItemTitle() {
+		return itemTitle;
+	}
+	public String getExpiredListingsTitle() {
+		return expiredListingsTitle;
+	}
+	public String getPokemonTitle() {
+		return pokemonTitle;
+	}
+	public String getFilteredListingsTitle() {
+		return filteredListingsTitle;
+	}
+	public String getHistoryTitle() {
+		return historyTitle;
+	}
+	public String getItemListingsTitle() {
+		return itemListingsTitle;
+	}
+	public String getManageTitle() {
+		return manageTitle;
+	}
+	public String getPokemonListingsTitle() {
+		return pokemonListingsTitle;
+	}
+	public String getOnlyOnePokemonInParty() { return onlyOnePokemonInParty; }
 
 	/**
 	 * Method to initialize the config.
 	 */
 	public void init() {
-		CompletableFuture<Boolean> futureRead = Utils.readFileAsync("/config/gts/", "lang.json",
+
+		CompletableFuture<Boolean> futureRead = read();
+
+		if (!futureRead.join()) {
+			Gts.LOGGER.info("No lang.json file found for GTS. Attempting to generate one.");
+
+			CompletableFuture<Boolean> futureWrite = write();
+
+			if (!futureWrite.join()) {
+				Gts.LOGGER.fatal("Could not write lang.json for GTS.");
+			}
+			return;
+		}
+		Gts.LOGGER.info("GTS lang file read successfully.");
+	}
+
+	private CompletableFuture<Boolean> write() {
+		Gson gson = Utils.newGson();
+		String data = gson.toJson(this);
+		return Utils.writeFileAsync("/config/gts/", "lang.json", data);
+	}
+
+	private CompletableFuture<Boolean> read() {
+		return Utils.readFileAsync("/config/gts/", "lang.json",
 				el -> {
 					Gson gson = Utils.newGson();
+
+					Versioned versioned = gson.fromJson(el, Versioned.class);
+
 					LangOld lang = gson.fromJson(el, LangOld.class);
 
 					title = lang.getTitle();
+					itemTitle = lang.getItemTitle();
+					expiredListingsTitle = lang.getExpiredListingsTitle();
+					pokemonTitle = lang.getPokemonTitle();
+					filteredListingsTitle = lang.getFilteredListingsTitle();
+					historyTitle = lang.getHistoryTitle();
+					itemListingsTitle = lang.getItemListingsTitle();
+					manageTitle = lang.getManageTitle();
+					pokemonListingsTitle = lang.getPokemonListingsTitle();
 					purchaseMessageBuyer = lang.getPurchaseMessageBuyer();
 					cancelListing = lang.getCancelListing();
-					relistExpiredButtonItem = lang.getRelistExpiredButtonItem();
 					relistExpiredButtonLabel = lang.getRelistExpiredButtonLabel();
 					returnListingSuccess = lang.getReturnListingSuccess();
 					returnListingFail = lang.getReturnListingFail();
@@ -356,19 +433,6 @@ public class LangOld {
 					reloadMessage = lang.getReloadMessage();
 					insufficientFunds = lang.getInsufficientFunds();
 					listingBought = lang.getListingBought();
-					itemListingsButtonItem = lang.getItemListingsButtonItem();
-					pokemonListingsButtonItem = lang.getPokemonListingsButtonItem();
-					manageListingsButtonItem = lang.getManageListingsButtonItem();
-					nextPageButtonItems = lang.getNextPageButtonItems();
-					previousPageButtonItems = lang.getPreviousPageButtonItems();
-					fillerItem = lang.getFillerItem();
-					purchaseButtonItem = lang.getPurchaseButtonItem();
-					cancelButtonItem = lang.getCancelButtonItem();
-					sortByPriceButtonItem = lang.getSortByPriceButtonItem();
-					sortByNewestButtonItem = lang.getSortByNewestButtonItem();
-					sortByNameButtonItem = lang.getSortByNameButtonItem();
-					expiredListingsButtonItem = lang.getExpiredListingsButtonItem();
-					removeListingButtonItem = lang.getRemoveListingButtonItem();
 					newListingBroadcast = lang.getNewListingBroadcast();
 					seller = lang.getSeller();
 					price = lang.getPrice();
@@ -388,31 +452,28 @@ public class LangOld {
 					receiveListingButtonLabel = lang.getReceiveListingButtonLabel();
 					sold_date = lang.getSold_date();
 					buyer = lang.getBuyer();
+					insufficientInventorySpace = lang.getInsufficientInventorySpace();
+					itemListingsButtonItem = lang.getItemListingsButtonItem();
+					pokemonListingsButtonItem = lang.getPokemonListingsButtonItem();
+					manageListingsButtonItem = lang.getManageListingsButtonItem();
+					nextPageButtonItems = lang.getNextPageButtonItems();
+					previousPageButtonItems = lang.getPreviousPageButtonItems();
+					fillerItem = lang.getFillerItem();
+					purchaseButtonItem = lang.getPurchaseButtonItem();
+					cancelButtonItem = lang.getCancelButtonItem();
+					sortByPriceButtonItem = lang.getSortByPriceButtonItem();
+					sortByNewestButtonItem = lang.getSortByNewestButtonItem();
+					sortByNameButtonItem = lang.getSortByNameButtonItem();
+					expiredListingsButtonItem = lang.getExpiredListingsButtonItem();
+					removeListingButtonItem = lang.getRemoveListingButtonItem();
+					relistExpiredButtonItem = lang.getRelistExpiredButtonItem();
+					onlyOnePokemonInParty = lang.getOnlyOnePokemonInParty();
 
 					// If the lang version isn't correct, update the file.
-					if (!lang.getVersion().equals(Gts.LANG_FILE_VERSION)) {
+					if (!versioned.getVersion().equals(Gts.LANG_FILE_VERSION)) {
 						write();
+						read();
 					}
-
-					insufficientInventorySpace = lang.getInsufficientInventorySpace();
-		});
-
-		if (!futureRead.join()) {
-			Gts.LOGGER.info("No lang.json file found for GTS. Attempting to generate one.");
-
-			CompletableFuture<Boolean> futureWrite = write();
-
-			if (!futureWrite.join()) {
-				Gts.LOGGER.fatal("Could not write lang.json for GTS.");
-			}
-			return;
-		}
-		Gts.LOGGER.info("GTS lang file read successfully.");
-	}
-
-	private CompletableFuture<Boolean> write() {
-		Gson gson = Utils.newGson();
-		String data = gson.toJson(this);
-		return Utils.writeFileAsync("/config/gts/", "lang.json", data);
+				});
 	}
 }

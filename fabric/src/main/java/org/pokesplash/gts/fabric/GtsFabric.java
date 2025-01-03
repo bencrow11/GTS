@@ -11,7 +11,10 @@ public class GtsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         CommandRegistrationCallback.EVENT.register(CommandsRegistry::registerCommands); // Registers Commands
-        ServerWorldEvents.LOAD.register((t, e) -> Gts.server = t);
+        ServerWorldEvents.LOAD.register((t, e) -> {
+            Gts.server = t;
+            Gts.reloadSensitive();
+        });
         ServerTickEvents.END_SERVER_TICK.register((e) -> {
             if (e.getTickCount() % Gts.ticksPerCheck == 0) {
                 Gts.listings.check();

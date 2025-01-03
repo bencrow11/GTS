@@ -47,7 +47,7 @@ public class ItemListings {
 		}
 
 		Button sortByPriceButton = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getSortByPriceButtonItem()))
+				.display(Gts.language.getSortByPriceButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getSortByPriceButtonLabel()))
 				.onClick((action) -> {
@@ -58,7 +58,7 @@ public class ItemListings {
 				.build();
 
 		Button sortByNewestButton = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getSortByNewestButtonItem()))
+				.display(Gts.language.getSortByNewestButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getSortByNewestButtonLabel()))
 				.onClick((action) -> {
@@ -69,7 +69,7 @@ public class ItemListings {
 				.build();
 
 		Button sortByNameButton = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getSortByNameButtonItem()))
+				.display(Gts.language.getSortByNameButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getSortByNameButtonLabel()))
 				.onClick((action) -> {

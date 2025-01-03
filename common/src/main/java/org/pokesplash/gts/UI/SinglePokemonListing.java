@@ -45,7 +45,7 @@ public class SinglePokemonListing {
 				.build();
 
 		Button purchase = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
+				.display(Gts.language.getPurchaseButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getConfirmPurchaseButtonLabel()))
 				.onClick((action) -> {
@@ -87,7 +87,7 @@ public class SinglePokemonListing {
 				.build();
 
 		Button cancel = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getCancelButtonItem()))
+				.display(Gts.language.getCancelButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getCancelPurchaseButtonLabel()))
 				.onClick((action) -> {
@@ -98,7 +98,7 @@ public class SinglePokemonListing {
 				.build();
 
 		Button removeListing = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getRemoveListingButtonItem()))
+				.display(Gts.language.getRemoveListingButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getRemoveListingButtonLabel()))
 				.onClick((action) -> {

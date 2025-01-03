@@ -9,12 +9,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.AllListings;
-import org.pokesplash.gts.util.Utils;
 
 public abstract class RelistAll {
     public static Button getButton() {
         return GooeyButton.builder()
-                .display(Utils.parseItemId(Gts.language.getRelistExpiredButtonItem()))
+                .display(Gts.language.getRelistExpiredButtonItem())
                 .with(DataComponents.CUSTOM_NAME,
                         Component.literal(Gts.language.getRelistExpiredButtonLabel()))
                 .onClick((action) -> {

@@ -11,12 +11,11 @@ import net.minecraft.util.Unit;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.PokemonListings;
 import org.pokesplash.gts.enumeration.Sort;
-import org.pokesplash.gts.util.Utils;
 
 public abstract class SeePokemonListings {
     public static Button getButton() {
         return GooeyButton.builder()
-                .display(Utils.parseItemId(Gts.language.getPokemonListingsButtonItem()))
+                .display(Gts.language.getPokemonListingsButtonItem())
                 .with(DataComponents.CUSTOM_NAME,
                         Component.literal(Gts.language.getPokemonListingsButtonLabel()))
                 .with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)

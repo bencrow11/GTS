@@ -45,7 +45,7 @@ public class ExpiredPokemonListing {
 				.build();
 
 		Button receiveListing = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getPurchaseButtonItem()))
+				.display(Gts.language.getPurchaseButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getReceiveListingButtonLabel()))
 				.onClick((action) -> {
@@ -69,7 +69,7 @@ public class ExpiredPokemonListing {
 				.build();
 
 		Button cancel = GooeyButton.builder()
-				.display(Utils.parseItemId(Gts.language.getCancelButtonItem()))
+				.display(Gts.language.getCancelButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getCancelPurchaseButtonLabel()))
 				.onClick((action) -> {

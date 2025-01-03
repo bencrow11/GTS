@@ -28,6 +28,7 @@ public class GtsForge {
     @SubscribeEvent
     public void worldLoadEvent(LevelEvent.Load event) {
         Gts.server = event.getLevel().getServer();
+        Gts.reloadSensitive();
     }
 
     @SubscribeEvent
