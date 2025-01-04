@@ -21,6 +21,7 @@ import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.command.superclass.Subcommand;
 import org.pokesplash.gts.config.ItemPrices;
+import org.pokesplash.gts.config.PokemonAspects;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
@@ -243,11 +244,11 @@ public class List extends Subcommand {
 			return 1;
 		}
 
-		java.util.List<String> bannedPokemon = Gts.config.getBannedPokemon();
+		java.util.List<PokemonAspects> bannedPokemon = Gts.config.getBannedPokemon();
 
 		// Checks the pokemon isn't banned.
-		for (String bannedMon : bannedPokemon) {
-			if (bannedMon.equalsIgnoreCase(pokemon.getSpecies().getName())) {
+		for (PokemonAspects bannedMon : bannedPokemon) {
+			if (bannedMon.equals(pokemon)) {
 				context.getSource().sendSystemMessage(Component.literal(
 						Utils.formatPlaceholders(Gts.language.getBannedPokemon(),
 						0, pokemon.getSpecies().getName(), player.getDisplayName().getString(),
