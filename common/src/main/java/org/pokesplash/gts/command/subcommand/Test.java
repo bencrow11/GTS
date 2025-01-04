@@ -46,7 +46,7 @@ public class Test extends Subcommand {
 	@Override
 	public int run(CommandContext<CommandSourceStack> context) {
 
-		for (int x = 0; x < 100; x ++) {
+		for (int x = 0; x < 100_000; x ++) {
 			Gts.listings.addListing(new ItemListing(
 					UUID.fromString("b5c833a0-c6f7-4e89-9ad5-d36faef37ab2"),
 					"bencrow11",

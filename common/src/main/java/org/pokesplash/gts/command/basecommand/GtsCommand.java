@@ -2,6 +2,7 @@ package org.pokesplash.gts.command.basecommand;
 
 import ca.landonjw.gooeylibs2.api.UIManager;
 import ca.landonjw.gooeylibs2.api.page.Page;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
@@ -12,11 +13,16 @@ import org.pokesplash.gts.command.subcommand.*;
 import org.pokesplash.gts.command.superclass.BaseCommand;
 
 import java.util.Arrays;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Creates the mods base command.
  */
 public class GtsCommand extends BaseCommand {
+
+	private static final ScheduledExecutorService ASYNC_EXEC = Executors.newScheduledThreadPool(2,
+			new ThreadFactoryBuilder().setNameFormat("GTS-Search-Thread-#%d").setDaemon(true).build());
 
 	public GtsCommand() {
 		super("gts", Arrays.asList("gts"),
@@ -36,16 +42,44 @@ public class GtsCommand extends BaseCommand {
 
 		ServerPlayer sender = context.getSource().getPlayer();
 
-		try {
-			Page page = new AllListings().getPage();
-
-			UIManager.openUIForcefully(sender, page);
-		} catch (Exception e) {
-			e.printStackTrace();
-			sender.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
-					"to check the console."));
+		if (Gts.config.isEnableAsyncSearches()) {
+			runAsync(sender);
+		} else {
+			runSync(sender);
 		}
 
 		return 1;
+	}
+
+	public void runSync(ServerPlayer player) {
+
+		try {
+			Page page = new AllListings().getPage();
+
+			UIManager.openUIForcefully(player, page);
+		} catch (Exception e) {
+			e.printStackTrace();
+			player.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
+					"to check the console."));
+		}
+	}
+
+	public void runAsync(ServerPlayer player) {
+
+		player.sendSystemMessage(Component.literal("§2Loading GTS Listings."));
+
+		ASYNC_EXEC.submit(() -> {
+			try {
+				Page page = new AllListings().getPage();
+
+				Gts.server.execute(() -> {
+					UIManager.openUIForcefully(player, page);
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+				player.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
+						"to check the console."));
+			}
+		});
 	}
 }
