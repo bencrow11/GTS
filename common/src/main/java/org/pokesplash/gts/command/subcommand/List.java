@@ -22,6 +22,7 @@ import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.command.superclass.Subcommand;
 import org.pokesplash.gts.config.ItemPrices;
 import org.pokesplash.gts.config.PokemonAspects;
+import org.pokesplash.gts.config.PokemonPrices;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
@@ -230,6 +231,15 @@ public class List extends Subcommand {
 			minPrice += Gts.config.getMinPriceUltrabeast();
 		}
 
+		// If the Pokemon has a minimum price, add it.
+		java.util.List<PokemonPrices> minPrices = Gts.config.getCustomPokemonPrices();
+		for (PokemonPrices pokemonPrices : minPrices) {
+			if (pokemonPrices.getPokemon().equals(pokemon)) {
+				minPrice += pokemonPrices.getPrice();
+				break;
+			}
+		}
+
 		// If less than min price, cancel the command.
 		if (price < minPrice) {
 			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMinimumListingPrice(),
@@ -321,7 +331,7 @@ public class List extends Subcommand {
 
 				if (min.getItem().equals(item.getItem()) &&
 						ItemStack.isSameItemSameComponents(min, item)) {
-					minPrice += minItem.getMin_price();
+					minPrice += minItem.getMinPrice();
 					break;
 				}
 			}

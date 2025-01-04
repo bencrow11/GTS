@@ -68,7 +68,7 @@ public class PokemonAspects {
                 isSameAbility = true;
             }
 
-            if (gender.trim().isBlank() || ability.equalsIgnoreCase(other.getGender().name())) {
+            if (gender.trim().isBlank() || gender.equalsIgnoreCase(other.getGender().name())) {
                 isSameGender = true;
             }
 

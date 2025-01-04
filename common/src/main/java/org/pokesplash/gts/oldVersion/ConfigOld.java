@@ -2,7 +2,6 @@ package org.pokesplash.gts.oldVersion;
 
 import com.google.gson.Gson;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.config.ItemPrices;
 import org.pokesplash.gts.config.Webhook;
 import org.pokesplash.gts.util.Utils;
 

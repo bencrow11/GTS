@@ -15,19 +15,19 @@ public class ItemPrices {
 	private JsonElement item;
 
 	// The price of the item.
-	private double min_price;
+	private double price;
 
 	/**
 	 * Constructor to create an example item.
 	 */
 	public ItemPrices() {
 		item = CodecUtils.encodeItem(new ItemStack(CobblemonItems.ASSAULT_VEST));
-		min_price = 10000;
+		price = 10000;
 	}
 
 	public ItemPrices(ItemPricesOld old) {
 		item = CodecUtils.encodeItem(Utils.parseItemId(old.getItem_name()));
-		min_price = old.getMin_price();
+		price = old.getMin_price();
 	}
 
 	public JsonElement getItem() {
@@ -38,7 +38,7 @@ public class ItemPrices {
 	 * Getter for the minimum price of the item.
 	 * @return min price as an int.
 	 */
-	public double getMin_price() {
-		return min_price;
+	public double getMinPrice() {
+		return price;
 	}
 }

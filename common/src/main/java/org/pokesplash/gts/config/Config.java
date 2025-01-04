@@ -1,7 +1,6 @@
 package org.pokesplash.gts.config;
 
 import com.cobblemon.mod.common.CobblemonItems;
-import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.world.item.ItemStack;
@@ -39,7 +38,8 @@ public class Config extends Versioned {
 	private double maximumPrice; // The maximum price of a listing
 	private List<ItemPrices> customItemPrices; // A list of items with minimum prices
 	private List<JsonElement> bannedItems; // A list of items that can not be sold
-	private List<PokemonAspects> bannedPokemon; // A list of pokemon that ca not be sold.
+	private List<PokemonPrices> customPokemonPrices; // A list of Pokemon with minimum prices.
+	private List<PokemonAspects> bannedPokemon; // A list of pokemon that can not be sold.
 
 	/**
 	 * Constructor to create a default config file.
@@ -64,6 +64,8 @@ public class Config extends Versioned {
 		customItemPrices.add(new ItemPrices());
 		bannedItems = new ArrayList<>();
 		bannedItems.add(CodecUtils.encodeItem(new ItemStack(CobblemonItems.LUCKY_EGG)));
+		customPokemonPrices = new ArrayList<>();
+		customPokemonPrices.add(new PokemonPrices());
 		bannedPokemon = new ArrayList<>();
 		bannedPokemon.add(new PokemonAspects());
 		discord = new Webhook();
@@ -141,6 +143,7 @@ public class Config extends Versioned {
 						showBreedable = cfg.isShowBreedable();
 						bannedItems = cfg.getBannedItems();
 						customItemPrices = cfg.getCustomItemPrices();
+						customPokemonPrices = cfg.getCustomPokemonPrices();
 						bannedPokemon = cfg.getBannedPokemon();
 					}
 				});
@@ -331,5 +334,9 @@ public class Config extends Versioned {
 
 	public boolean isShowBreedable() {
 		return showBreedable;
+	}
+
+	public List<PokemonPrices> getCustomPokemonPrices() {
+		return customPokemonPrices;
 	}
 }
