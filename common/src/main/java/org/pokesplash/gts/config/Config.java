@@ -20,6 +20,8 @@ import java.util.concurrent.CompletableFuture;
  * Config file.
  */
 public class Config extends Versioned {
+	private boolean enablePokemonSales; // Allows players to sell Pokemon on GTS.
+	private boolean enableItemSales; // Allows players to sell Items on GTS.
 	private boolean broadcastListings; // Broadcasts new listings to chat.
 	private boolean enablePermissionNodes; // Should permission nodes or levels be used.
 	private int maxListingsPerPlayer; // The maximum listings each player is allowed.
@@ -47,6 +49,8 @@ public class Config extends Versioned {
 	 */
 	public Config() {
 		super(Gts.CONFIG_FILE_VERSION);
+		enablePokemonSales = true;
+		enableItemSales = true;
 		broadcastListings = true;
 		enablePermissionNodes = true;
 		maxListingsPerPlayer = 8;
@@ -127,6 +131,8 @@ public class Config extends Versioned {
 						Gts.LOGGER.info("Config successfully updated for GTS!");
 					} else {
 						Config cfg = gson.fromJson(el, Config.class);
+						enablePokemonSales = cfg.isEnablePokemonSales();
+						enableItemSales = cfg.isEnableItemSales();
 						broadcastListings = cfg.isBroadcastListings();
 						maxListingsPerPlayer = cfg.getMaxListingsPerPlayer();
 						listingDuration = cfg.getListingDuration();
@@ -345,5 +351,13 @@ public class Config extends Versioned {
 
 	public double getTaxRate() {
 		return taxRate;
+	}
+
+	public boolean isEnablePokemonSales() {
+		return enablePokemonSales;
+	}
+
+	public boolean isEnableItemSales() {
+		return enableItemSales;
 	}
 }

@@ -44,6 +44,13 @@ public class List extends Subcommand {
 		return Commands.literal("sell")
 				.executes(this::showUsage)
 				.then(Commands.literal("pokemon")
+						.requires(ctx -> {
+							if (ctx.isPlayer()) {
+								return Gts.config.isEnablePokemonSales();
+							} else {
+								return false;
+							}
+						})
 						.executes(this::showPokemonUsage)
 						.then(Commands.argument("slot", IntegerArgumentType.integer())
 								.suggests((ctx, builder) -> {
@@ -66,6 +73,13 @@ public class List extends Subcommand {
 										})
 										.executes(this::run))))
 				.then(Commands.literal("item")
+						.requires(ctx -> {
+							if (ctx.isPlayer()) {
+								return Gts.config.isEnableItemSales();
+							} else {
+								return false;
+							}
+						})
 						.executes(this::showItemUsage)
 						.then(Commands.argument("price", FloatArgumentType.floatArg())
 								.suggests((ctx, builder) -> {
