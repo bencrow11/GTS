@@ -7,11 +7,11 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.command.superclass.Subcommand;
+import org.pokesplash.gts.permission.LuckPermsUtils;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.concurrent.CompletableFuture;
@@ -31,8 +31,8 @@ public class SaveItem extends Subcommand {
 		return Commands.literal("saveitem")
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return Gts.permissions.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("GtsSaveItem"));
+						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
+								Gts.permissions.getPermission("saveitem"));
 					} else {
 						return true;
 					}

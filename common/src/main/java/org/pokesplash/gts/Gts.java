@@ -9,9 +9,9 @@ import org.pokesplash.gts.config.Config;
 import org.pokesplash.gts.config.Lang;
 import org.pokesplash.gts.history.HistoryProvider;
 import org.pokesplash.gts.moderation.TimeoutProvider;
+import org.pokesplash.gts.permission.PermissionProvider;
 import org.pokesplash.gts.util.CommandsRegistry;
 import org.pokesplash.gts.util.GtsLogger;
-import org.pokesplash.gts.util.Permissions;
 
 public class Gts
 {
@@ -25,7 +25,7 @@ public class Gts
 	public static int debugTime = 10;
 	public static int ticksPerCheck = 20;
 	public static Config config;
-	public static final Permissions permissions = new Permissions();
+	public static final PermissionProvider permissions = new PermissionProvider();
 	public static ListingsProvider listings;
 	public static HistoryProvider history;
 	public static TimeoutProvider timeouts;

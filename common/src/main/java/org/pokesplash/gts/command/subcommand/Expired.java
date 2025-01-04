@@ -8,8 +8,10 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.ExpiredListings;
 import org.pokesplash.gts.command.superclass.Subcommand;
+import org.pokesplash.gts.permission.LuckPermsUtils;
 
 public class Expired extends Subcommand {
 
@@ -24,6 +26,14 @@ public class Expired extends Subcommand {
 	@Override
 	public LiteralCommandNode<CommandSourceStack> build() {
 		return Commands.literal("expired")
+				.requires(ctx -> {
+					if (ctx.isPlayer()) {
+						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
+								Gts.permissions.getPermission("expired"));
+					} else {
+						return true;
+					}
+				})
 				.executes(this::run)
 				.build();
 	}

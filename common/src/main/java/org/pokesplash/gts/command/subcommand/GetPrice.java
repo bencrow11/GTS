@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.command.superclass.Subcommand;
+import org.pokesplash.gts.permission.LuckPermsUtils;
 
 public class GetPrice extends Subcommand {
 
@@ -26,6 +27,14 @@ public class GetPrice extends Subcommand {
 	@Override
 	public LiteralCommandNode<CommandSourceStack> build() {
 		return Commands.literal("getprice")
+				.requires(ctx -> {
+					if (ctx.isPlayer()) {
+						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
+								Gts.permissions.getPermission("getprice"));
+					} else {
+						return true;
+					}
+				})
 				.executes(this::runItem)
 					.then(Commands.argument("slot", IntegerArgumentType.integer(1, 6))
 					.executes(this::runPokemon))

@@ -1,12 +1,12 @@
 package org.pokesplash.gts.command.superclass;
 
-import com.cobblemon.mod.common.api.permission.CobblemonPermission;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.permission.LuckPermsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public abstract class BaseCommand {
 	private ArrayList<String> aliases;
 
 	// The permission for the command.
-	private CobblemonPermission permission;
+	private String permission;
 
 	// A list of subcommands for the base command.
 	private ArrayList<Subcommand> subcommands;
@@ -34,7 +34,7 @@ public abstract class BaseCommand {
 	 * @param aliases A list of the aliases that should be used for this command.
 	 * @param subcommands A list of the subcommands of the base command.
 	 */
-	public BaseCommand(String commandString, List<String> aliases, CobblemonPermission permission,
+	public BaseCommand(String commandString, List<String> aliases, String permission,
 	                   List<Subcommand> subcommands) {
 		this.commandString = commandString;
 
@@ -60,8 +60,7 @@ public abstract class BaseCommand {
 				.requires(ctx -> {
 					if (Gts.config.isEnablePermissionNodes()) {
 						if (ctx.isPlayer()) {
-							return Gts.permissions.hasPermission(ctx.getPlayer(),
-									permission);
+							return LuckPermsUtils.hasPermission(ctx.getPlayer(), permission);
 						} else {
 							return true;
 						}
