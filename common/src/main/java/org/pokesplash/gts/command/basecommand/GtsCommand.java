@@ -28,7 +28,8 @@ public class GtsCommand extends BaseCommand {
 		super("gts", Arrays.asList("gts"),
 				Gts.permissions.getPermission("GtsCommand"),
 				Arrays.asList(new Manage(), new Expired(), new List(), new History(),
-						new Reload(), new Open(), new Debug(), new Search(), new GetPrice(), new Timeout()));
+						new Reload(), new Open(), new Debug(), new Search(), new GetPrice(), new Timeout(),
+						new SaveItem()));
 	}
 
 	// Runs when the base command is run with no subcommands.

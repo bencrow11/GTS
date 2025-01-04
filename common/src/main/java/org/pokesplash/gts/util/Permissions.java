@@ -25,6 +25,7 @@ public class Permissions {
 		createPermission("GtsReload", "gts.reload", 2);
 		createPermission("GtsDebug", "gts.debug", 2);
 		createPermission("GtsTimeout", "gts.timeout", 2);
+		createPermission("GtsSaveItem", "gts.saveitem", 2);
 	}
 
 	/**
