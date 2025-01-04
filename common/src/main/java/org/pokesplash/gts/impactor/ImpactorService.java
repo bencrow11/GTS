@@ -64,28 +64,4 @@ public class ImpactorService implements GtsEconomy {
 
 		return transaction.successful();
 	}
-
-	/**
-	 * Method to transfer a balance from one account to another.
-	 * @param sender The account that is sending the balance.
-	 * @param receiver The account that is receiving the balance.
-	 * @param amount The amount to be transferred.
-	 * @return true if the transaction was successful.
-	 */
-	@Override
-	public boolean transfer(UUID sender, UUID receiver, double amount) {
-
-		boolean removedMoney = remove(sender, amount);
-		boolean addMoney = add(receiver, amount);
-
-		if (!removedMoney && addMoney) {
-			remove(receiver, amount);
-		}
-
-		if (removedMoney && !addMoney) {
-			add(sender, amount);
-		}
-
-		return removedMoney && addMoney;
-	}
 }

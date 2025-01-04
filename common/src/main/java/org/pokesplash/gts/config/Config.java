@@ -26,6 +26,7 @@ public class Config extends Versioned {
 	private int listingDuration; // The length of each listing.
 	private Webhook discord; // Config settings for using discord webhooks.
 	private boolean showBreedable; // Should GTS look for "breedable" tag.
+	private double taxRate; // How much the seller should be taxed after a sale.
 	private double minPrice1IV; // The minimum price of a pokemon with one full stat (31 IVs)
 	private double minPrice2IV; // The minimum price of a pokemon with two full stat (31 IVs)
 	private double minPrice3IV; // The minimum price of a pokemon with three full stat (31 IVs)
@@ -50,6 +51,7 @@ public class Config extends Versioned {
 		enablePermissionNodes = true;
 		maxListingsPerPlayer = 8;
 		listingDuration = 72;
+		taxRate = 0.1;
 		minPrice1IV = 10000;
 		minPrice2IV = 20000;
 		minPrice3IV = 30000;
@@ -128,6 +130,7 @@ public class Config extends Versioned {
 						broadcastListings = cfg.isBroadcastListings();
 						maxListingsPerPlayer = cfg.getMaxListingsPerPlayer();
 						listingDuration = cfg.getListingDuration();
+						taxRate = cfg.getTaxRate();
 						minPrice1IV = cfg.getMinPrice1IV();
 						minPrice2IV = cfg.getMinPrice2IV();
 						minPrice3IV = cfg.getMinPrice3IV();
@@ -338,5 +341,9 @@ public class Config extends Versioned {
 
 	public List<PokemonPrices> getCustomPokemonPrices() {
 		return customPokemonPrices;
+	}
+
+	public double getTaxRate() {
+		return taxRate;
 	}
 }

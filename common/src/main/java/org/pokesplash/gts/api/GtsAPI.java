@@ -122,14 +122,14 @@ public abstract class GtsAPI {
 	public static boolean sale(UUID seller, ServerPlayer buyer, PokemonListing listing) {
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
-		boolean transactionSuccess = GtsEconomyProvider.getHighestEconomy().transfer(buyer.getUUID(), seller, listing.getPrice());
+		boolean transactionSuccess = transferFunds(seller, buyer.getUUID(), listing.getPrice());
 
 		// If listing failed to be removed, cancel the transaction.
 		if (!listingsSuccess) {
 			Gts.listings.addListing(listing);
 
 			if (transactionSuccess) {
-				GtsEconomyProvider.getHighestEconomy().transfer(seller, buyer.getUUID(), listing.getPrice());
+				revertFundTransfer(seller, buyer.getUUID(), listing.getPrice());
 			}
 			return false;
 		}
@@ -167,15 +167,14 @@ public abstract class GtsAPI {
 
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
-		boolean transactionSuccess =
-				GtsEconomyProvider.getHighestEconomy().transfer(buyer.getUUID(), seller, listing.getPrice());
+		boolean transactionSuccess = transferFunds(seller, buyer.getUUID(), listing.getPrice());
 
 		// If listing failed to be removed, cancel the transaction.
 		if (!listingsSuccess) {
 			Gts.listings.addListing(listing);
 
 			if (transactionSuccess) {
-				GtsEconomyProvider.getHighestEconomy().transfer(seller, buyer.getUUID(), listing.getPrice());
+				revertFundTransfer(seller, buyer.getUUID(), listing.getPrice());
 			}
 			return false;
 		}
@@ -199,6 +198,42 @@ public abstract class GtsAPI {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Transfers funds from one user to another.
+	 * @param seller The person receiving the money.
+	 * @param buyer The person sending the money.
+	 * @param amount The amount to send (Not accounting for tax).
+	 * @return true if the transfer was successful, otherwise false.
+	 */
+	private static boolean transferFunds(UUID seller, UUID buyer, double amount) {
+		boolean takeSuccess = GtsEconomyProvider.getHighestEconomy().remove(buyer, amount);
+		boolean giveSuccess = GtsEconomyProvider.getHighestEconomy().add(seller,
+				(1 - Gts.config.getTaxRate()) * amount);
+
+		if (!takeSuccess && giveSuccess) {
+			GtsEconomyProvider.getHighestEconomy().remove(seller,
+					(1 - Gts.config.getTaxRate()) * amount);
+		}
+
+		if (takeSuccess && !giveSuccess) {
+			GtsEconomyProvider.getHighestEconomy().add(buyer, amount);
+		}
+
+		return takeSuccess && giveSuccess;
+	}
+
+	/**
+	 * Reverts a transaction.
+	 * @param seller The original seller to remove the paid amount from.
+	 * @param buyer The original buyer to send the money back to.
+	 * @param amount The transaction amount (not accounting for tax).
+	 */
+	private static void revertFundTransfer(UUID seller, UUID buyer, double amount) {
+		GtsEconomyProvider.getHighestEconomy().add(buyer, amount);
+		GtsEconomyProvider.getHighestEconomy().remove(seller,
+				(1 - Gts.config.getTaxRate()) * amount);
 	}
 
 	/**
