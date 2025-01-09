@@ -8,20 +8,17 @@ import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
 import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
-import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.ExpiredListings;
 import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
-import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,50 +35,33 @@ public class ManageListings {
 	 */
 	public Page getPage(UUID owner) {
 
-		List<PokemonListing> pkmListings = Gts.listings.getPokemonListingsByPlayer(owner);
-		List<ItemListing> itmListings = Gts.listings.getItemListingsByPlayer(owner);
+		List<Listing> listings = Gts.listings.getListingsByPlayer(owner);
 
 		PlaceholderButton placeholder = new PlaceholderButton();
 
-		List<Button> pokemonButtons = new ArrayList<>();
-		if (pkmListings != null) {
-			for (PokemonListing listing : pkmListings) {
+		List<Button> buttons = new ArrayList<>();
+		if (!listings.isEmpty()) {
+			listings.forEach(listing -> {
 				List<Component> lore = ListingInfo.parse(listing);
 
-				lore.addAll(PokemonInfo.parse(listing));
+				if (listing.isPokemon()) {
+					PokemonListing pokemonListing = (PokemonListing) listing;
+					lore.addAll(PokemonInfo.parse(pokemonListing.getListing()));
+				}
 
 				Button button = GooeyButton.builder()
-						.display(PokemonItem.from(listing.getListing(), 1))
+						.display(listing.getIcon())
 						.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
 						.with(DataComponents.LORE, new ItemLore(lore))
 						.onClick((action) -> {
 							ServerPlayer sender = action.getPlayer();
-							Page page = new SinglePokemonListing().getPage(sender, listing);
+							Page page = new SingleListing().getPage(sender, listing);
 							UIManager.openUIForcefully(sender, page);
 						})
 						.build();
-				pokemonButtons.add(button);
-			}
-		}
 
-		List<Button> itemButtons = new ArrayList<>();
-		if (itmListings != null) {
-			for (ItemListing listing : itmListings) {
-				List<Component> lore = ListingInfo.parse(listing);
-
-				Button button = GooeyButton.builder()
-						.display(listing.getListing())
-						.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
-						.with(DataComponents.LORE, new ItemLore(lore))
-						.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-						.onClick((action) -> {
-							ServerPlayer sender = action.getPlayer();
-							Page page = new SingleItemListing().getPage(sender, listing);
-							UIManager.openUIForcefully(sender, page);
-						})
-						.build();
-				itemButtons.add(button);
-			}
+				buttons.add(button);
+			});
 		}
 
 		ChestTemplate template = ChestTemplate.builder(6)
@@ -95,9 +75,7 @@ public class ManageListings {
 				.set(52, RelistAll.getButton())
 				.build();
 
-		pokemonButtons.addAll(itemButtons);
-
-		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
+		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
 		page.setTitle(Gts.language.getManageTitle());
 
 		setPageTitle(page);

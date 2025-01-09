@@ -1,5 +1,6 @@
 package org.pokesplash.gts.Listing;
 
+import com.cobblemon.mod.common.item.PokemonItem;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -8,6 +9,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.world.item.ItemStack;
+import org.pokesplash.gts.Gts;
 
 import java.util.UUID;
 
@@ -74,6 +77,16 @@ public class PokemonListing extends Listing<Pokemon> {
 				break;
 		}
 		return displayName;
+	}
+
+	@Override
+	public String getUiTitle() {
+		return Gts.language.getPokemonTitle();
+	}
+
+	@Override
+	public ItemStack getIcon() {
+		return PokemonItem.from(getListing(), 1);
 	}
 
 	@Override

@@ -9,11 +9,8 @@ import net.minecraft.commands.arguments.UuidArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
-import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.UI.SingleItemListing;
-import org.pokesplash.gts.UI.SinglePokemonListing;
+import org.pokesplash.gts.UI.SingleListing;
 import org.pokesplash.gts.command.superclass.Subcommand;
 import org.pokesplash.gts.permission.LuckPermsUtils;
 
@@ -64,11 +61,7 @@ public class Open extends Subcommand {
 
 		Listing listing = Gts.listings.getActiveListingById(id);
 		if (listing != null) {
-			if (listing instanceof PokemonListing) {
-				UIManager.openUIForcefully(sender, new SinglePokemonListing().getPage(sender, (PokemonListing) listing));
-			} else {
-				UIManager.openUIForcefully(sender, new SingleItemListing().getPage(sender, (ItemListing) listing));
-			}
+			UIManager.openUIForcefully(sender, new SingleListing().getPage(sender, listing));
 		}
 		return 1;
 	}

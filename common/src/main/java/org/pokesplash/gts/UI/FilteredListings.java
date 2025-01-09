@@ -8,14 +8,11 @@ import ca.landonjw.gooeylibs2.api.helpers.PaginationHelper;
 import ca.landonjw.gooeylibs2.api.page.LinkedPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
-import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.ManageListings;
@@ -23,7 +20,6 @@ import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.provider.ListingAPI;
-import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,44 +46,24 @@ public class FilteredListings {
 
 		for (Listing listing : listings) {
 
-			if (listing.getDisplayName().getString().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))
+			if (listing.getListingName().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))
 				|| listing.getSellerName().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))) {
 				List<Component> lore = ListingInfo.parse(listing);
 
-				Button button;
-
-				if (listing instanceof PokemonListing) {
-
-					PokemonListing pokemonListing = (PokemonListing) listing;
-
-					lore.addAll(PokemonInfo.parse(pokemonListing));
-
-					button = GooeyButton.builder()
-							.display(PokemonItem.from(pokemonListing.getListing(), 1))
-							.with(DataComponents.CUSTOM_NAME, pokemonListing.getDisplayName())
-							.with(DataComponents.LORE, new ItemLore(lore))
-							.onClick((action) -> {
-								ServerPlayer sender = action.getPlayer();
-								Page page = new SinglePokemonListing().getPage(sender, pokemonListing);
-								UIManager.openUIForcefully(sender, page);
-							})
-							.build();
-				} else {
-
-					ItemListing itemListing = (ItemListing) listing;
-
-					button = GooeyButton.builder()
-							.display(itemListing.getListing())
-							.with(DataComponents.CUSTOM_NAME, itemListing.getDisplayName())
-							.with(DataComponents.LORE, new ItemLore(lore))
-							.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-							.onClick((action) -> {
-								ServerPlayer sender = action.getPlayer();
-								Page page = new SingleItemListing().getPage(sender, itemListing);
-								UIManager.openUIForcefully(sender, page);
-							})
-							.build();
+				if (listing.isPokemon()) {
+					lore.addAll(PokemonInfo.parse((PokemonListing) listing));
 				}
+
+				Button button = GooeyButton.builder()
+						.display(listing.getIcon())
+						.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
+						.with(DataComponents.LORE, new ItemLore(lore))
+						.onClick((action) -> {
+							ServerPlayer sender = action.getPlayer();
+							Page page = new SingleListing().getPage(sender, listing);
+							UIManager.openUIForcefully(sender, page);
+						})
+						.build();
 
 				buttons.add(button);
 			}

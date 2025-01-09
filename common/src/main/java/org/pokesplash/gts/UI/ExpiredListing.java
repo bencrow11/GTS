@@ -6,12 +6,13 @@ import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.GooeyPage;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
-import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.Filler;
 import org.pokesplash.gts.UI.module.PokemonInfo;
@@ -22,25 +23,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UI of the Expired Pokemon Listing page.
+ * UI of the Expired Item Listing page.
  */
-public class ExpiredPokemonListing {
+public class ExpiredListing {
 
 	/**
 	 * Method that returns the page.
-	 * @return SinglePokemonListing page.
+	 * @return SingleListing page.
 	 */
-	public Page getPage(PokemonListing listing) {
+	public Page getPage(Listing listing) {
 
 		List<Component> lore = new ArrayList<>();
 
 		lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
 		lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
-		lore.addAll(PokemonInfo.parse(listing));
 
-		Button pokemon = GooeyButton.builder()
-				.display(PokemonItem.from(listing.getListing(), 1))
+		if (listing.isPokemon()) {
+			lore.addAll(PokemonInfo.parse((PokemonListing) listing));
+		}
+
+		Button listingDisplay = GooeyButton.builder()
+				.display(listing.getIcon())
 				.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
+				.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 				.with(DataComponents.LORE, new ItemLore(lore))
 				.build();
 
@@ -55,15 +60,18 @@ public class ExpiredPokemonListing {
 
 					if (success) {
 						message = Utils.formatPlaceholders(Gts.language.getReturnListingSuccess(),
-								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListingName(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
+
+
 					} else {
 						message = Utils.formatPlaceholders(Gts.language.getReturnListingFail(),
-								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
+								0, listing.getListingName(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
 						action.getPlayer().sendSystemMessage(Component.literal(message));
 					}
+
 					UIManager.openUIForcefully(action.getPlayer(), new ExpiredListings().getPage(action.getPlayer().getUUID()));
 				})
 				.build();
@@ -82,13 +90,13 @@ public class ExpiredPokemonListing {
 		ChestTemplate.Builder template = ChestTemplate.builder(3)
 				.fill(Filler.getButton())
 				.set(11, receiveListing)
-				.set(13, pokemon)
+				.set(13, listingDisplay)
 				.set(15, cancel);
 
 
 		GooeyPage page = GooeyPage.builder()
 				.template(template.build())
-				.title(Gts.language.getPokemonTitle())
+				.title(listing.getUiTitle())
 				.build();
 
 		return page;

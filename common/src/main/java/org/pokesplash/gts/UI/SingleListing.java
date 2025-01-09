@@ -9,12 +9,14 @@ import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.Listing.Listing;
+import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.Filler;
 import org.pokesplash.gts.UI.module.ListingInfo;
+import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.permission.LuckPermsUtils;
 import org.pokesplash.gts.util.Utils;
@@ -22,22 +24,25 @@ import org.pokesplash.gts.util.Utils;
 import java.util.List;
 
 /**
- * UI of the Single Item Listing
+ * UI of the Item Listings page.
  */
-public class SingleItemListing {
+public class SingleListing {
 
 	/**
 	 * Method that returns the page.
 	 * @return SinglePokemonListing page.
 	 */
-	public Page getPage(ServerPlayer viewer, ItemListing listing) {
+	public Page getPage(ServerPlayer viewer, Listing listing) {
 
 		List<Component> lore = ListingInfo.parse(listing);
 
+		if (listing.isPokemon()) {
+			lore.addAll(PokemonInfo.parse((PokemonListing) listing));
+		}
+
 		Button pokemon = GooeyButton.builder()
-				.display(listing.getListing())
+				.display(listing.getIcon())
 				.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
-				.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 				.with(DataComponents.LORE, new ItemLore(lore))
 				.build();
 
@@ -46,36 +51,48 @@ public class SingleItemListing {
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getConfirmPurchaseButtonLabel()))
 				.onClick((action) -> {
-					String message;
 
-				  if (Gts.listings.getActiveListingById(listing.getId()) == null) {
-						message = "§cThis item is no longer available.";
-					} else if (!Utils.hasSpace(action.getPlayer(), listing.getListing()))
-						message = Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
-								0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
-								action.getPlayer().getName().getString());
-					else {
-						boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
+					if (Gts.listings.getActiveListingById(listing.getId()) == null) {
+						action.getPlayer().sendSystemMessage(Component.literal(
+								"§cThis listing is no longer available."
+						));
+						UIManager.closeUI(action.getPlayer());
+						return;
+					}
 
-						if (success) {
-							message = Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
-									0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
-									action.getPlayer().getName().getString());
-
-							ServerPlayer seller =
-									action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
-
-							if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
-								seller.sendSystemMessage(Component.literal(
-										Utils.formatPlaceholders(Gts.language.getListingBought(),
-												0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
-												action.getPlayer().getName().getString())));
-							}
-						} else {
-							message = Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
-									0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
-									action.getPlayer().getName().getString());
+					if (!listing.isPokemon()) {
+						ItemListing itemListing = (ItemListing) listing;
+						if (!Utils.hasSpace(action.getPlayer(), itemListing.getListing())) {
+							action.getPlayer().sendSystemMessage(Component.literal(
+									Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
+									0, listing.getListingName(), listing.getSellerName(),
+									action.getPlayer().getName().getString())));
+							UIManager.closeUI(action.getPlayer());
+							return;
 						}
+
+					}
+
+					boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
+
+					String message;
+					if (success) {
+						message = Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
+								0, listing.getListingName(), listing.getSellerName(),
+								action.getPlayer().getName().getString());
+
+						ServerPlayer seller =
+								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
+
+						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
+							seller.sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingBought(),
+									0, listing.getListingName(), listing.getSellerName(),
+									action.getPlayer().getName().getString())));
+						}
+					} else {
+						message = Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
+								0, listing.getListingName(), listing.getSellerName(),
+								action.getPlayer().getName().getString());
 					}
 					action.getPlayer().sendSystemMessage(Component.literal(message));
 
@@ -99,14 +116,17 @@ public class SingleItemListing {
 				.with(DataComponents.CUSTOM_NAME,
 						Component.literal(Gts.language.getRemoveListingButtonLabel()))
 				.onClick((action) -> {
+
+
 					if (action.getPlayer().getUUID().equals(listing.getSellerUuid())) {
 						GtsAPI.cancelAndReturnListing(action.getPlayer(), listing);
 					} else {
 						GtsAPI.cancelListing(listing);
 					}
 					String message = Utils.formatPlaceholders(Gts.language.getCancelListing(),
-							0, listing.getListing().getDisplayName().getString(), listing.getSellerName(),
+							0, listing.getListingName(), listing.getSellerName(),
 							action.getPlayer().getName().getString());
+
 					action.getPlayer().sendSystemMessage(Component.literal(message));
 
 					ServerPlayer seller =
@@ -131,7 +151,6 @@ public class SingleItemListing {
 			template.set(11, purchase);
 		}
 
-
 		if (LuckPermsUtils.hasPermission(viewer, Gts.permissions.getPermission("remove"))
 		&& !viewer.getUUID().equals(listing.getSellerUuid())) {
 			template.set(22, removeListing);
@@ -139,7 +158,7 @@ public class SingleItemListing {
 
 		GooeyPage page = GooeyPage.builder()
 				.template(template.build())
-				.title(Gts.language.getItemTitle())
+				.title(listing.getUiTitle())
 				.build();
 
 		return page;

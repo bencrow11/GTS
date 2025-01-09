@@ -1,6 +1,8 @@
 package org.pokesplash.gts.history;
 
+import com.google.gson.JsonElement;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.world.item.ItemStack;
@@ -14,11 +16,13 @@ import java.util.stream.Stream;
  */
 public class ItemHistoryItem extends HistoryItem<ItemStack> {
 
-    private String item;
+    private JsonElement item;
 
     public ItemHistoryItem(ItemListing listing, String buyerName) {
         super(listing.isPokemon(), listing.getSellerUuid(), listing.getSellerName(), listing.getPrice(), buyerName);
-        this.item = listing.getListing().save(HolderLookup.Provider.create(Stream.empty())).getAsString();
+        this.item = ItemStack.CODEC.encodeStart(
+                Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
+                listing.getListing()).getOrThrow();
     }
 
     /**
@@ -28,9 +32,11 @@ public class ItemHistoryItem extends HistoryItem<ItemStack> {
     @Override
     public ItemStack getListing() {
         try {
-            ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), TagParser.parseTag(item));
-        } catch (CommandSyntaxException e) {
-            Gts.LOGGER.fatal("Failed to parse item for NBT: " + item);
+            ItemStack itemStack = ItemStack.CODEC.decode(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
+                    item).getOrThrow().getFirst();
+            return itemStack;
+        } catch (IllegalStateException e) {
+            Gts.LOGGER.fatal("Failed to parse item for " + item);
             Gts.LOGGER.fatal("Stacktrace: ");
             e.printStackTrace();
         }

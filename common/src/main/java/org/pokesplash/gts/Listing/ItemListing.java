@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.util.Utils;
 
 import java.util.UUID;
 
@@ -72,5 +71,15 @@ public class ItemListing extends Listing<ItemStack> {
 	public MutableComponent getDisplayName() {
 		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua").getOrThrow());
 		return Component.empty().setStyle(dark_aqua).append(getListing().getHoverName());
+	}
+
+	@Override
+	public String getUiTitle() {
+		return Gts.language.getItemTitle();
+	}
+
+	@Override
+	public ItemStack getIcon() {
+		return getListing();
 	}
 }

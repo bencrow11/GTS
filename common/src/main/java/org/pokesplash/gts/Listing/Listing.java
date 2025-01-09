@@ -2,6 +2,7 @@ package org.pokesplash.gts.Listing;
 
 import com.google.gson.Gson;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.api.provider.ListingAPI;
 import org.pokesplash.gts.util.Utils;
@@ -150,4 +151,8 @@ public abstract class Listing<T> {
     }
 
     public abstract MutableComponent getDisplayName();
+
+    public abstract String getUiTitle();
+
+    public abstract ItemStack getIcon();
 }

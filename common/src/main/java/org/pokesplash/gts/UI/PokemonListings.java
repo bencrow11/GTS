@@ -92,7 +92,7 @@ public class PokemonListings {
 					.with(DataComponents.LORE, new ItemLore(lore))
 					.onClick((action) -> {
 						ServerPlayer sender = action.getPlayer();
-						Page page = new SinglePokemonListing().getPage(sender, listing);
+						Page page = new SingleListing().getPage(sender, listing);
 						UIManager.openUIForcefully(sender, page);
 					})
 					.build();

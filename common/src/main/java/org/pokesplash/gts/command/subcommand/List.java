@@ -388,7 +388,7 @@ public class List extends Subcommand {
 			ItemListing listing = new ItemListing(player.getUUID(), player.getName().getString(), price,
 					listingItem);
 
-			boolean success = GtsAPI.addListing(player, listing);
+			boolean success = GtsAPI.addListing(listing, player, null);
 
 			if (success) {
 				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingSuccess(),

@@ -84,6 +84,22 @@ public class ListingsProvider {
 	}
 
 	/**
+	 * Method to get all listings that have been listed by a specific UUID.
+	 * @param uuid the uuid to get the listings for.
+	 * @return Arraylist of listings from the specified player.
+	 */
+	public List<Listing> getListingsByPlayer(UUID uuid) {
+		ArrayList<Listing> playerListings = new ArrayList<>();
+
+		for (Listing listing : getListings()) {
+			if (listing.getSellerUuid().equals(uuid)) {
+				playerListings.add(listing);
+			}
+		}
+		return playerListings;
+	}
+
+	/**
 	 * Method to get all pokemon listings that have been listed by a specific UUID.
 	 * @param uuid the uuid to get the pokemon listings for.
 	 * @return Arraylist of pokemon listings from the specified player.

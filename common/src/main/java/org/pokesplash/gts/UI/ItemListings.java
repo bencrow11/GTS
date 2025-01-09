@@ -19,7 +19,6 @@ import org.pokesplash.gts.UI.button.ManageListings;
 import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.enumeration.Sort;
-import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -92,7 +91,7 @@ public class ItemListings {
 					.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 					.onClick((action) -> {
 						ServerPlayer sender = action.getPlayer();
-						Page page = new SingleItemListing().getPage(sender, listing);
+						Page page = new SingleListing().getPage(sender, listing);
 						UIManager.openUIForcefully(sender, page);
 					})
 					.build();
