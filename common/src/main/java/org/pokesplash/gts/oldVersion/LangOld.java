@@ -1,9 +1,13 @@
 package org.pokesplash.gts.oldVersion;
 
+import com.cobblemon.mod.common.CobblemonItems;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.api.file.Versioned;
-import org.pokesplash.gts.config.Material;
+import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.concurrent.CompletableFuture;
@@ -79,20 +83,20 @@ public class LangOld extends Versioned {
 	 * Button Materials
 	 */
 
-	private Material itemListingsButtonItem; // The display item for the "item listings" menu.
-	private Material pokemonListingsButtonItem; // The display item for the "pokemon listings" menu.
-	private Material manageListingsButtonItem; // The display item for the "manage listings" menu.
-	private Material expiredListingsButtonItem; // The material for the expired listings button.
-	private Material nextPageButtonItems; // The display item for the "next page" button.
-	private Material previousPageButtonItems; // The display item for the "previous page" button.
-	private Material fillerItem; // The filler item for the UI.
-	private Material purchaseButtonItem; // The material for the purchase button.
-	private Material cancelButtonItem; // The material for the cancel button.
-	private Material removeListingButtonItem; // The material for the remove listing moderation button.
-	private Material sortByPriceButtonItem; // The material for the sort by price button.
-	private Material sortByNewestButtonItem; // The material for the sort by newest button.
-	private Material sortByNameButtonItem; // The material for the sort by name button.
-	private Material relistExpiredButtonItem; // The material for the relist button.
+	private JsonElement itemListingsButtonItem; // The display item for the "item listings" menu.
+	private JsonElement pokemonListingsButtonItem; // The display item for the "pokemon listings" menu.
+	private JsonElement manageListingsButtonItem; // The display item for the "manage listings" menu.
+	private JsonElement expiredListingsButtonItem; // The material for the expired listings button.
+	private JsonElement nextPageButtonItems; // The display item for the "next page" button.
+	private JsonElement previousPageButtonItems; // The display item for the "previous page" button.
+	private JsonElement fillerItem; // The filler item for the UI.
+	private JsonElement purchaseButtonItem; // The material for the purchase button.
+	private JsonElement cancelButtonItem; // The material for the cancel button.
+	private JsonElement removeListingButtonItem; // The material for the remove listing moderation button.
+	private JsonElement sortByPriceButtonItem; // The material for the sort by price button.
+	private JsonElement sortByNewestButtonItem; // The material for the sort by newest button.
+	private JsonElement sortByNameButtonItem; // The material for the sort by name button.
+	private JsonElement relistExpiredButtonItem; // The material for the relist button.
 
 	/**
 	 * Placeholders
@@ -122,7 +126,7 @@ public class LangOld extends Versioned {
 		manageTitle = "§3Gts - Manage";
 		purchaseMessageBuyer = "§2You have bought {listing} from {seller}!";
 		relistExpiredButtonLabel = "§9Relist Expired";
-		relistExpiredButtonItem = new Material("cobblemon:rare_candy", "");
+		relistExpiredButtonItem = CodecUtils.encodeItem(new ItemStack(CobblemonItems.RARE_CANDY));
 		cancelListing = "§6The {listing} listing has been cancelled!";
 		returnListingSuccess = "§2You have received the {listing} listing!";
 		returnListingFail = "§cCould not receive the {listing} listing.";
@@ -141,19 +145,19 @@ public class LangOld extends Versioned {
 		reloadMessage = "§2Reloaded Configs!";
 		insufficientFunds = "§cYou do not have enough money to purchase this listing!";
 		listingBought = "§2Your {listing} has been bought by {buyer}";
-		itemListingsButtonItem = new Material("cobblemon:assault_vest", "");
-		pokemonListingsButtonItem = new Material("cobblemon:poke_ball", "");
-		manageListingsButtonItem = new Material("cobblemon:sachet", "");
-		nextPageButtonItems = new Material("minecraft:arrow", "");
-		previousPageButtonItems = new Material("cobblemon:poison_barb", "");
-		fillerItem = new Material("minecraft:white_stained_glass_pane", "");
-		purchaseButtonItem = new Material("minecraft:green_stained_glass_pane", "");
-		cancelButtonItem = new Material("minecraft:red_stained_glass_pane", "");
-		sortByPriceButtonItem = new Material("minecraft:gold_nugget", "");
-		sortByNewestButtonItem = new Material("minecraft:clock", "");
-		sortByNameButtonItem = new Material("minecraft:oak_sign", "");
-		expiredListingsButtonItem = new Material("cobblemon:link_cable", "");
-		removeListingButtonItem = new Material("minecraft:orange_stained_glass_pane", "");
+		itemListingsButtonItem = CodecUtils.encodeItem(new ItemStack(CobblemonItems.ASSAULT_VEST));
+		pokemonListingsButtonItem = CodecUtils.encodeItem(new ItemStack(CobblemonItems.POKE_BALL));
+		manageListingsButtonItem = CodecUtils.encodeItem(new ItemStack(CobblemonItems.SACHET));
+		nextPageButtonItems = CodecUtils.encodeItem(new ItemStack(Items.ARROW));
+		previousPageButtonItems = CodecUtils.encodeItem(new ItemStack(CobblemonItems.POISON_BARB));
+		fillerItem = CodecUtils.encodeItem(new ItemStack(Items.WHITE_STAINED_GLASS_PANE));
+		purchaseButtonItem = CodecUtils.encodeItem(new ItemStack(Items.GREEN_STAINED_GLASS_PANE));
+		cancelButtonItem = CodecUtils.encodeItem(new ItemStack(Items.RED_STAINED_GLASS_PANE));
+		sortByPriceButtonItem = CodecUtils.encodeItem(new ItemStack(Items.GOLD_NUGGET));
+		sortByNewestButtonItem = CodecUtils.encodeItem(new ItemStack(Items.CLOCK));
+		sortByNameButtonItem = CodecUtils.encodeItem(new ItemStack(Items.OAK_SIGN));
+		expiredListingsButtonItem = CodecUtils.encodeItem(new ItemStack(CobblemonItems.LINK_CABLE));
+		removeListingButtonItem = CodecUtils.encodeItem(new ItemStack(Items.ORANGE_STAINED_GLASS_PANE));
 		newListingBroadcast = "§e{seller} §2has just added a §e{listing} §2to GTS.";
 		seller = "§9Seller: §b";
 		price = "§9Price: §b";
@@ -237,44 +241,47 @@ public class LangOld extends Versioned {
 	public String getListingBought() {
 		return listingBought;
 	}
-	public Material getItemListingsButtonItem() {
-		return itemListingsButtonItem;
+	public ItemStack getItemListingsButtonItem() {
+		return CodecUtils.decodeItem(itemListingsButtonItem);
 	}
-	public Material getPokemonListingsButtonItem() {
-		return pokemonListingsButtonItem;
+	public ItemStack getPokemonListingsButtonItem() {
+		return CodecUtils.decodeItem(pokemonListingsButtonItem);
 	}
-	public Material getManageListingsButtonItem() {
-		return manageListingsButtonItem;
+	public ItemStack getManageListingsButtonItem() {
+		return CodecUtils.decodeItem(manageListingsButtonItem);
 	}
-	public Material getNextPageButtonItems() {
-		return nextPageButtonItems;
+	public ItemStack getNextPageButtonItems() {
+		return CodecUtils.decodeItem(nextPageButtonItems);
 	}
-	public Material getPreviousPageButtonItems() {
-		return previousPageButtonItems;
+	public ItemStack getPreviousPageButtonItems() {
+		return CodecUtils.decodeItem(previousPageButtonItems);
 	}
-	public Material getFillerItem() {
-		return fillerItem;
+	public ItemStack getFillerItem() {
+		return CodecUtils.decodeItem(fillerItem);
 	}
-	public Material getPurchaseButtonItem() {
-		return purchaseButtonItem;
+	public ItemStack getPurchaseButtonItem() {
+		return CodecUtils.decodeItem(purchaseButtonItem);
 	}
-	public Material getCancelButtonItem() {
-		return cancelButtonItem;
+	public ItemStack getCancelButtonItem() {
+		return CodecUtils.decodeItem(cancelButtonItem);
 	}
-	public Material getSortByPriceButtonItem() {
-		return sortByPriceButtonItem;
+	public ItemStack getSortByPriceButtonItem() {
+		return CodecUtils.decodeItem(sortByPriceButtonItem);
 	}
-	public Material getSortByNewestButtonItem() {
-		return sortByNewestButtonItem;
+	public ItemStack getSortByNewestButtonItem() {
+		return CodecUtils.decodeItem(sortByNewestButtonItem);
 	}
-	public Material getSortByNameButtonItem() {
-		return sortByNameButtonItem;
+	public ItemStack getSortByNameButtonItem() {
+		return CodecUtils.decodeItem(sortByNameButtonItem);
 	}
-	public Material getExpiredListingsButtonItem() {
-		return expiredListingsButtonItem;
+	public ItemStack getExpiredListingsButtonItem() {
+		return CodecUtils.decodeItem(expiredListingsButtonItem);
 	}
-	public Material getRemoveListingButtonItem() {
-		return removeListingButtonItem;
+	public ItemStack getRemoveListingButtonItem() {
+		return CodecUtils.decodeItem(removeListingButtonItem);
+	}
+	public ItemStack getRelistExpiredButtonItem() {
+		return CodecUtils.decodeItem(relistExpiredButtonItem);
 	}
 	public String getNewListingBroadcast() {
 		return newListingBroadcast;
@@ -339,9 +346,6 @@ public class LangOld extends Versioned {
 	}
 	public String getRelistExpiredButtonLabel() {
 		return relistExpiredButtonLabel;
-	}
-	public Material getRelistExpiredButtonItem() {
-		return relistExpiredButtonItem;
 	}
 	public String getItemTitle() {
 		return itemTitle;
@@ -453,27 +457,21 @@ public class LangOld extends Versioned {
 					sold_date = lang.getSold_date();
 					buyer = lang.getBuyer();
 					insufficientInventorySpace = lang.getInsufficientInventorySpace();
-					itemListingsButtonItem = lang.getItemListingsButtonItem();
-					pokemonListingsButtonItem = lang.getPokemonListingsButtonItem();
-					manageListingsButtonItem = lang.getManageListingsButtonItem();
-					nextPageButtonItems = lang.getNextPageButtonItems();
-					previousPageButtonItems = lang.getPreviousPageButtonItems();
-					fillerItem = lang.getFillerItem();
-					purchaseButtonItem = lang.getPurchaseButtonItem();
-					cancelButtonItem = lang.getCancelButtonItem();
-					sortByPriceButtonItem = lang.getSortByPriceButtonItem();
-					sortByNewestButtonItem = lang.getSortByNewestButtonItem();
-					sortByNameButtonItem = lang.getSortByNameButtonItem();
-					expiredListingsButtonItem = lang.getExpiredListingsButtonItem();
-					removeListingButtonItem = lang.getRemoveListingButtonItem();
-					relistExpiredButtonItem = lang.getRelistExpiredButtonItem();
 					onlyOnePokemonInParty = lang.getOnlyOnePokemonInParty();
-
-					// If the lang version isn't correct, update the file.
-					if (!versioned.getVersion().equals(Gts.LANG_FILE_VERSION)) {
-						write();
-						read();
-					}
+					itemListingsButtonItem = CodecUtils.encodeItem(lang.getItemListingsButtonItem());
+					pokemonListingsButtonItem = CodecUtils.encodeItem(lang.getPokemonListingsButtonItem());
+					manageListingsButtonItem = CodecUtils.encodeItem(lang.getManageListingsButtonItem());
+					nextPageButtonItems = CodecUtils.encodeItem(lang.getNextPageButtonItems());
+					previousPageButtonItems = CodecUtils.encodeItem(lang.getPreviousPageButtonItems());
+					fillerItem = CodecUtils.encodeItem(lang.getFillerItem());
+					purchaseButtonItem = CodecUtils.encodeItem(lang.getPurchaseButtonItem());
+					cancelButtonItem = CodecUtils.encodeItem(lang.getCancelButtonItem());
+					sortByPriceButtonItem = CodecUtils.encodeItem(lang.getSortByPriceButtonItem());
+					sortByNewestButtonItem = CodecUtils.encodeItem(lang.getSortByNewestButtonItem());
+					sortByNameButtonItem = CodecUtils.encodeItem(lang.getSortByNameButtonItem());
+					expiredListingsButtonItem = CodecUtils.encodeItem(lang.getExpiredListingsButtonItem());
+					removeListingButtonItem = CodecUtils.encodeItem(lang.getRemoveListingButtonItem());
+					relistExpiredButtonItem = CodecUtils.encodeItem(lang.getRelistExpiredButtonItem());
 				});
 	}
 }

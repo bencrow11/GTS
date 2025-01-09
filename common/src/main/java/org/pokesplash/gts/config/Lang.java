@@ -79,6 +79,7 @@ public class Lang extends Versioned {
 	private String sortByNameButtonLabel; // The name of the "Sort By Name" button.
 	private String receiveListingButtonLabel; // The name of the "Receive Listing" button.
 	private String relistExpiredButtonLabel; // The label of the button that relists all expired listings.
+	private String expiredListingButtonLabel; // The label for the expired listing button.
 
 	/**
 	 * Button Materials
@@ -180,6 +181,7 @@ public class Lang extends Versioned {
 		receiveListingButtonLabel = "§2Receive Listing";
 		insufficientInventorySpace = "§cYou do not have enough inventory space to receive this listing.";
 		onlyOnePokemonInParty = "§cYou can not list a Pokemon to GTS if you only have less than 2 Pokemon in your party.";
+		expiredListingButtonLabel = "§cExpired Listings";
 	}
 
 	/**
@@ -373,6 +375,9 @@ public class Lang extends Versioned {
 		return pokemonListingsTitle;
 	}
 	public String getOnlyOnePokemonInParty() { return onlyOnePokemonInParty; }
+	public String getExpiredListingButtonLabel() {
+		return expiredListingButtonLabel;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -459,41 +464,28 @@ public class Lang extends Versioned {
 					buyer = lang.getBuyer();
 					insufficientInventorySpace = lang.getInsufficientInventorySpace();
 					onlyOnePokemonInParty = lang.getOnlyOnePokemonInParty();
+					itemListingsButtonItem = CodecUtils.encodeItem(lang.getItemListingsButtonItem());
+					pokemonListingsButtonItem = CodecUtils.encodeItem(lang.getPokemonListingsButtonItem());
+					manageListingsButtonItem = CodecUtils.encodeItem(lang.getManageListingsButtonItem());
+					nextPageButtonItems = CodecUtils.encodeItem(lang.getNextPageButtonItems());
+					previousPageButtonItems = CodecUtils.encodeItem(lang.getPreviousPageButtonItems());
+					fillerItem = CodecUtils.encodeItem(lang.getFillerItem());
+					purchaseButtonItem = CodecUtils.encodeItem(lang.getPurchaseButtonItem());
+					cancelButtonItem = CodecUtils.encodeItem(lang.getCancelButtonItem());
+					sortByPriceButtonItem = CodecUtils.encodeItem(lang.getSortByPriceButtonItem());
+					sortByNewestButtonItem = CodecUtils.encodeItem(lang.getSortByNewestButtonItem());
+					sortByNameButtonItem = CodecUtils.encodeItem(lang.getSortByNameButtonItem());
+					expiredListingsButtonItem = CodecUtils.encodeItem(lang.getExpiredListingsButtonItem());
+					removeListingButtonItem = CodecUtils.encodeItem(lang.getRemoveListingButtonItem());
+					relistExpiredButtonItem = CodecUtils.encodeItem(lang.getRelistExpiredButtonItem());
 
 					// If the lang version isn't correct, update the file.
 					if (!versioned.getVersion().equals(Gts.LANG_FILE_VERSION)) {
 						LangOld oldLang = gson.fromJson(el, LangOld.class);
-						itemListingsButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getItemListingsButtonItem()));
-						pokemonListingsButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getPokemonListingsButtonItem()));
-						manageListingsButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getManageListingsButtonItem()));
-						nextPageButtonItems = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getNextPageButtonItems()));
-						previousPageButtonItems = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getPreviousPageButtonItems()));
-						fillerItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getFillerItem()));
-						purchaseButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getPurchaseButtonItem()));
-						cancelButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getCancelButtonItem()));
-						sortByPriceButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getSortByPriceButtonItem()));
-						sortByNewestButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getSortByNewestButtonItem()));
-						sortByNameButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getSortByNameButtonItem()));
-						expiredListingsButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getExpiredListingsButtonItem()));
-						removeListingButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getRemoveListingButtonItem()));
-						relistExpiredButtonItem = CodecUtils.encodeItem(Utils.parseItemId(oldLang.getRelistExpiredButtonItem()));
 						write();
 						read();
 					} else {
-						itemListingsButtonItem = CodecUtils.encodeItem(lang.getItemListingsButtonItem());
-						pokemonListingsButtonItem = CodecUtils.encodeItem(lang.getPokemonListingsButtonItem());
-						manageListingsButtonItem = CodecUtils.encodeItem(lang.getManageListingsButtonItem());
-						nextPageButtonItems = CodecUtils.encodeItem(lang.getNextPageButtonItems());
-						previousPageButtonItems = CodecUtils.encodeItem(lang.getPreviousPageButtonItems());
-						fillerItem = CodecUtils.encodeItem(lang.getFillerItem());
-						purchaseButtonItem = CodecUtils.encodeItem(lang.getPurchaseButtonItem());
-						cancelButtonItem = CodecUtils.encodeItem(lang.getCancelButtonItem());
-						sortByPriceButtonItem = CodecUtils.encodeItem(lang.getSortByPriceButtonItem());
-						sortByNewestButtonItem = CodecUtils.encodeItem(lang.getSortByNewestButtonItem());
-						sortByNameButtonItem = CodecUtils.encodeItem(lang.getSortByNameButtonItem());
-						expiredListingsButtonItem = CodecUtils.encodeItem(lang.getExpiredListingsButtonItem());
-						removeListingButtonItem = CodecUtils.encodeItem(lang.getRemoveListingButtonItem());
-						relistExpiredButtonItem = CodecUtils.encodeItem(lang.getRelistExpiredButtonItem());
+						expiredListingButtonLabel = lang.getExpiredListingButtonLabel();
 					}
 				});
 	}
