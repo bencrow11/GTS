@@ -252,6 +252,11 @@ public abstract class Utils {
 		}
 	}
 
+	/**
+	 * Converts a long time item to a String.
+	 * @param time The timestamp to convert.
+	 * @return The String that represents the long timestamp.
+	 */
 	public static String parseLongDate(long time) {
 		// 1000 ms in 1 s
 		// 60s in 1 m
@@ -288,6 +293,11 @@ public abstract class Utils {
 		return output;
 	}
 
+	/**
+	 * Capitalises the first letter of given words.
+	 * @param message The message to capitalise the first letter of.
+	 * @return The amended message.
+	 */
 	public static String capitaliseFirst(String message) {
 
 		if (message.trim().isEmpty()) {
@@ -309,6 +319,11 @@ public abstract class Utils {
 		return output.trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase(Locale.ROOT);
 	}
 
+	/**
+	 * Checks if a Pokemon has it's Hidden Ability.
+	 * @param pokemon The Pokemon to check.
+	 * @return true if the Pokemon has it's hidden ability.
+	 */
 	public static boolean isHA(Pokemon pokemon) {
 
 		List<PotentialAbility> abilities = pokemon.getForm().getAbilities().getMapping().get(Priority.LOW);
@@ -322,6 +337,15 @@ public abstract class Utils {
 		return pokemon.getAbility().getName().equalsIgnoreCase(ability);
 	}
 
+	/**
+	 * Replaces placeholders with their respective values.
+	 * @param message The message to replace placeholders within.
+	 * @param minPrice The minimum price placeholder replacement.
+	 * @param listing The listing name placeholder replacement.
+	 * @param seller The seller name placeholder replacement.
+	 * @param buyer The buyer name placeholder replacement.
+	 * @return
+	 */
 	public static String formatPlaceholders(String message, double minPrice, String listing,
 	                                        String seller, String buyer) {
 		String newMessage = message;
@@ -347,6 +371,11 @@ public abstract class Utils {
 				.replaceAll("\\{max_price\\}", "" + Gts.config.getMaximumPrice());
 	}
 
+	/**
+	 * Converts a string to an ItemStack.
+	 * @param id The id of the item.
+	 * @return The ItemStack that has been created.
+	 */
 	public static ItemStack parseItemId(String id) {
 
 		CompoundTag tag;
@@ -361,31 +390,11 @@ public abstract class Utils {
 		return ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), tag).get();
 	}
 
-	public static ItemStack parseItemId(Material id) {
-
-		CompoundTag tag;
-
-		try	{
-			tag = TagParser.parseTag(id.getMaterial());
-		} catch (Exception e) {
-			tag = new CompoundTag();
-			tag.putString("id", id.getMaterial());
-			tag.putInt("Count", 1);
-		}
-
-
-		try {
-			if (!id.getNBT().isEmpty()) {
-				tag.put("tag", TagParser.parseTag(id.getNBT()));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-
-		return ItemStack.parse(HolderLookup.Provider.create(Stream.empty()), tag).get();
-	}
-
+	/**
+	 * Broadcasts a clickable message to chat.
+	 * @param message The text the message should show.
+	 * @param command The command the text should run when clicked.
+	 */
 	public static void broadcastClickable(String message, String command) {
 		Component component = Component.literal(message).setStyle(Style.EMPTY.withClickEvent(
 				new ClickEvent(ClickEvent.Action.RUN_COMMAND, command)));
@@ -398,14 +407,12 @@ public abstract class Utils {
 		}
 	}
 
-	public static Gson getListingGson() {
-		GsonBuilder builder = new GsonBuilder();
-		// Type adapters help gson deserialize the listings interface.
-		builder.registerTypeAdapter(Listing.class, new Deserializer(PokemonListing.class));
-		builder.registerTypeAdapter(Listing.class, new Deserializer(ItemListing.class));
-		return builder.create();
-	}
-
+	/**
+	 * Checks that a players has space for a given ItemStack in their inventory.
+	 * @param player The player whose inventory should be checked.
+	 * @param stack The ItemStack that needs to fit into the players inventory.
+	 * @return true if the ItemStack will fit into the players inventory.
+	 */
 	public static boolean hasSpace(ServerPlayer player, ItemStack stack) {
 
 		List<ItemStack> items = player.getInventory().items;

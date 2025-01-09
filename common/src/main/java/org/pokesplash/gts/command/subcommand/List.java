@@ -402,8 +402,10 @@ public class List extends Subcommand {
 				return 1;
 			}
 
+			// Finds the amount of stacks to create.
 			int numberOfStacks = amount / stackSize;
 
+			// For each stack, create a listing.
 			for (int i = 0; i < numberOfStacks; i++) {
 
 				int totalActiveListings = Gts.listings.getListingsByPlayer(player.getUUID()).size();

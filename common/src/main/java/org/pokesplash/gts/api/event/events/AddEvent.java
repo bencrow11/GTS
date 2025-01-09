@@ -5,6 +5,9 @@ import org.pokesplash.gts.Listing.Listing;
 
 import java.util.UUID;
 
+/**
+ * Event used when a new listing has been added.
+ */
 public class AddEvent {
 	private Listing listing;
 	private UUID source;

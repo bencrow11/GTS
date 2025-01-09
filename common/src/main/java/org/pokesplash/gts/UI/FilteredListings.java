@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * UI of the filtered Pokemon Listings page.
+ * UI of the filtered Listings page.
  */
 public class FilteredListings {
 

@@ -32,7 +32,7 @@ public class History {
 
 	/**
 	 * Method that returns the page.
-	 * @return Pokemon Listings page.
+	 * @return Listings page.
 	 */
 	public Page getPage(UUID owner) {
 

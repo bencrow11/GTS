@@ -24,13 +24,13 @@ import org.pokesplash.gts.util.Utils;
 import java.util.List;
 
 /**
- * UI of the Item Listings page.
+ * UI of the Single Listings page.
  */
 public class SingleListing {
 
 	/**
 	 * Method that returns the page.
-	 * @return SinglePokemonListing page.
+	 * @return SingleListing page.
 	 */
 	public Page getPage(ServerPlayer viewer, Listing listing) {
 

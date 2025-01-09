@@ -3,6 +3,9 @@ package org.pokesplash.gts.api.provider;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class that controls which history provider should be used.
+ */
 public abstract class HistoryAPI {
     private static Map<Priority, HistoryInterface> providers = new HashMap<>();
 

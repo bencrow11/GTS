@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * UI of the Expired Item Listing page.
+ * UI of the Expired Listing page.
  */
 public class ExpiredListing {
 

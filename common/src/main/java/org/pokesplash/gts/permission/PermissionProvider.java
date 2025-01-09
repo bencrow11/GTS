@@ -2,6 +2,9 @@ package org.pokesplash.gts.permission;
 
 import java.util.HashMap;
 
+/**
+ * Class that stores all of the GTS permissions.
+ */
 public class PermissionProvider {
 
     private HashMap<String, String> permissions;

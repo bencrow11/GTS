@@ -52,10 +52,18 @@ public abstract class Listing<T> {
         this.isPokemon = isPokemon;
     }
 
+    /**
+     * Helps differentiate Item Listings from Pokemon Listings.
+     * @return true if the listing is a Pokemon listing.
+     */
     public boolean isPokemon() {
         return isPokemon;
     }
 
+    /**
+     * Gets the file version.
+     * @return The file version.
+     */
     public String getVersion() {
         return version;
     }
@@ -93,6 +101,9 @@ public abstract class Listing<T> {
         this.endTime = endTime;
     }
 
+    /**
+     * Renews the end time. Used when relisting an expired listing.
+     */
     public void renewEndTime() {
         // If debug mode, set timer to 1 minute.
         if (Gts.isDebugMode) {

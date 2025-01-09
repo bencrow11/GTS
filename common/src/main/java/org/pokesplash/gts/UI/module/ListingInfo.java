@@ -12,7 +12,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Class that creates lore for a listing.
+ */
 public abstract class ListingInfo {
+
+    /**
+     * Creates UI item lore for a given listing.
+     * @param listing The listing to create lore for.
+     * @return The list of lore created.
+     */
     public static List<Component> parse(Listing listing) {
         List<Component> lore = new ArrayList<>();
 
@@ -41,7 +50,6 @@ public abstract class ListingInfo {
 //                }
 //            }
 
-            // TODO config setting to transfer tooltips.
             try {
                 List<Component> itemTooltips = itemListing.getListing()
                         .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.NORMAL);

@@ -31,7 +31,7 @@ public class ItemListings {
 
 	/**
 	 * Method that returns the page.
-	 * @return Pokemon Listings page.
+	 * @return Item Listings page.
 	 */
 	public Page getPage(Sort sort) {
 

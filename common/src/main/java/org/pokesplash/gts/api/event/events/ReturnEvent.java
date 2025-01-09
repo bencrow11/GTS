@@ -5,6 +5,9 @@ import org.pokesplash.gts.Listing.Listing;
 
 import java.util.UUID;
 
+/**
+ * Event for when a listing has been returned to the seller.
+ */
 public class ReturnEvent {
 	private UUID player;
 	private Listing listing;

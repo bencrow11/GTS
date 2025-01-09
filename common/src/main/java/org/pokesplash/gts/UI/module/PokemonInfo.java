@@ -17,7 +17,16 @@ import org.pokesplash.gts.util.Utils;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Class that creates Pokemon specific UI lore.
+ */
 public abstract class PokemonInfo {
+
+	/**
+	 * Create UI component lore for a give Pokemon (Gender, IVs, Nature, etc).
+	 * @param pokemon The Pokemon to create lore for.
+	 * @return The list of lore created.
+	 */
 	public static Collection<Component> parse(Pokemon pokemon) {
 
 		Collection<Component> lore = new ArrayList<>();

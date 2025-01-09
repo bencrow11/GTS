@@ -31,7 +31,7 @@ public class ManageListings {
 
 	/**
 	 * Method that returns the page.
-	 * @return Pokemon Listings page.
+	 * @return Listings page.
 	 */
 	public Page getPage(UUID owner) {
 
