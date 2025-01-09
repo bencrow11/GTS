@@ -1,15 +1,10 @@
 package org.pokesplash.gts.history;
 
 import com.google.gson.JsonElement;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.TagParser;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
-
-import java.util.stream.Stream;
 
 /**
  * Class that is used to save sold Items.

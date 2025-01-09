@@ -105,7 +105,15 @@ public class List extends Subcommand {
 											}
 											return builder.buildFuture();
 										})
-										.executes(this::run))))
+										.executes(this::run)
+										.then(Commands.argument("stackSize", IntegerArgumentType.integer())
+												.suggests((ctx, builder) -> {
+													for (int i = 1; i <= 32; i++) {
+														builder.suggest(i);
+													}
+													return builder.buildFuture();
+												})
+												.executes(this::run)))))
 				.build();
 	}
 
@@ -145,17 +153,14 @@ public class List extends Subcommand {
 				return 1;
 			}
 
-			int totalPokemonListings =
-					Gts.listings.getPokemonListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
-			int totalItemListings = Gts.listings.getItemListingsByPlayer(
-					context.getSource().getPlayer().getUUID()).size();
+			int totalListings = Gts.listings.getListingsByPlayer(context.getSource().getPlayer().getUUID()).size();
 
 			java.util.List<Listing> expiredListings = Gts.listings.getExpiredListingsOfPlayer(
 					context.getSource().getPlayer().getUUID());
 
 			int totalExpiredListings = expiredListings == null ? 0 : expiredListings.size();
 
-			if (totalPokemonListings + totalItemListings +
+			if (totalListings +
 					totalExpiredListings >=
 					Gts.config.getMaxListingsPerPlayer()) {
 				context.getSource().sendSystemMessage(Component.literal(
@@ -314,6 +319,15 @@ public class List extends Subcommand {
 		int amount = IntegerArgumentType.getInteger(context, "amount");
 		double price = FloatArgumentType.getFloat(context, "price");
 
+		int stackSize;
+
+		try {
+			stackSize = IntegerArgumentType.getInteger(context, "stackSize");
+		} catch (Exception e) {
+			stackSize = amount;
+		}
+
+
 		java.util.List<ItemPrices> minPrices = Gts.config.getCustomItemPrices();
 		java.util.List<JsonElement> bannedItems = Gts.config.getBannedItems();
 
@@ -382,25 +396,48 @@ public class List extends Subcommand {
 
 			}
 
-			ItemStack listingItem = item.copy();
-			listingItem.setCount(amount);
-
-			ItemListing listing = new ItemListing(player.getUUID(), player.getName().getString(), price,
-					listingItem);
-
-			boolean success = GtsAPI.addListing(listing, player, null);
-
-			if (success) {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingSuccess(),
-						minPrice, listing.getListingName(), player.getDisplayName().getString(), null)));
-
-
-			} else {
-				context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingFail(),
-						minPrice, listing.getListingName(), player.getDisplayName().getString(), null)));
-
-
+			if (stackSize > amount || amount % stackSize != 0) {
+				context.getSource().sendSystemMessage(
+						Component.literal("The stack size can not be divided by amount."));
+				return 1;
 			}
+
+			int numberOfStacks = amount / stackSize;
+
+			for (int i = 0; i < numberOfStacks; i++) {
+
+				int totalActiveListings = Gts.listings.getListingsByPlayer(player.getUUID()).size();
+				int totalExpiredListigs = Gts.listings.getExpiredListingsOfPlayer(player.getUUID()).size();
+
+				// If they exceed max listings, prevent any more.
+				if (totalActiveListings + totalExpiredListigs >= Gts.config.getMaxListingsPerPlayer()) {
+					context.getSource().sendSystemMessage(Component.literal(
+							Utils.formatPlaceholders(Gts.language.getMaximumListings(), 0, null,
+									context.getSource().getPlayer().getDisplayName().getString(), null)));
+					break;
+				}
+
+				ItemStack listingItem = item.copy();
+				listingItem.setCount(stackSize);
+
+				ItemListing listing = new ItemListing(player.getUUID(), player.getName().getString(), price,
+						listingItem);
+
+				boolean success = GtsAPI.addListing(listing, player, null);
+
+				if (success) {
+					context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingSuccess(),
+							minPrice, listing.getListingName(), player.getDisplayName().getString(), null)));
+
+				} else {
+					context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingFail(),
+							minPrice, listing.getListingName(), player.getDisplayName().getString(), null)));
+
+
+				}
+			}
+
+
 			return 1;
 
 
@@ -422,7 +459,7 @@ public class List extends Subcommand {
 	}
 
 	public int showItemUsage(CommandContext<CommandSourceStack> context) {
-		String usage = "§9Usage:\n§3- gts sell item <price> <quantity>";
+		String usage = "§9Usage:\n§3- gts sell item <price> <quantity> [stack size]";
 		context.getSource().sendSystemMessage(Component.literal(Utils.formatMessage(usage, context.getSource().isPlayer())));
 		return 1;
 	}

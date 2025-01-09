@@ -274,6 +274,11 @@ public class ListingsProvider {
 
 
 	public List<Listing> getExpiredListingsOfPlayer(UUID player) {
+
+		if (expiredListings.get(player) == null) {
+			return Collections.emptyList();
+		}
+
 		return expiredListings.get(player);
 	}
 
