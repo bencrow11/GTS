@@ -50,7 +50,7 @@ public class FilteredListings {
 
 		for (Listing listing : listings) {
 
-			if (listing.getListingName().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))
+			if (listing.getDisplayName().getString().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))
 				|| listing.getSellerName().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))) {
 				List<Component> lore = ListingInfo.parse(listing);
 
@@ -78,8 +78,7 @@ public class FilteredListings {
 
 					button = GooeyButton.builder()
 							.display(itemListing.getListing())
-							.with(DataComponents.CUSTOM_NAME,
-									Component.literal("§3" + Utils.capitaliseFirst(itemListing.getListingName())))
+							.with(DataComponents.CUSTOM_NAME, itemListing.getDisplayName())
 							.with(DataComponents.LORE, new ItemLore(lore))
 							.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 							.onClick((action) -> {

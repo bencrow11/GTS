@@ -71,8 +71,7 @@ public class ManageListings {
 
 				Button button = GooeyButton.builder()
 						.display(listing.getListing())
-						.with(DataComponents.CUSTOM_NAME,
-								Component.literal("§3" + Utils.capitaliseFirst(listing.getListingName())))
+						.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
 						.with(DataComponents.LORE, new ItemLore(lore))
 						.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 						.onClick((action) -> {

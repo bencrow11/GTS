@@ -36,8 +36,7 @@ public class SingleItemListing {
 
 		Button pokemon = GooeyButton.builder()
 				.display(listing.getListing())
-				.with(DataComponents.CUSTOM_NAME,
-						Component.literal("§3" + Utils.capitaliseFirst(listing.getListingName())))
+				.with(DataComponents.CUSTOM_NAME, listing.getDisplayName())
 				.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 				.with(DataComponents.LORE, new ItemLore(lore))
 				.build();

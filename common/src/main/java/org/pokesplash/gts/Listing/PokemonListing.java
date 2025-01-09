@@ -49,6 +49,7 @@ public class PokemonListing extends Listing<Pokemon> {
 		return pokemon;
 	}
 
+	@Override
 	public MutableComponent getDisplayName() {
 		Style blue = Style.EMPTY.withColor(TextColor.parseColor("blue").getOrThrow());
 		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua").getOrThrow());

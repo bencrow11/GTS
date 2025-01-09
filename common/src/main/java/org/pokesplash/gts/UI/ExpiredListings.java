@@ -74,8 +74,7 @@ public class ExpiredListings {
 
 					button = GooeyButton.builder()
 							.display(itemListing.getListing())
-							.with(DataComponents.CUSTOM_NAME,
-									Component.literal("§3" + Utils.capitaliseFirst(itemListing.getListingName())))
+							.with(DataComponents.CUSTOM_NAME, itemListing.getDisplayName())
 							.with(DataComponents.LORE, new ItemLore(lore))
 							.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 							.onClick((action) -> {
