@@ -64,6 +64,14 @@ public abstract class PokemonInfo {
 			);
 		}
 
+		if (pokemon.getPersistentData().getBoolean("pokerus")) {
+			lore.add(Component.literal("Pokerus").setStyle(dark_green)
+					.append(": ")
+					.append(Component.translatable("cobblemon.ui.generic.yes")
+							.setStyle(green))
+			);
+		}
+
 		lore.add(Component.translatable("cobblemon.ui.stats").setStyle(gray).append(": "));
 
 		lore.add(Component.translatable("cobblemon.ui.stats.hp").setStyle(light_purple)
