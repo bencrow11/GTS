@@ -21,7 +21,7 @@ modId="gts" #mandatory
 # see the associated build.gradle script for how to populate this completely automatically during a build
 version="${version}" #mandatory
 # A display name for the mod
-displayName="Gts" #mandatory
+displayName="Cobblemon GTS" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification <here>
 #updateJSONURL="http://myurl.me/" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -42,7 +42,7 @@ logoFile="icon.png" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-
+A Global Trading System mod made for Cobblemon to allow player to player sales.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.gts]] #optional
@@ -61,6 +61,20 @@ description='''
    modId="minecraft"
    mandatory=true
    # This version range declares a minimum of the current minecraft version up to but not including the next major version
-   versionRange="[1.21.1,)"
+   versionRange="[1.21.1]"
+   ordering="NONE"
+   side="BOTH"
+[[dependencies.gts]]
+   modId="luckperms"
+   mandatory=true
+   # This version range declares a minimum of the current minecraft version up to but not including the next major version
+   versionRange="[5.4.139,)"
+   ordering="NONE"
+   side="BOTH"
+[[dependencies.gts]]
+   modId="cobblemon"
+   mandatory=true
+   # This version range declares a minimum of the current minecraft version up to but not including the next major version
+   versionRange="[1.6.0,)"
    ordering="NONE"
    side="BOTH"

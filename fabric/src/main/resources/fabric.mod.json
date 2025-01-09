@@ -3,9 +3,9 @@
   "id": "gts",
   "version": "${version}",
 
-  "name": "gts",
-  "description": "",
-  "authors": [],
+  "name": "Cobblemon GTS",
+  "description": "A Global Trading System mod made for Cobblemon to allow player to player sales.",
+  "authors": ["bencrow11"],
   "contact": {},
 
   "license": "MIT",
@@ -19,6 +19,8 @@
   },
   "depends": {
     "fabricloader": ">=0.16.0",
-    "minecraft": ">=1.21.1"
+    "minecraft": "=1.21.1",
+    "cobblemon": ">=1.6.0",
+    "luckperms": ">=5.4.139"
   }
 }

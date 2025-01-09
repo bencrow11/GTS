@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class Webhook {
@@ -95,7 +96,7 @@ public abstract class Webhook {
             sendPost(pokemonBody
                     .replaceAll("%title%", "New Listing")
                     .replaceAll("%colour%", String.valueOf(newColour))
-                    .replaceAll("%dex%", pokemonListing.getListing().getSpecies().getTranslatedName().getString().toLowerCase())
+                    .replaceAll("%dex%", pokemonListing.getListing().getSpecies().getTranslatedName().getString().toLowerCase(Locale.ROOT))
                     .replaceAll("%shiny%", pokemonListing.getListing().getShiny() ? "shiny" : "normal")
                     .replaceAll("%form%", FormParser.parseForm(pokemonListing.getListing().getForm().getName()))
                     .replaceAll("%pokemon%", pokemonListing.getListing().getSpecies().getTranslatedName().getString())
@@ -170,7 +171,7 @@ public abstract class Webhook {
             sendPost(pokemonBody
                     .replaceAll("%title%", "Sold Listing")
                     .replaceAll("%colour%", String.valueOf(soldColour))
-                    .replaceAll("%dex%", pokemonListing.getListing().getSpecies().getTranslatedName().getString().toLowerCase())
+                    .replaceAll("%dex%", pokemonListing.getListing().getSpecies().getTranslatedName().getString().toLowerCase(Locale.ROOT))
                     .replaceAll("%shiny%", pokemonListing.getListing().getShiny() ? "shiny" : "normal")
                     .replaceAll("%form%", FormParser.parseForm(pokemonListing.getListing().getForm().getName()))
                     .replaceAll("%pokemon%", pokemonListing.getListing().getSpecies().getTranslatedName().getString())

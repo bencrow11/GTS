@@ -33,6 +33,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -305,7 +306,7 @@ public abstract class Utils {
 			return output;
 		}
 
-		return output.trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase();
+		return output.trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase(Locale.ROOT);
 	}
 
 	public static boolean isHA(Pokemon pokemon) {

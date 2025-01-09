@@ -42,11 +42,14 @@ public abstract class ListingInfo {
 //            }
 
             // TODO config setting to transfer tooltips.
-            List<Component> itemTooltips = itemListing.getListing()
-                    .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.NORMAL);
+            try {
+                List<Component> itemTooltips = itemListing.getListing()
+                        .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.NORMAL);
 
-            lore.addAll(itemTooltips.subList(1, itemTooltips.size()));
+                lore.addAll(itemTooltips.subList(1, itemTooltips.size()));
+            } catch (NullPointerException e) {}
         }
+
 
         return lore;
     }

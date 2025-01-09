@@ -27,6 +27,7 @@ import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * UI of the filtered Pokemon Listings page.
@@ -49,8 +50,8 @@ public class FilteredListings {
 
 		for (Listing listing : listings) {
 
-			if (listing.getListingName().toLowerCase().contains(searchValue.toLowerCase())
-				|| listing.getSellerName().toLowerCase().contains(searchValue.toLowerCase())) {
+			if (listing.getListingName().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))
+				|| listing.getSellerName().toLowerCase(Locale.ROOT).contains(searchValue.toLowerCase(Locale.ROOT))) {
 				List<Component> lore = ListingInfo.parse(listing);
 
 				Button button;
