@@ -80,6 +80,7 @@ public class Lang extends Versioned {
 	private String receiveListingButtonLabel; // The name of the "Receive Listing" button.
 	private String relistExpiredButtonLabel; // The label of the button that relists all expired listings.
 	private String expiredListingButtonLabel; // The label for the expired listing button.
+	private String pokemonBall; // The label for the ball that the Pokemon is held in.
 
 	/**
 	 * Button Materials
@@ -182,6 +183,7 @@ public class Lang extends Versioned {
 		insufficientInventorySpace = "§cYou do not have enough inventory space to receive this listing.";
 		onlyOnePokemonInParty = "§cYou can not list a Pokemon to GTS if you only have less than 2 Pokemon in your party.";
 		expiredListingButtonLabel = "§cExpired Listings";
+		pokemonBall = "§2Ball: ";
 	}
 
 	/**
@@ -378,6 +380,9 @@ public class Lang extends Versioned {
 	public String getExpiredListingButtonLabel() {
 		return expiredListingButtonLabel;
 	}
+	public String getPokemonBall() {
+		return pokemonBall;
+	}
 
 	/**
 	 * Method to initialize the config.
@@ -486,6 +491,7 @@ public class Lang extends Versioned {
 						read();
 					} else {
 						expiredListingButtonLabel = lang.getExpiredListingButtonLabel();
+						pokemonBall = lang.getPokemonBall();
 					}
 				});
 	}

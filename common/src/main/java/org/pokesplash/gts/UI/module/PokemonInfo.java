@@ -33,7 +33,7 @@ public abstract class PokemonInfo {
 		Style white = Style.EMPTY.withColor(TextColor.parseColor("white").getOrThrow());
 
 		Item ball = pokemon.getCaughtBall().item();
-		lore.add(Component.literal("§2Ball: ")
+		lore.add(Component.literal(Gts.language.getPokemonBall())
 				.append(Component.translatable(ball.getName(new ItemStack(ball)).getString()).setStyle(green)));
 
 		lore.add(Component.translatable("cobblemon.ui.info.species").setStyle(dark_green).append(": ")
