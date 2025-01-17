@@ -109,7 +109,7 @@ public abstract class GtsAPI {
 	 * @param listing The pokemon listing that is being sold.
 	 * @return true if the transaction was successful.
 	 */
-	public static boolean sale(UUID seller, ServerPlayer buyer, Listing listing) {
+	public static boolean sale(UUID seller, ServerPlayer buyer, Listing listing) throws Exception {
 		boolean listingsSuccess = Gts.listings.removeListing(listing);
 
 		boolean transactionSuccess = transferFunds(seller, buyer.getUUID(), listing.getPrice());
@@ -121,13 +121,13 @@ public abstract class GtsAPI {
 			if (transactionSuccess) {
 				revertFundTransfer(seller, buyer.getUUID(), listing.getPrice());
 			}
-			return false;
+			throw new Exception("The listing could not be removed.");
 		}
 
 		// If transaction failed, revert the pokemon listing.
 		if (!transactionSuccess) {
 			Gts.listings.addListing(listing);
-			return false;
+			throw new Exception("The transaction encountered a problem.");
 		}
 
 		if (listing.isPokemon()) {
@@ -174,6 +174,10 @@ public abstract class GtsAPI {
 		}
 
 		return takeSuccess && giveSuccess;
+	}
+
+	public static boolean hasEnoughFunds(UUID player, double amount) {
+		return GtsEconomyProvider.getHighestEconomy().balance(player) >= amount;
 	}
 
 	/**

@@ -64,4 +64,11 @@ public class ImpactorService implements GtsEconomy {
 
 		return transaction.successful();
 	}
+
+	@Override
+	public double balance(UUID player) {
+		Account acc = getAccount(player);
+
+		return acc.balance().doubleValue();
+	}
 }

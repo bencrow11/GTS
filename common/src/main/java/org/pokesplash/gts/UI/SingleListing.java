@@ -52,6 +52,7 @@ public class SingleListing {
 						Component.literal(Gts.language.getConfirmPurchaseButtonLabel()))
 				.onClick((action) -> {
 
+					// Checks that the listing still exists.
 					if (Gts.listings.getActiveListingById(listing.getId()) == null) {
 						action.getPlayer().sendSystemMessage(Component.literal(
 								"§cThis listing is no longer available."
@@ -60,6 +61,7 @@ public class SingleListing {
 						return;
 					}
 
+					// Checks the player has inventory space for the item.
 					if (!listing.isPokemon()) {
 						ItemListing itemListing = (ItemListing) listing;
 						if (!Utils.hasSpace(action.getPlayer(), itemListing.getListing())) {
@@ -73,28 +75,39 @@ public class SingleListing {
 
 					}
 
-					boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
-
-					String message;
-					if (success) {
-						message = Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
+					// Checks that the player can afford the listing.
+					if (!GtsAPI.hasEnoughFunds(action.getPlayer().getUUID(), listing.getPrice())) {
+						action.getPlayer().sendSystemMessage(Component.literal(
+								Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
 								0, listing.getListingName(), listing.getSellerName(),
-								action.getPlayer().getName().getString());
+								action.getPlayer().getName().getString())));
+						return;
+					}
+
+					try {
+						// Perform the transaction.
+						boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
+
+						// Notify the player.
+						action.getPlayer().sendSystemMessage(Component.literal(
+								Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
+										0, listing.getListingName(), listing.getSellerName(),
+										action.getPlayer().getName().getString())));
 
 						ServerPlayer seller =
 								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
+						// If the seller is online and not the buyer, notify them.
 						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
 							seller.sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingBought(),
 									0, listing.getListingName(), listing.getSellerName(),
 									action.getPlayer().getName().getString())));
 						}
-					} else {
-						message = Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
-								0, listing.getListingName(), listing.getSellerName(),
-								action.getPlayer().getName().getString());
+
+					} catch (Exception e) {
+						action.getPlayer().sendSystemMessage(Component.literal("§c" + e.getMessage()));
 					}
-					action.getPlayer().sendSystemMessage(Component.literal(message));
+
 
 					UIManager.closeUI(action.getPlayer());
 				})
