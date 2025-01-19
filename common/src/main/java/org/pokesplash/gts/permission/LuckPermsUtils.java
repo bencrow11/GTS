@@ -16,7 +16,7 @@ public abstract class LuckPermsUtils {
         User playerLP = LuckPermsProvider.get().getUserManager().getUser(user.getUUID());
 
         if (playerLP == null) {
-            System.out.println("Could not find player " + user + " in LuckPerms for GTS.");
+            System.out.println("Could not find player " + user.getUUID() + " in LuckPerms for GTS.");
             return false;
         }
 

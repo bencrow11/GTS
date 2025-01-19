@@ -63,7 +63,7 @@ public class History {
 				lore.add(Component.literal(Gts.language.getSold_date() +
 						format.format(new Date(item.getSoldDate()))));
 
-				Button button;
+				Button button = null;
 
 				// Pokemon specific lore and button.
 				if (item.isPokemon()) {
@@ -80,18 +80,22 @@ public class History {
 				else {
 					ItemHistoryItem itemHistoryItem = (ItemHistoryItem) item;
 
-					button = GooeyButton.builder()
-							.display(itemHistoryItem.getListing())
-							.with(DataComponents.CUSTOM_NAME,
-									Component.literal("§3" + Utils.capitaliseFirst(
-											itemHistoryItem.getListing().getDisplayName().getString())))
-							.with(DataComponents.LORE, new ItemLore(lore))
-							.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
-							.build();
+					if (itemHistoryItem.getListing() != null) {
+						button = GooeyButton.builder()
+								.display(itemHistoryItem.getListing())
+								.with(DataComponents.CUSTOM_NAME,
+										Component.literal("§3" + Utils.capitaliseFirst(
+												itemHistoryItem.getListing().getDisplayName().getString())))
+								.with(DataComponents.LORE, new ItemLore(lore))
+								.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
+								.build();
+					}
 				}
 
 				// Adds the button to the list.
-				buttons.add(button);
+				if (button != null) {
+					buttons.add(button);
+				}
 			}
 		}
 
