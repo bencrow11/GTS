@@ -56,6 +56,11 @@ public class ItemListing extends Listing<ItemStack> {
 	}
 
 	@Override
+	public boolean isListingValid() {
+        return item != null && item.isJsonObject();
+    }
+
+	@Override
 	public Listing deepClone() {
 		return new ItemListing(this);
 	}

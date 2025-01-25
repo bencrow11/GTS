@@ -119,6 +119,8 @@ public abstract class Listing<T> {
 
     public abstract T getListing(); // The object that has been listed.
 
+    public abstract boolean isListingValid(); // Checks the listing is present.
+
     public boolean write(String filePath) { // Writes the listing to file.
 
         if (ListingAPI.getHighestPriority() != null) {

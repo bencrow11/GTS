@@ -72,6 +72,8 @@ public abstract class HistoryItem<T> {
         return version;
     }
 
+    public abstract boolean isHistoryItemValid();
+
     public void write() {
 
         if (HistoryAPI.getHighestPriority() != null) {

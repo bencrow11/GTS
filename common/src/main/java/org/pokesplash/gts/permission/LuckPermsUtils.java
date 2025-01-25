@@ -23,3 +23,5 @@ public abstract class LuckPermsUtils {
         return playerLP.getCachedData().getPermissionData().checkPermission(permission).asBoolean();
     }
 }
+
+

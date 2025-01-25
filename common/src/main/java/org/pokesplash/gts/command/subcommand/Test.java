@@ -50,29 +50,9 @@ public class Test extends Subcommand {
 	@Override
 	public int run(CommandContext<CommandSourceStack> context) {
 
-		ArrayList<CobblemonItem> items = new ArrayList<>();
-
-		items.add(CobblemonItems.ANTIDOTE);
-		items.add(CobblemonItems.RARE_CANDY);
-		items.add(CobblemonItems.EVERSTONE);
-		items.add(CobblemonItems.REVIVE);
-		items.add(CobblemonItems.DRAGON_SCALE);
-		items.add(CobblemonItems.METRONOME);
-		items.add(CobblemonItems.TIMER_BALL);
-		items.add(CobblemonItems.PRISM_SCALE);
-		items.add(CobblemonItems.FIRE_STONE);
-		items.add(CobblemonItems.DUSK_STONE);
-
-		for (int x = 0; x < 100_000; x ++) {
-			CobblemonItem item = items.get(new Random().nextInt(items.size()));
-			Gts.history.addHistoryItem(
-					new ItemListing(
-							UUID.fromString("b5c833a0-c6f7-4e89-9ad5-d36faef37ab2"),
-							"bencrow11",
-							1000 + (x * 10),
-							new ItemStack(item)
-			), "Test History Item");
-		}
+		Gts.history.getHistory().keySet().forEach(item -> {
+			new org.pokesplash.gts.UI.History().getPage(item);
+		});
 
 		return 1;
 	}

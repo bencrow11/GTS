@@ -25,4 +25,9 @@ public class PokemonHistoryItem extends HistoryItem<Pokemon> {
     public Pokemon getListing() {
         return Pokemon.getCODEC().decode(JsonOps.INSTANCE, pokemon).getOrThrow().getFirst();
     }
+
+    @Override
+    public boolean isHistoryItemValid() {
+        return pokemon != null && pokemon.isJsonObject();
+    }
 }

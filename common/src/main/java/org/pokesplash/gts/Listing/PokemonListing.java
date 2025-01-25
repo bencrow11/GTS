@@ -48,6 +48,11 @@ public class PokemonListing extends Listing<Pokemon> {
 		return Pokemon.getCODEC().decode(JsonOps.INSTANCE, pokemon).getOrThrow().getFirst();
 	}
 
+	@Override
+	public boolean isListingValid() {
+		return pokemon != null && pokemon.isJsonObject();
+	}
+
 	public JsonElement getListingAsJsonObject() {
 		return pokemon;
 	}

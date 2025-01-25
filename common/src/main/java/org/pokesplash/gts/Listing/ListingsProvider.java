@@ -18,6 +18,8 @@ public class ListingsProvider {
 
 	protected HashMap<UUID, ArrayList<Listing>> expiredListings; // Expired listings.
 
+	private final String brokenFilePath = "/config/gts/invalid/listings/";
+
 	/**
 	 * Constructor to create a new list for both hashmaps.
 	 */
@@ -321,12 +323,20 @@ public class ListingsProvider {
 					// Type adapters help gson deserialize the listings interface.
 					builder.registerTypeAdapter(Listing.class, new Deserializer(PokemonListing.class));
 					builder.registerTypeAdapter(Listing.class, new Deserializer(ItemListing.class));
-					Gson gson = builder.create();
+					Gson gson = builder.setPrettyPrinting().create();
 
 					Listing listing = gson.fromJson(el, Listing.class);
 
 					listing = listing.isPokemon() ? gson.fromJson(el, PokemonListing.class) :
 							gson.fromJson(el, ItemListing.class);
+
+					if (!listing.isListingValid()) {
+						System.out.println("[GTS] Invalid file: " + file + " has been removed.");
+						Utils.writeFileAsync(brokenFilePath, file,
+								gson.toJson(listing));
+						Utils.deleteFile(Gts.LISTING_FILE_PATH, file);
+						return;
+					}
 
 					if (!listing.getVersion().equals(Gts.LISTING_FILE_VERSION)) {
 						// TODO upgrade listing file (Future use).

@@ -24,6 +24,7 @@ import java.util.UUID;
 public class HistoryProvider {
 	// path the player history are written to.
 	public static final String filePath = "/config/gts/history/";
+	private static final String brokeFilesPath = "/config/gts/invalid/history/";
 	// Storage of player history.
 	protected HashMap<UUID, PlayerHistory> history;
 
@@ -32,6 +33,10 @@ public class HistoryProvider {
 	 */
 	public HistoryProvider() {
 		history = new HashMap<>();
+	}
+
+	public HashMap<UUID, PlayerHistory> getHistory() {
+		return history;
 	}
 
 	/**
@@ -164,7 +169,7 @@ public class HistoryProvider {
 							// Type adapters help gson deserialize the listings interface.
 							builder.registerTypeAdapter(HistoryItem.class, new Deserializer(PokemonHistoryItem.class));
 							builder.registerTypeAdapter(HistoryItem.class, new Deserializer(ItemHistoryItem.class));
-							Gson gson = builder.create();
+							Gson gson = builder.setPrettyPrinting().create();
 
 							// Try parse the file to a history item.
 							try {
@@ -172,6 +177,14 @@ public class HistoryProvider {
 
 								item = item.isPokemon() ? gson.fromJson(el, PokemonHistoryItem.class) :
 										gson.fromJson(el, ItemHistoryItem.class);
+
+								if (!item.isHistoryItemValid()) {
+									System.out.println("[GTS] Invalid file: " + playerFile.getName() + " has been removed.");
+									Utils.writeFileAsync(brokeFilesPath, playerFile.getName(),
+											gson.toJson(item));
+									Utils.deleteFile(filePath + file.getName() + "/", playerFile.getName());
+									return;
+								}
 
 								// If the file version isn't the same as the version needed, update it.
 								if (!item.getVersion().equals(Gts.HISTORY_FILE_VERSION)) {

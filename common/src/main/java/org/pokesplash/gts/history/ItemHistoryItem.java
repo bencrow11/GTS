@@ -37,4 +37,9 @@ public class ItemHistoryItem extends HistoryItem<ItemStack> {
         }
         return null;
     }
+
+    @Override
+    public boolean isHistoryItemValid() {
+        return item != null && item.isJsonObject();
+    }
 }
