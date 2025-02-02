@@ -37,7 +37,7 @@ public class PokemonListing extends Listing<Pokemon> {
 		super(UUID.fromString(other.getSellerUuid().toString()),
 				String.copyValueOf(other.getSellerName().toCharArray()),
 				other.getPrice(), true);
-		this.pokemon = other.getListing().saveToJSON(new JsonObject());
+		this.pokemon = Pokemon.getCODEC().encodeStart(JsonOps.INSTANCE, other.getListing()).getOrThrow();
 		super.id = UUID.fromString(other.getId().toString());
 		super.version = String.copyValueOf(other.getVersion().toCharArray());
 		super.setEndTime(other.getEndTime());
