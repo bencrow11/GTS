@@ -39,25 +39,33 @@ public class HistoryProvider {
 		return history;
 	}
 
+	protected void putHistory(UUID uuid, PlayerHistory playerHistory) {
+		history.put(uuid, playerHistory);
+	}
+
+	protected void removeHistory(UUID uuid) {
+		history.remove(uuid);
+	}
+
 	/**
 	 * Method to get the history of a player.
 	 * @param player The player to get the history of.
 	 * @return The history of the player, or null.
 	 */
 	public PlayerHistory getPlayerHistory(UUID player) {
-		if (history.get(player) == null) {
+		if (getHistory().get(player) == null) {
 			if (HistoryAPI.getHighestPriority() == null) {
 				new PlayerHistory(player);
 			} else {
-				history.put(player, new PlayerHistory(player));
+				putHistory(player, new PlayerHistory(player));
 			}
 
 		}
-		return history.get(player);
+		return getHistory().get(player);
 	}
 
 	public HistoryItem findHistoryById(UUID id) {
-		for (PlayerHistory h : history.values()) {
+		for (PlayerHistory h : getHistory().values()) {
 			for (HistoryItem item : h.getListings()) {
 				if (item.getId().equals(id)) {
 					return item;
@@ -69,17 +77,17 @@ public class HistoryProvider {
 	}
 
 	public void updateHistory(PlayerHistory history) {
-		this.history.put(history.getPlayer(), history);
+		putHistory(history.getPlayer(), history);
 	}
 
 	public void addHistoryItem(Listing item, String buyerName) {
-		if (history.get(item.getSellerUuid()) == null) {
-			history.put(item.getSellerUuid(), new PlayerHistory(item.getSellerUuid()));
+		if (getHistory().get(item.getSellerUuid()) == null) {
+			putHistory(item.getSellerUuid(), new PlayerHistory(item.getSellerUuid()));
 		}
 
-		PlayerHistory playerHistory = history.get(item.getSellerUuid());
+		PlayerHistory playerHistory = getHistory().get(item.getSellerUuid());
 		playerHistory.addListing(item, buyerName);
-		history.put(item.getSellerUuid(), playerHistory);
+		putHistory(item.getSellerUuid(), playerHistory);
 	}
 
 	public double getAveragePrice(ItemStack itemStack) {
@@ -87,7 +95,7 @@ public class HistoryProvider {
 		double total = 0;
 		int amount = 0;
 
-		for (PlayerHistory h : history.values()) {
+		for (PlayerHistory h : getHistory().values()) {
 			for (ItemHistoryItem item : h.getItemListings()) {
 				if (ItemStack.isSameItem(item.getListing(), itemStack)) {
 					total += item.getPrice();
@@ -108,7 +116,7 @@ public class HistoryProvider {
 		double total = 0;
 		int amount = 0;
 
-		for (PlayerHistory h : history.values()) {
+		for (PlayerHistory h : getHistory().values()) {
 			for (PokemonHistoryItem mon : h.getPokemonListings()) {
 				if (mon.getListing().getSpecies().getNationalPokedexNumber() ==
 				pokemon.getSpecies().getNationalPokedexNumber()) {
@@ -145,7 +153,7 @@ public class HistoryProvider {
 						PlayerHistoryOld oldPlayer = gson.fromJson(el, PlayerHistoryOld.class); // Load from old class.
 						PlayerHistory newPlayer = new PlayerHistory(oldPlayer);
 						Utils.deleteFile(filePath, file.getName()); // Delete the old file.
-						history.put(newPlayer.getPlayer(), newPlayer);
+						putHistory(newPlayer.getPlayer(), newPlayer);
 					} catch (Exception e) {
 						Gts.LOGGER.error("Could not convert file " + file.getName() + " to a GTS Player History");
 						e.printStackTrace();
@@ -202,7 +210,7 @@ public class HistoryProvider {
 				}
 
 				// Adds the player history to memory.
-				history.put(playerId, new PlayerHistory(playerId, items));
+				putHistory(playerId, new PlayerHistory(playerId, items));
 			}
 		}
 	}

@@ -33,7 +33,7 @@ public class ListingsProvider {
 	 * @param player The player that the expired listings should be relisted.
 	 */
 	public void relistAllExpiredListings(UUID player) {
-		ArrayList<Listing> expired = expiredListings.get(player);
+		ArrayList<Listing> expired = getExpiredListings().get(player);
 
 		if (expired == null) {
 			return;
@@ -55,7 +55,7 @@ public class ListingsProvider {
 			addListing(listing);
 		}
 
-		expiredListings.remove(player);
+		delExpiredListing(player);
 	}
 
 	/**
@@ -66,7 +66,6 @@ public class ListingsProvider {
 		return listings;
 	}
 
-
 	/**
 	 * Method to get all pokemon listings, as a collection.
 	 * @return Pokemon listings in a collection.
@@ -76,7 +75,7 @@ public class ListingsProvider {
 		ArrayList<PokemonListing> pkmListings = new ArrayList<>();
 
 		// Filters all listings and finds the listings that are Pokemon only.
-		for (Listing listing : listings) {
+		for (Listing listing : getListings()) {
 			if (listing instanceof PokemonListing) {
 				pkmListings.add((PokemonListing) listing);
 			}
@@ -125,7 +124,7 @@ public class ListingsProvider {
 		ArrayList<ItemListing> itemListings = new ArrayList<>();
 
 		// Filters all listings and finds the listings that are Pokemon only.
-		for (Listing listing : listings) {
+		for (Listing listing : getListings()) {
 			if (listing instanceof ItemListing) {
 				itemListings.add((ItemListing) listing);
 			}
@@ -158,10 +157,10 @@ public class ListingsProvider {
 	 */
 	public boolean addListing(Listing listing) throws IllegalArgumentException {
 
-		if (hasListing(listing.getId(), listings)) {
+		if (hasListing(listing.getId(), getListings())) {
 			throw new IllegalArgumentException("This listing already exists!");
 		}
-		listings.add(listing);
+		putListing(listing);
 		return listing.write(Gts.LISTING_FILE_PATH);
 	}
 
@@ -172,11 +171,11 @@ public class ListingsProvider {
 	 * @throws IllegalArgumentException if the listing doesn't exist.
 	 */
 	public boolean removeListing(Listing listing) throws IllegalArgumentException {
-		if (!hasListing(listing.getId(), listings)) {
+		if (!hasListing(listing.getId(), getListings())) {
 			throw new IllegalArgumentException("No listing with the UUID " + listing.getId() + " exists.");
 		}
 
-		return listings.remove(listing);
+		return delListing(listing);
 	}
 
 	/**
@@ -200,7 +199,7 @@ public class ListingsProvider {
 	 * @return true if the player has expired listings.
 	 */
 	public boolean hasExpiredListings(UUID playerUUID) {
-		return expiredListings.containsKey(playerUUID);
+		return getExpiredListings().containsKey(playerUUID);
 	}
 
 	/**
@@ -209,14 +208,14 @@ public class ListingsProvider {
 	 * @return true if successfully written to file.
 	 */
 	public boolean addExpiredListing(Listing listing) {
-		if (expiredListings.containsKey(listing.getSellerUuid())) {
-			ArrayList<Listing> currentListings = expiredListings.get(listing.getSellerUuid());
+		if (getExpiredListings().containsKey(listing.getSellerUuid())) {
+			ArrayList<Listing> currentListings = getExpiredListings().get(listing.getSellerUuid());
 			if (!currentListings.contains(listing)) {
 				currentListings.add(listing);
-				expiredListings.put(listing.getSellerUuid(), currentListings);
+				putExpiredListing(listing.getSellerUuid(), currentListings);
 			}
 		} else {
-			expiredListings.put(listing.getSellerUuid(), new ArrayList<>(List.of(listing)));
+			putExpiredListing(listing.getSellerUuid(), new ArrayList<>(List.of(listing)));
 		}
 		return true;
 	}
@@ -228,14 +227,14 @@ public class ListingsProvider {
 	 */
 	public boolean removeExpiredListing(Listing listing) {
 
-		if (expiredListings.get(listing.getSellerUuid()) == null) {
+		if (getExpiredListings().get(listing.getSellerUuid()) == null) {
 			return false;
 		}
 
-		ArrayList<Listing> listings = expiredListings.get(listing.getSellerUuid());
+		ArrayList<Listing> listings = getExpiredListings().get(listing.getSellerUuid());
 		if (listings.contains(listing)) {
 			listings.remove(listing);
-			expiredListings.put(listing.getSellerUuid(), listings);
+			putExpiredListing(listing.getSellerUuid(), listings);
 			return true;
 		} else {
 			return false;
@@ -243,7 +242,7 @@ public class ListingsProvider {
 	}
 
 	public Listing getActiveListingById(UUID id) {
-		for (Listing listing : listings) {
+		for (Listing listing : getListings()) {
 			if (listing.getId().equals(id)) {
 				return listing;
 			}
@@ -253,7 +252,7 @@ public class ListingsProvider {
 	}
 
 	public Listing getExpiredListingById(UUID id) {
-		for (ArrayList<Listing> playerListings : expiredListings.values()) {
+		for (ArrayList<Listing> playerListings : getExpiredListings().values()) {
 			for (Listing listing : playerListings) {
 				if (listing.getId().equals(id)) {
 					return listing;
@@ -277,11 +276,11 @@ public class ListingsProvider {
 
 	public List<Listing> getExpiredListingsOfPlayer(UUID player) {
 
-		if (expiredListings.get(player) == null) {
+		if (getExpiredListings().get(player) == null) {
 			return Collections.emptyList();
 		}
 
-		return expiredListings.get(player);
+		return getExpiredListings().get(player);
 	}
 
 	public HashMap<UUID, ArrayList<Listing>> getExpiredListings() {
@@ -291,7 +290,7 @@ public class ListingsProvider {
 	public void check() {
 		ArrayList<Listing> toRemove = new ArrayList<>();
 
-		for (Listing listing : listings) {
+		for (Listing listing : getListings()) {
 			if (listing.getEndTime() < new Date().getTime() &&
 					listing.getEndTime() != -1) {
 				toRemove.add(listing);
@@ -302,6 +301,22 @@ public class ListingsProvider {
 			boolean success = removeListing(listing);
 			addExpiredListing(listing);
 		}
+	}
+
+	protected boolean putListing(Listing listing) {
+		return listings.add(listing);
+	}
+
+	protected boolean delListing(Listing listing) {
+		return listings.remove(listing);
+	}
+
+	protected void putExpiredListing(UUID playerUUID, ArrayList<Listing> listings) {
+		expiredListings.put(playerUUID, listings);
+	}
+
+	protected void delExpiredListing(UUID playerUUID) {
+		expiredListings.remove(playerUUID);
 	}
 
 
@@ -344,7 +359,7 @@ public class ListingsProvider {
 
 					if (listing.getEndTime() > new Date().getTime() ||
 						listing.getEndTime() == -1) {
-						listings.add(listing);
+						putListing(listing);
 					} else {
 						addExpiredListing(listing);
 					}
