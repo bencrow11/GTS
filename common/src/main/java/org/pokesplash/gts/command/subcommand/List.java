@@ -23,7 +23,6 @@ import org.pokesplash.gts.command.superclass.Subcommand;
 import org.pokesplash.gts.config.ItemPrices;
 import org.pokesplash.gts.config.PokemonAspects;
 import org.pokesplash.gts.config.PokemonPrices;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
@@ -45,8 +44,8 @@ public class List extends Subcommand {
 		return Commands.literal("sell")
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("sell"));
+						return Gts.permissions.hasPermission(ctx.getPlayer(),
+								"sell");
 					} else {
 						return true;
 					}

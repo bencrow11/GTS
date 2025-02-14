@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.command.superclass.Subcommand;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.Date;
@@ -30,8 +29,8 @@ public class Timeout extends Subcommand {
 		return Commands.literal("timeout")
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("timeout"));
+						return Gts.permissions.hasPermission(ctx.getPlayer(),
+								"timeout");
 					} else {
 						return true;
 					}

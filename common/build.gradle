@@ -13,8 +13,6 @@ dependencies {
         transitive = false
     }
     api("net.kyori:adventure-api:${rootProject.kyori_version}")
-
-    compileOnly("net.luckperms:api:5.4")
 }
 
 architectury {

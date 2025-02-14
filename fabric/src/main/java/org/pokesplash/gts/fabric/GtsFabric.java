@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.fabric.permission.FabricPermissions;
 import org.pokesplash.gts.util.CommandsRegistry;
 
 public class GtsFabric implements ModInitializer {
@@ -21,5 +22,6 @@ public class GtsFabric implements ModInitializer {
             }
         });
         Gts.init();
+        Gts.permissions = new FabricPermissions();
     }
 }

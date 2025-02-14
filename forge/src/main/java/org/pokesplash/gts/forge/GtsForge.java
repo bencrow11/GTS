@@ -6,7 +6,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
+import net.neoforged.neoforge.server.permission.events.PermissionGatherEvent;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.forge.permission.NeoforgePermissions;
 import org.pokesplash.gts.util.CommandsRegistry;
 
 @Mod(Gts.MOD_ID)
@@ -34,5 +36,12 @@ public class GtsForge {
     @SubscribeEvent
     public void tickEvent(ServerTickEvent.Post event) {
         Gts.listings.check();
+    }
+
+    @SubscribeEvent
+    public void registerPermissions(PermissionGatherEvent.Nodes event) {
+        NeoforgePermissions permissionChecker = new NeoforgePermissions();
+        permissionChecker.createNodes().forEach(event::addNodes);
+        Gts.permissions = permissionChecker;
     }
 }

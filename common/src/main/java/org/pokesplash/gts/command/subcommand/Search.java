@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.FilteredListings;
 import org.pokesplash.gts.command.superclass.Subcommand;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 
 public class Search extends Subcommand {
 
@@ -29,8 +28,8 @@ public class Search extends Subcommand {
 		return Commands.literal("search")
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("search"));
+						return Gts.permissions.hasPermission(ctx.getPlayer(),
+								"search");
 					} else {
 						return true;
 					}

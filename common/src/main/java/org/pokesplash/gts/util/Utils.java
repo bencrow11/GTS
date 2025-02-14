@@ -15,10 +15,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.Listing.ItemListing;
-import org.pokesplash.gts.Listing.Listing;
-import org.pokesplash.gts.Listing.PokemonListing;
-import org.pokesplash.gts.config.Material;
 
 import java.io.File;
 import java.io.FileWriter;

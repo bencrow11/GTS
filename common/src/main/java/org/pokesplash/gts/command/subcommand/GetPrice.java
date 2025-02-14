@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.command.superclass.Subcommand;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 
 public class GetPrice extends Subcommand {
 
@@ -29,8 +28,8 @@ public class GetPrice extends Subcommand {
 		return Commands.literal("getprice")
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("getprice"));
+						return Gts.permissions.hasPermission(ctx.getPlayer(),
+								"getprice");
 					} else {
 						return true;
 					}

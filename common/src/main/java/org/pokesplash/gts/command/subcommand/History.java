@@ -10,7 +10,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.command.superclass.Subcommand;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 
 public class History extends Subcommand {
 
@@ -27,8 +26,8 @@ public class History extends Subcommand {
 		return Commands.literal("history")
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("history"));
+						return Gts.permissions.hasPermission(ctx.getPlayer(),
+								"history");
 					} else {
 						return true;
 					}

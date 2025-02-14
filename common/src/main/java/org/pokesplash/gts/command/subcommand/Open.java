@@ -12,7 +12,6 @@ import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.UI.SingleListing;
 import org.pokesplash.gts.command.superclass.Subcommand;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 
 import java.util.UUID;
 
@@ -32,8 +31,8 @@ public class Open extends Subcommand {
 		return Commands.argument("id", UuidArgument.uuid())
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("base"));
+						return Gts.permissions.hasPermission(ctx.getPlayer(),
+								"base");
 					} else {
 						return true;
 					}

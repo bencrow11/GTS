@@ -65,13 +65,6 @@ A Global Trading System mod made for Cobblemon to allow player to player sales.
    ordering="NONE"
    side="BOTH"
 [[dependencies.gts]]
-   modId="luckperms"
-   mandatory=true
-   # This version range declares a minimum of the current minecraft version up to but not including the next major version
-   versionRange="[5.4.139,)"
-   ordering="NONE"
-   side="BOTH"
-[[dependencies.gts]]
    modId="cobblemon"
    mandatory=true
    # This version range declares a minimum of the current minecraft version up to but not including the next major version

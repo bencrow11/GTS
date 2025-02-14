@@ -18,7 +18,6 @@ import org.pokesplash.gts.UI.button.Filler;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.List;
@@ -164,7 +163,7 @@ public class SingleListing {
 			template.set(11, purchase);
 		}
 
-		if (LuckPermsUtils.hasPermission(viewer, Gts.permissions.getPermission("remove"))
+		if (Gts.permissions.hasPermission(viewer, "remove")
 		&& !viewer.getUUID().equals(listing.getSellerUuid())) {
 			template.set(22, removeListing);
 		}

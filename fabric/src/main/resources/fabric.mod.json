@@ -20,7 +20,6 @@
   "depends": {
     "fabricloader": ">=0.16.0",
     "minecraft": "=1.21.1",
-    "cobblemon": ">=1.6.0",
-    "luckperms": ">=5.4.139"
+    "cobblemon": ">=1.6.0"
   }
 }

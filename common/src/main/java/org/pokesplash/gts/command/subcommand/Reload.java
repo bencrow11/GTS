@@ -7,7 +7,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.command.superclass.Subcommand;
-import org.pokesplash.gts.permission.LuckPermsUtils;
 import org.pokesplash.gts.util.Utils;
 
 public class Reload extends Subcommand {
@@ -25,8 +24,8 @@ public class Reload extends Subcommand {
 		return Commands.literal("reload")
 				.requires(ctx -> {
 					if (ctx.isPlayer()) {
-						return LuckPermsUtils.hasPermission(ctx.getPlayer(),
-								Gts.permissions.getPermission("reload"));
+						return Gts.permissions.hasPermission(ctx.getPlayer(),
+								"reload");
 					} else {
 						return true;
 					}
