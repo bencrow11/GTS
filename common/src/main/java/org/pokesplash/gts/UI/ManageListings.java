@@ -77,7 +77,7 @@ public class ManageListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getManageTitle())));
+		page.setTitle(Gts.language.getManageTitle());
 
 		setPageTitle(page);
 
@@ -87,7 +87,7 @@ public class ManageListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getManageTitle())));
+			next.setTitle(Gts.language.getManageTitle());
 			setPageTitle(next);
 		}
 	}

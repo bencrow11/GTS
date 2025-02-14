@@ -2,6 +2,10 @@ package org.pokesplash.gts.history;
 
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -41,5 +45,11 @@ public class ItemHistoryItem extends HistoryItem<ItemStack> {
     @Override
     public boolean isHistoryItemValid() {
         return item != null && item.isJsonObject();
+    }
+
+    @Override
+    public MutableComponent getDisplayName() {
+        Style dark_aqua = Style.EMPTY.withItalic(false).withColor(TextColor.parseColor("dark_aqua").getOrThrow());
+        return Component.empty().setStyle(dark_aqua).append(getListing().getHoverName());
     }
 }

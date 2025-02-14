@@ -10,6 +10,7 @@ import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
@@ -54,19 +55,16 @@ public class History {
 
 				// Standard lore for any item.
 				List<Component> lore = new ArrayList<>();
-				lore.add(Component.literal(
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSeller())) + item.getSellerName()));
-				lore.add(Component.literal(
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPrice())) + item.getPriceAsString()));
-				lore.add(Component.literal(
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getBuyer())) + item.getBuyerName()));
+
+				lore.add(ColorUtil.parse(Gts.language.getSeller() + item.getSellerName()));
+				lore.add(ColorUtil.parse(Gts.language.getPrice() + item.getPriceAsString()));
+				lore.add(ColorUtil.parse(Gts.language.getBuyer() + item.getBuyerName()));
 
 				String pattern = "d MMMM yyyy";
 				SimpleDateFormat format = new SimpleDateFormat(pattern);
 
-				lore.add(
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSold_date() +
-								format.format(new Date(item.getSoldDate())))));
+				lore.add(ColorUtil.parse(Gts.language.getSold_date() +
+						format.format(new Date(item.getSoldDate()))));
 
 				Button button = null;
 
@@ -77,7 +75,7 @@ public class History {
 
 					button = GooeyButton.builder()
 							.display(PokemonItem.from(pokemonItem.getListing(), 1))
-							.with(DataComponents.CUSTOM_NAME, pokemonItem.getListing().getDisplayName())
+							.with(DataComponents.CUSTOM_NAME, pokemonItem.getDisplayName())
 							.with(DataComponents.LORE, new ItemLore(lore))
 							.build();
 				}
@@ -88,9 +86,7 @@ public class History {
 					if (itemHistoryItem.getListing() != null) {
 						button = GooeyButton.builder()
 								.display(itemHistoryItem.getListing())
-								.with(DataComponents.CUSTOM_NAME,
-										Component.literal("§3" + Utils.capitaliseFirst(
-												itemHistoryItem.getListing().getDisplayName().getString())))
+								.with(DataComponents.CUSTOM_NAME, itemHistoryItem.getDisplayName())
 								.with(DataComponents.LORE, new ItemLore(lore))
 								.with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
 								.build();
@@ -115,7 +111,8 @@ public class History {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getHistoryTitle())));
+
+		page.setTitle(Gts.language.getHistoryTitle());
 
 		setPageTitle(page);
 
@@ -125,7 +122,7 @@ public class History {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getHistoryTitle())));
+			next.setTitle(Gts.language.getHistoryTitle());
 			setPageTitle(next);
 		}
 	}

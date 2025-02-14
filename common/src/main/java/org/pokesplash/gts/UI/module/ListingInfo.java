@@ -1,6 +1,7 @@
 package org.pokesplash.gts.UI.module;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import org.pokesplash.gts.Gts;
@@ -26,12 +27,14 @@ public abstract class ListingInfo {
     public static List<Component> parse(Listing listing) {
         List<Component> lore = new ArrayList<>();
 
-        lore.add(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSeller() + listing.getSellerName())));
-        lore.add(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPrice() + listing.getPriceAsString())));
+        Style base = Style.EMPTY.withItalic(false);
 
-        if (listing.getEndTime() != -1) {
-            lore.add(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getRemainingTime() +
-                    Utils.parseLongDate(listing.getEndTime() - new Date().getTime()))));
+        lore.add(ColorUtil.parse(Gts.language.getSeller() + listing.getSellerName()));
+        lore.add(ColorUtil.parse(Gts.language.getPrice() + listing.getPriceAsString()));
+
+        if (listing.getEndTime() != -1 && listing.getEndTime() > new Date().getTime()) {
+            lore.add(ColorUtil.parse(Gts.language.getRemainingTime() +
+                            Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
         }
 
 

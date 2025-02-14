@@ -1,5 +1,6 @@
 package org.pokesplash.gts.history;
 
+import net.minecraft.network.chat.MutableComponent;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.api.provider.HistoryAPI;
 import org.pokesplash.gts.util.Utils;
@@ -84,4 +85,6 @@ public abstract class HistoryItem<T> {
         Utils.writeFileAsync(HistoryProvider.filePath + sellerUuid + "/",
                 id + ".json", Utils.newGson().toJson(this));
     }
+
+    public abstract MutableComponent getDisplayName();
 }

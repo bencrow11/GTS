@@ -5,6 +5,7 @@ import ca.landonjw.gooeylibs2.api.button.linked.LinkType;
 import ca.landonjw.gooeylibs2.api.button.linked.LinkedPageButton;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.util.ColorUtil;
 
@@ -14,7 +15,7 @@ public abstract class NextPage {
                 .linkType(LinkType.Next)
                 .display(Gts.language.getNextPageButtonItems())
                 .with(DataComponents.CUSTOM_NAME,
-                        ColorUtil.toText(ColorUtil.parseColour(Gts.language.getNextPageButtonLabel())))
+                        ColorUtil.parse(Gts.language.getNextPageButtonLabel()))
                 .build();
     }
 }

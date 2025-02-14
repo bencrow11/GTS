@@ -82,8 +82,8 @@ public class FilteredListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(
-				Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue))));
+
+		page.setTitle(Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue));
 
 		setPageTitle(page, searchValue);
 
@@ -93,8 +93,7 @@ public class FilteredListings {
 	private void setPageTitle(LinkedPage page, String searchValue) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(
-					Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue))));
+			next.setTitle(Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue));
 			setPageTitle(next, searchValue);
 		}
 	}

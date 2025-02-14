@@ -1,8 +1,10 @@
 package org.pokesplash.gts.util;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.minecraft.network.chat.Style;
 import org.pokesplash.gts.Gts;
 
 import java.util.Locale;
@@ -12,6 +14,12 @@ import java.util.regex.Pattern;
 public final class ColorUtil {
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]){6}");
     private static final Pattern LEGACY_PATTERN = Pattern.compile("[&§]([0-9a-fA-fk-oK-OrR])");
+
+    public static net.minecraft.network.chat.Component parse(String text) {
+        net.minecraft.network.chat.Component component = toText(parseColour(text));
+        return net.minecraft.network.chat.Component.empty().setStyle(Style.EMPTY.withItalic(false))
+                .append(component);
+    }
 
     public static Component parseColour(String input) {
         return MiniMessage.miniMessage().deserialize(ColorUtil.replaceCodes(input));

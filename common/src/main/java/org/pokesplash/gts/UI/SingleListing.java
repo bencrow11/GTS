@@ -49,7 +49,7 @@ public class SingleListing {
 		Button purchase = GooeyButton.builder()
 				.display(Gts.language.getPurchaseButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getConfirmPurchaseButtonLabel())))
+						ColorUtil.parse(Gts.language.getConfirmPurchaseButtonLabel()))
 				.onClick((action) -> {
 
 					// Checks that the listing still exists.
@@ -66,10 +66,9 @@ public class SingleListing {
 						ItemListing itemListing = (ItemListing) listing;
 						if (!Utils.hasSpace(action.getPlayer(), itemListing.getListing())) {
 							action.getPlayer().sendSystemMessage(
-									ColorUtil.toText(ColorUtil.parseColour(
-											Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
+									ColorUtil.parse(Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
 											0, listing.getListingName(), listing.getSellerName(),
-											action.getPlayer().getName().getString()))));
+											action.getPlayer().getName().getString())));
 							UIManager.closeUI(action.getPlayer());
 							return;
 						}
@@ -79,10 +78,10 @@ public class SingleListing {
 					// Checks that the player can afford the listing.
 					if (!GtsAPI.hasEnoughFunds(action.getPlayer().getUUID(), listing.getPrice())) {
 						action.getPlayer().sendSystemMessage(
-								ColorUtil.toText(ColorUtil.parseColour(
+								ColorUtil.parse(
 										Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
 												0, listing.getListingName(), listing.getSellerName(),
-												action.getPlayer().getName().getString()))));
+												action.getPlayer().getName().getString())));
 						return;
 					}
 
@@ -92,10 +91,10 @@ public class SingleListing {
 
 						// Notify the player.
 						action.getPlayer().sendSystemMessage(
-								ColorUtil.toText(ColorUtil.parseColour(
+								ColorUtil.parse(
 										Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
 												0, listing.getListingName(), listing.getSellerName(),
-												action.getPlayer().getName().getString()))));
+												action.getPlayer().getName().getString())));
 
 						ServerPlayer seller =
 								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
@@ -103,10 +102,10 @@ public class SingleListing {
 						// If the seller is online and not the buyer, notify them.
 						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
 							seller.sendSystemMessage(
-									ColorUtil.toText(ColorUtil.parseColour(
+									ColorUtil.parse(
 											Utils.formatPlaceholders(Gts.language.getListingBought(),
 													0, listing.getListingName(), listing.getSellerName(),
-													action.getPlayer().getName().getString()))));
+													action.getPlayer().getName().getString())));
 						}
 
 					} catch (Exception e) {
@@ -121,7 +120,7 @@ public class SingleListing {
 		Button cancel = GooeyButton.builder()
 				.display(Gts.language.getCancelButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getCancelPurchaseButtonLabel())))
+						ColorUtil.parse(Gts.language.getCancelPurchaseButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new AllListings().getPage();
@@ -132,7 +131,7 @@ public class SingleListing {
 		Button removeListing = GooeyButton.builder()
 				.display(Gts.language.getRemoveListingButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getRemoveListingButtonLabel())))
+						ColorUtil.parse(Gts.language.getRemoveListingButtonLabel()))
 				.onClick((action) -> {
 
 
@@ -142,10 +141,10 @@ public class SingleListing {
 						GtsAPI.cancelListing(listing);
 					}
 					Component message =
-							ColorUtil.toText(ColorUtil.parseColour(
+							ColorUtil.parse(
 									Utils.formatPlaceholders(Gts.language.getCancelListing(),
 									0, listing.getListingName(), listing.getSellerName(),
-									action.getPlayer().getName().getString())));
+									action.getPlayer().getName().getString()));
 
 					action.getPlayer().sendSystemMessage(message);
 

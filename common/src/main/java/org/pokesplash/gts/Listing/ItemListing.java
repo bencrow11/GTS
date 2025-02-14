@@ -74,7 +74,7 @@ public class ItemListing extends Listing<ItemStack> {
 
 	@Override
 	public MutableComponent getDisplayName() {
-		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua").getOrThrow());
+		Style dark_aqua = Style.EMPTY.withItalic(false).withColor(TextColor.parseColor("dark_aqua").getOrThrow());
 		return Component.empty().setStyle(dark_aqua).append(getListing().getHoverName());
 	}
 

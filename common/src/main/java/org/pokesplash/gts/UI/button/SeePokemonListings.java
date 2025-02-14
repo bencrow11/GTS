@@ -6,6 +6,7 @@ import ca.landonjw.gooeylibs2.api.button.GooeyButton;
 import ca.landonjw.gooeylibs2.api.page.Page;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import org.pokesplash.gts.Gts;
@@ -18,7 +19,7 @@ public abstract class SeePokemonListings {
         return GooeyButton.builder()
                 .display(Gts.language.getPokemonListingsButtonItem())
                 .with(DataComponents.CUSTOM_NAME,
-                        ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPokemonListingsButtonLabel())))
+                        ColorUtil.parse(Gts.language.getPokemonListingsButtonLabel()))
                 .with(DataComponents.HIDE_ADDITIONAL_TOOLTIP, Unit.INSTANCE)
                 .onClick((action) -> {
                     ServerPlayer sender = action.getPlayer();

@@ -10,6 +10,7 @@ import ca.landonjw.gooeylibs2.api.page.Page;
 import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
@@ -49,7 +50,7 @@ public class ItemListings {
 		Button sortByPriceButton = GooeyButton.builder()
 				.display(Gts.language.getSortByPriceButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByPriceButtonLabel())))
+						ColorUtil.parse(Gts.language.getSortByPriceButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(Sort.PRICE);
@@ -60,7 +61,7 @@ public class ItemListings {
 		Button sortByNewestButton = GooeyButton.builder()
 				.display(Gts.language.getSortByNewestButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByNewestButtonLabel())))
+						ColorUtil.parse(Gts.language.getSortByNewestButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(Sort.DATE);
@@ -71,7 +72,7 @@ public class ItemListings {
 		Button sortByNameButton = GooeyButton.builder()
 				.display(Gts.language.getSortByNameButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByNameButtonLabel())))
+						ColorUtil.parse(Gts.language.getSortByNameButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(Sort.NAME);
@@ -113,7 +114,7 @@ public class ItemListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, itemButtons, null);
-		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getItemListingsTitle())));
+		page.setTitle(Gts.language.getItemListingsTitle());
 
 		setPageTitle(page);
 
@@ -123,7 +124,7 @@ public class ItemListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getItemListingsTitle())));
+			next.setTitle(Gts.language.getItemListingsTitle());
 			setPageTitle(next);
 		}
 	}

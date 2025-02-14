@@ -11,6 +11,7 @@ import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
@@ -50,7 +51,7 @@ public class PokemonListings {
 		Button sortByPriceButton = GooeyButton.builder()
 				.display(Gts.language.getSortByPriceButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByPriceButtonLabel())))
+						ColorUtil.parse(Gts.language.getSortByPriceButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(Sort.PRICE);
@@ -61,7 +62,7 @@ public class PokemonListings {
 		Button sortByNewestButton = GooeyButton.builder()
 				.display(Gts.language.getSortByNewestButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByNewestButtonLabel())))
+						ColorUtil.parse(Gts.language.getSortByNewestButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(Sort.DATE);
@@ -72,7 +73,7 @@ public class PokemonListings {
 		Button sortByNameButton = GooeyButton.builder()
 				.display(Gts.language.getSortByNameButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByPokemonButtonLabel())))
+						ColorUtil.parse(Gts.language.getSortByPokemonButtonLabel()))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new PokemonListings().getPage(Sort.NAME);
@@ -114,7 +115,8 @@ public class PokemonListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, pokemonButtons, null);
-		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPokemonListingsButtonLabel())));
+
+		page.setTitle(Gts.language.getPokemonListingsTitle());
 
 		setPageTitle(page);
 
@@ -124,7 +126,7 @@ public class PokemonListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPokemonListingsButtonLabel())));
+			next.setTitle(Gts.language.getPokemonListingsTitle());
 			setPageTitle(next);
 		}
 	}

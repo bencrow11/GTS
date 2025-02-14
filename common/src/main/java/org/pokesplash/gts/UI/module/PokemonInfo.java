@@ -30,21 +30,23 @@ public abstract class PokemonInfo {
 	 */
 	public static Collection<Component> parse(Pokemon pokemon) {
 
+		Style style = Style.EMPTY.withItalic(false);
+
 		Collection<Component> lore = new ArrayList<>();
-		Style dark_aqua = Style.EMPTY.withColor(TextColor.parseColor("dark_aqua").getOrThrow());
-		Style dark_green = Style.EMPTY.withColor(TextColor.parseColor("dark_green").getOrThrow());
-		Style dark_purple = Style.EMPTY.withColor(TextColor.parseColor("dark_purple").getOrThrow());
-		Style gold = Style.EMPTY.withColor(TextColor.parseColor("gold").getOrThrow());
-		Style gray = Style.EMPTY.withColor(TextColor.parseColor("gray").getOrThrow());
-		Style green = Style.EMPTY.withColor(TextColor.parseColor("green").getOrThrow());
-		Style red = Style.EMPTY.withColor(TextColor.parseColor("red").getOrThrow());
-		Style light_purple = Style.EMPTY.withColor(TextColor.parseColor("light_purple").getOrThrow());
-		Style yellow = Style.EMPTY.withColor(TextColor.parseColor("yellow").getOrThrow());
-		Style white = Style.EMPTY.withColor(TextColor.parseColor("white").getOrThrow());
+		Style dark_aqua = style.withColor(TextColor.parseColor("dark_aqua").getOrThrow());
+		Style dark_green = style.withColor(TextColor.parseColor("dark_green").getOrThrow());
+		Style dark_purple = style.withColor(TextColor.parseColor("dark_purple").getOrThrow());
+		Style gold = style.withColor(TextColor.parseColor("gold").getOrThrow());
+		Style gray = style.withColor(TextColor.parseColor("gray").getOrThrow());
+		Style green = style.withColor(TextColor.parseColor("green").getOrThrow());
+		Style red = style.withColor(TextColor.parseColor("red").getOrThrow());
+		Style light_purple = style.withColor(TextColor.parseColor("light_purple").getOrThrow());
+		Style yellow = style.withColor(TextColor.parseColor("yellow").getOrThrow());
+		Style white = style.withColor(TextColor.parseColor("white").getOrThrow());
 
 		Item ball = pokemon.getCaughtBall().item();
 
-		lore.add(Component.empty().append(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPokemonBall())))
+		lore.add(Component.empty().setStyle(style).append(ColorUtil.parse(Gts.language.getPokemonBall()))
 				.append(Component.translatable(ball.getName(new ItemStack(ball)).getString()).setStyle(green)));
 
 		lore.add(Component.translatable("cobblemon.ui.info.species").setStyle(dark_green).append(": ")
