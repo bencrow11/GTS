@@ -1,6 +1,5 @@
 package org.pokesplash.gts.command.subcommand;
 
-import com.cobblemon.mod.common.Cobblemon;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;

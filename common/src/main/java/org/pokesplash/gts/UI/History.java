@@ -10,7 +10,6 @@ import ca.landonjw.gooeylibs2.api.template.types.ChestTemplate;
 import com.cobblemon.mod.common.item.PokemonItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
 import org.pokesplash.gts.Gts;
@@ -22,7 +21,6 @@ import org.pokesplash.gts.history.ItemHistoryItem;
 import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.history.PokemonHistoryItem;
 import org.pokesplash.gts.util.ColorUtil;
-import org.pokesplash.gts.util.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
