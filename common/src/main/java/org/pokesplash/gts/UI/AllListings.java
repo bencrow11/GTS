@@ -20,6 +20,7 @@ import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.provider.ListingAPI;
+import org.pokesplash.gts.util.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class AllListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle("§3" + Gts.language.getTitle());
+		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getTitle())));
 
 		setPageTitle(page);
 
@@ -85,7 +86,7 @@ public class AllListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(Gts.language.getTitle());
+			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getTitle())));
 			setPageTitle(next);
 		}
 	}

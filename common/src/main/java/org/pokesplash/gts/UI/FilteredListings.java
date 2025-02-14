@@ -20,6 +20,7 @@ import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.provider.ListingAPI;
+import org.pokesplash.gts.util.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,8 @@ public class FilteredListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle(Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue));
+		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(
+				Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue))));
 
 		setPageTitle(page, searchValue);
 
@@ -91,7 +93,8 @@ public class FilteredListings {
 	private void setPageTitle(LinkedPage page, String searchValue) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue));
+			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(
+					Gts.language.getFilteredListingsTitle().replaceAll("%search%", searchValue))));
 			setPageTitle(next, searchValue);
 		}
 	}

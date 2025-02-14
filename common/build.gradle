@@ -12,7 +12,9 @@ dependencies {
     modApi("net.impactdev.impactor.api:core:${rootProject.impactor_version}") {
         transitive = false
     }
-    api("net.kyori:adventure-api:${rootProject.kyori_version}")
+    implementation("net.kyori:adventure-api:${rootProject.kyori_version}")
+    implementation("net.kyori:adventure-text-minimessage:${rootProject.kyori_version}")
+    implementation("net.kyori:adventure-text-serializer-gson:${rootProject.kyori_version}")
 }
 
 architectury {

@@ -19,6 +19,7 @@ import org.pokesplash.gts.UI.button.ManageListings;
 import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.enumeration.Sort;
+import org.pokesplash.gts.util.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -48,7 +49,7 @@ public class ItemListings {
 		Button sortByPriceButton = GooeyButton.builder()
 				.display(Gts.language.getSortByPriceButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getSortByPriceButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByPriceButtonLabel())))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(Sort.PRICE);
@@ -59,7 +60,7 @@ public class ItemListings {
 		Button sortByNewestButton = GooeyButton.builder()
 				.display(Gts.language.getSortByNewestButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getSortByNewestButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByNewestButtonLabel())))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(Sort.DATE);
@@ -70,7 +71,7 @@ public class ItemListings {
 		Button sortByNameButton = GooeyButton.builder()
 				.display(Gts.language.getSortByNameButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getSortByNameButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSortByNameButtonLabel())))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ItemListings().getPage(Sort.NAME);
@@ -112,7 +113,7 @@ public class ItemListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, itemButtons, null);
-		page.setTitle(Gts.language.getItemListingsTitle());
+		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getItemListingsTitle())));
 
 		setPageTitle(page);
 
@@ -122,7 +123,7 @@ public class ItemListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(Gts.language.getItemListingsTitle());
+			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getItemListingsTitle())));
 			setPageTitle(next);
 		}
 	}

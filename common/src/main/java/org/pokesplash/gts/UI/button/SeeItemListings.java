@@ -10,13 +10,14 @@ import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.ItemListings;
 import org.pokesplash.gts.enumeration.Sort;
+import org.pokesplash.gts.util.ColorUtil;
 
 public abstract class SeeItemListings {
     public static Button getButton() {
         return GooeyButton.builder()
                 .display(Gts.language.getItemListingsButtonItem())
                 .with(DataComponents.CUSTOM_NAME,
-                        Component.literal(Gts.language.getItemListingsButtonLabel()))
+                        ColorUtil.toText(ColorUtil.parseColour(Gts.language.getItemListingsButtonLabel())))
                 .onClick((action) -> {
                     ServerPlayer sender = action.getPlayer();
                     Page page = new ItemListings().getPage(Sort.NONE);

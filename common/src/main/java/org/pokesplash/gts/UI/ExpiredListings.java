@@ -18,6 +18,7 @@ import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.ManageListings;
 import org.pokesplash.gts.UI.button.*;
 import org.pokesplash.gts.UI.module.PokemonInfo;
+import org.pokesplash.gts.util.ColorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +44,10 @@ public class ExpiredListings {
 			for (Listing listing : listings) {
 
 				List<Component> lore = new ArrayList<>();
-				lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-				lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
+				lore.add(Component.literal(
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSeller())) + listing.getSellerName()));
+				lore.add(Component.literal(
+								ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPrice())) + listing.getPriceAsString()));
 
 				if (listing.isPokemon()) {
 					lore.addAll(PokemonInfo.parse((PokemonListing) listing));
@@ -77,7 +80,7 @@ public class ExpiredListings {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle(Gts.language.getExpiredListingsTitle());
+		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getExpiredListingsTitle())));
 
 		setPageTitle(page);
 
@@ -87,7 +90,7 @@ public class ExpiredListings {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(Gts.language.getExpiredListingsTitle());
+			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getExpiredListingsTitle())));
 			setPageTitle(next);
 		}
 	}

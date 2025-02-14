@@ -20,6 +20,7 @@ import org.pokesplash.gts.history.HistoryItem;
 import org.pokesplash.gts.history.ItemHistoryItem;
 import org.pokesplash.gts.history.PlayerHistory;
 import org.pokesplash.gts.history.PokemonHistoryItem;
+import org.pokesplash.gts.util.ColorUtil;
 import org.pokesplash.gts.util.Utils;
 
 import java.text.SimpleDateFormat;
@@ -53,15 +54,19 @@ public class History {
 
 				// Standard lore for any item.
 				List<Component> lore = new ArrayList<>();
-				lore.add(Component.literal(Gts.language.getSeller() + item.getSellerName()));
-				lore.add(Component.literal(Gts.language.getPrice() + item.getPriceAsString()));
-				lore.add(Component.literal(Gts.language.getBuyer() + item.getBuyerName()));
+				lore.add(Component.literal(
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSeller())) + item.getSellerName()));
+				lore.add(Component.literal(
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPrice())) + item.getPriceAsString()));
+				lore.add(Component.literal(
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getBuyer())) + item.getBuyerName()));
 
 				String pattern = "d MMMM yyyy";
 				SimpleDateFormat format = new SimpleDateFormat(pattern);
 
-				lore.add(Component.literal(Gts.language.getSold_date() +
-						format.format(new Date(item.getSoldDate()))));
+				lore.add(
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSold_date() +
+								format.format(new Date(item.getSoldDate())))));
 
 				Button button = null;
 
@@ -110,7 +115,7 @@ public class History {
 				.build();
 
 		LinkedPage page = PaginationHelper.createPagesFromPlaceholders(template, buttons, null);
-		page.setTitle(Gts.language.getHistoryTitle());
+		page.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getHistoryTitle())));
 
 		setPageTitle(page);
 
@@ -120,7 +125,7 @@ public class History {
 	private void setPageTitle(LinkedPage page) {
 		LinkedPage next = page.getNext();
 		if (next != null) {
-			next.setTitle(Gts.language.getHistoryTitle());
+			next.setTitle(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getHistoryTitle())));
 			setPageTitle(next);
 		}
 	}

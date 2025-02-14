@@ -18,6 +18,7 @@ import org.pokesplash.gts.UI.button.Filler;
 import org.pokesplash.gts.UI.module.ListingInfo;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
+import org.pokesplash.gts.util.ColorUtil;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class SingleListing {
 		Button purchase = GooeyButton.builder()
 				.display(Gts.language.getPurchaseButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getConfirmPurchaseButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getConfirmPurchaseButtonLabel())))
 				.onClick((action) -> {
 
 					// Checks that the listing still exists.
@@ -64,10 +65,11 @@ public class SingleListing {
 					if (!listing.isPokemon()) {
 						ItemListing itemListing = (ItemListing) listing;
 						if (!Utils.hasSpace(action.getPlayer(), itemListing.getListing())) {
-							action.getPlayer().sendSystemMessage(Component.literal(
-									Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
-									0, listing.getListingName(), listing.getSellerName(),
-									action.getPlayer().getName().getString())));
+							action.getPlayer().sendSystemMessage(
+									ColorUtil.toText(ColorUtil.parseColour(
+											Utils.formatPlaceholders(Gts.language.getInsufficientInventorySpace(),
+											0, listing.getListingName(), listing.getSellerName(),
+											action.getPlayer().getName().getString()))));
 							UIManager.closeUI(action.getPlayer());
 							return;
 						}
@@ -76,10 +78,11 @@ public class SingleListing {
 
 					// Checks that the player can afford the listing.
 					if (!GtsAPI.hasEnoughFunds(action.getPlayer().getUUID(), listing.getPrice())) {
-						action.getPlayer().sendSystemMessage(Component.literal(
-								Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
-								0, listing.getListingName(), listing.getSellerName(),
-								action.getPlayer().getName().getString())));
+						action.getPlayer().sendSystemMessage(
+								ColorUtil.toText(ColorUtil.parseColour(
+										Utils.formatPlaceholders(Gts.language.getInsufficientFunds(),
+												0, listing.getListingName(), listing.getSellerName(),
+												action.getPlayer().getName().getString()))));
 						return;
 					}
 
@@ -88,19 +91,22 @@ public class SingleListing {
 						boolean success = GtsAPI.sale(listing.getSellerUuid(), action.getPlayer(), listing);
 
 						// Notify the player.
-						action.getPlayer().sendSystemMessage(Component.literal(
-								Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
-										0, listing.getListingName(), listing.getSellerName(),
-										action.getPlayer().getName().getString())));
+						action.getPlayer().sendSystemMessage(
+								ColorUtil.toText(ColorUtil.parseColour(
+										Utils.formatPlaceholders(Gts.language.getPurchaseMessageBuyer(),
+												0, listing.getListingName(), listing.getSellerName(),
+												action.getPlayer().getName().getString()))));
 
 						ServerPlayer seller =
 								action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
 						// If the seller is online and not the buyer, notify them.
 						if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
-							seller.sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingBought(),
-									0, listing.getListingName(), listing.getSellerName(),
-									action.getPlayer().getName().getString())));
+							seller.sendSystemMessage(
+									ColorUtil.toText(ColorUtil.parseColour(
+											Utils.formatPlaceholders(Gts.language.getListingBought(),
+													0, listing.getListingName(), listing.getSellerName(),
+													action.getPlayer().getName().getString()))));
 						}
 
 					} catch (Exception e) {
@@ -115,7 +121,7 @@ public class SingleListing {
 		Button cancel = GooeyButton.builder()
 				.display(Gts.language.getCancelButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getCancelPurchaseButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getCancelPurchaseButtonLabel())))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new AllListings().getPage();
@@ -126,7 +132,7 @@ public class SingleListing {
 		Button removeListing = GooeyButton.builder()
 				.display(Gts.language.getRemoveListingButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getRemoveListingButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getRemoveListingButtonLabel())))
 				.onClick((action) -> {
 
 
@@ -135,17 +141,19 @@ public class SingleListing {
 					} else {
 						GtsAPI.cancelListing(listing);
 					}
-					String message = Utils.formatPlaceholders(Gts.language.getCancelListing(),
-							0, listing.getListingName(), listing.getSellerName(),
-							action.getPlayer().getName().getString());
+					Component message =
+							ColorUtil.toText(ColorUtil.parseColour(
+									Utils.formatPlaceholders(Gts.language.getCancelListing(),
+									0, listing.getListingName(), listing.getSellerName(),
+									action.getPlayer().getName().getString())));
 
-					action.getPlayer().sendSystemMessage(Component.literal(message));
+					action.getPlayer().sendSystemMessage(message);
 
 					ServerPlayer seller =
 							action.getPlayer().getServer().getPlayerList().getPlayer(listing.getSellerUuid());
 
 					if (seller != null && !seller.getUUID().equals(action.getPlayer().getUUID())) {
-						seller.sendSystemMessage(Component.literal(message));
+						seller.sendSystemMessage(message);
 					}
 
 					UIManager.closeUI(action.getPlayer());

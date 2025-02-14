@@ -17,6 +17,7 @@ import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.UI.button.Filler;
 import org.pokesplash.gts.UI.module.PokemonInfo;
 import org.pokesplash.gts.api.GtsAPI;
+import org.pokesplash.gts.util.ColorUtil;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -35,8 +36,10 @@ public class ExpiredListing {
 
 		List<Component> lore = new ArrayList<>();
 
-		lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-		lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
+		lore.add(Component.literal(
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSeller())) + listing.getSellerName()));
+		lore.add(Component.literal(
+				ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPrice())) + listing.getPriceAsString()));
 
 		if (listing.isPokemon()) {
 			lore.addAll(PokemonInfo.parse((PokemonListing) listing));
@@ -52,7 +55,7 @@ public class ExpiredListing {
 		Button receiveListing = GooeyButton.builder()
 				.display(Gts.language.getPurchaseButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getReceiveListingButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getReceiveListingButtonLabel())))
 				.onClick((action) -> {
 					boolean success = GtsAPI.returnListing(action.getPlayer(), listing);
 
@@ -62,14 +65,14 @@ public class ExpiredListing {
 						message = Utils.formatPlaceholders(Gts.language.getReturnListingSuccess(),
 								0, listing.getListingName(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
-						action.getPlayer().sendSystemMessage(Component.literal(message));
-
-
+						action.getPlayer().sendSystemMessage(
+								ColorUtil.toText(ColorUtil.parseColour(message)));
 					} else {
 						message = Utils.formatPlaceholders(Gts.language.getReturnListingFail(),
 								0, listing.getListingName(), listing.getSellerName(),
 								action.getPlayer().getName().getString());
-						action.getPlayer().sendSystemMessage(Component.literal(message));
+						action.getPlayer().sendSystemMessage(
+								ColorUtil.toText(ColorUtil.parseColour(message)));
 					}
 
 					UIManager.openUIForcefully(action.getPlayer(), new ExpiredListings().getPage(action.getPlayer().getUUID()));
@@ -79,7 +82,7 @@ public class ExpiredListing {
 		Button cancel = GooeyButton.builder()
 				.display(Gts.language.getCancelButtonItem())
 				.with(DataComponents.CUSTOM_NAME,
-						Component.literal(Gts.language.getCancelPurchaseButtonLabel()))
+						ColorUtil.toText(ColorUtil.parseColour(Gts.language.getCancelPurchaseButtonLabel())))
 				.onClick((action) -> {
 					ServerPlayer sender = action.getPlayer();
 					Page page = new ExpiredListings().getPage(action.getPlayer().getUUID());

@@ -6,6 +6,7 @@ import net.minecraft.world.item.TooltipFlag;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
+import org.pokesplash.gts.util.ColorUtil;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
@@ -25,12 +26,12 @@ public abstract class ListingInfo {
     public static List<Component> parse(Listing listing) {
         List<Component> lore = new ArrayList<>();
 
-        lore.add(Component.literal(Gts.language.getSeller() + listing.getSellerName()));
-        lore.add(Component.literal(Gts.language.getPrice() + listing.getPriceAsString()));
+        lore.add(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getSeller() + listing.getSellerName())));
+        lore.add(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getPrice() + listing.getPriceAsString())));
 
         if (listing.getEndTime() != -1) {
-            lore.add(Component.literal(Gts.language.getRemainingTime() +
-                    Utils.parseLongDate(listing.getEndTime() - new Date().getTime())));
+            lore.add(ColorUtil.toText(ColorUtil.parseColour(Gts.language.getRemainingTime() +
+                    Utils.parseLongDate(listing.getEndTime() - new Date().getTime()))));
         }
 
 

@@ -9,13 +9,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.UI.AllListings;
+import org.pokesplash.gts.util.ColorUtil;
 
 public abstract class RelistAll {
     public static Button getButton() {
         return GooeyButton.builder()
                 .display(Gts.language.getRelistExpiredButtonItem())
                 .with(DataComponents.CUSTOM_NAME,
-                        Component.literal(Gts.language.getRelistExpiredButtonLabel()))
+                        ColorUtil.toText(ColorUtil.parseColour(Gts.language.getRelistExpiredButtonLabel())))
                 .onClick((action) -> {
                     ServerPlayer sender = action.getPlayer();
                     Gts.listings.relistAllExpiredListings(sender.getUUID());

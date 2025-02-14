@@ -8,14 +8,14 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.util.ColorUtil;
 
 public abstract class ExpiredListings {
     public static Button getButton() {
         return GooeyButton.builder()
                 .display(Gts.language.getExpiredListingsButtonItem())
-                .with(DataComponents.CUSTOM_NAME, Component.literal(
-                        Gts.language.getExpiredListingButtonLabel()
-                ))
+                .with(DataComponents.CUSTOM_NAME,
+                        ColorUtil.toText(ColorUtil.parseColour(Gts.language.getExpiredListingButtonLabel())))
                 .onClick((action) -> {
                     ServerPlayer sender = action.getPlayer();
                     Page page = new org.pokesplash.gts.UI.ExpiredListings().getPage(action.getPlayer().getUUID());
