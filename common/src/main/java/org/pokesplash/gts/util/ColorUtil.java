@@ -16,9 +16,15 @@ public final class ColorUtil {
     private static final Pattern LEGACY_PATTERN = Pattern.compile("[&§]([0-9a-fA-fk-oK-OrR])");
 
     public static net.minecraft.network.chat.Component parse(String text) {
-        net.minecraft.network.chat.Component component = toText(parseColour(text));
-        return net.minecraft.network.chat.Component.empty().setStyle(Style.EMPTY.withItalic(false))
-                .append(component);
+        try {
+            Class.forName("net.kyori.adventure.text.Component");
+            net.minecraft.network.chat.Component component = toText(parseColour(text));
+            return net.minecraft.network.chat.Component.empty().setStyle(Style.EMPTY.withItalic(false))
+                    .append(component);
+        } catch (ClassNotFoundException e) {
+            return net.minecraft.network.chat.Component.literal(text);
+        }
+
     }
 
     public static Component parseColour(String input) {
