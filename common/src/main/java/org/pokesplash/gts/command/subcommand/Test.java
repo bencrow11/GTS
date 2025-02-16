@@ -4,8 +4,14 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import org.pokesplash.gts.Gts;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import org.pokesplash.gts.command.superclass.Subcommand;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Test extends Subcommand {
 
@@ -41,9 +47,11 @@ public class Test extends Subcommand {
 	@Override
 	public int run(CommandContext<CommandSourceStack> context) {
 
-		Gts.history.getHistory().keySet().forEach(item -> {
-			new org.pokesplash.gts.UI.History().getPage(item);
-		});
+		ItemStack item = context.getSource().getPlayer().getMainHandItem();
+
+		CompoundTag tag = new CompoundTag();
+		tag.putIntArray("ivs", new ArrayList<>(List.of(31, 1, 3, 31, 31, 6)));
+		item.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
 
 		return 1;
 	}

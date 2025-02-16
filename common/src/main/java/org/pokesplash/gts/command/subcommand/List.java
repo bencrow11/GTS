@@ -11,9 +11,12 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
@@ -26,6 +29,7 @@ import org.pokesplash.gts.config.PokemonPrices;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -371,6 +375,42 @@ public class List extends Subcommand {
 					break;
 				}
 			}
+
+			// Checks eggs for IVs and sets their minimum prices.
+			CustomData customData = item.get(DataComponents.CUSTOM_DATA);
+			if (customData != null && customData.contains("ivs")) {
+				CompoundTag tag = customData.copyTag();
+				AtomicInteger totalMaxIVs = new AtomicInteger();
+				Arrays.stream(tag.getIntArray("ivs")).forEach(i -> {
+					if (i == 31) {
+						totalMaxIVs.getAndIncrement();
+					}
+				});
+
+				switch (totalMaxIVs.get()) {
+					case 1:
+						minPrice += Gts.config.getMinPrice1IV();
+						break;
+					case 2:
+						minPrice += Gts.config.getMinPrice2IV();
+						break;
+					case 3:
+						minPrice += Gts.config.getMinPrice3IV();
+						break;
+					case 4:
+						minPrice += Gts.config.getMinPrice4IV();
+						break;
+					case 5:
+						minPrice += Gts.config.getMinPrice5IV();
+						break;
+					case 6:
+						minPrice += Gts.config.getMinPrice6IV();
+						break;
+					default:
+						break;
+				}
+			}
+
 
 			// If less than min price, cancel the command.
 			if (price < minPrice) {
