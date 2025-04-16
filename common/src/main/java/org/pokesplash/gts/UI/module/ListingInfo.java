@@ -1,8 +1,10 @@
 package org.pokesplash.gts.UI.module;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
@@ -13,6 +15,7 @@ import org.pokesplash.gts.util.Utils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class that creates lore for a listing.
@@ -53,13 +56,14 @@ public abstract class ListingInfo {
 //                    }
 //                }
 //            }
+            if (!itemListing.getListing().getItem().getDescriptionId().contains("travelersbackpack")) {
+                try {
+                    List<Component> itemTooltips = itemListing.getListing()
+                            .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.NORMAL);
 
-            try {
-                List<Component> itemTooltips = itemListing.getListing()
-                        .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.NORMAL);
-
-                lore.addAll(itemTooltips.subList(1, itemTooltips.size()));
-            } catch (NullPointerException e) {}
+                    lore.addAll(itemTooltips.subList(1, itemTooltips.size()));
+                } catch (Exception e) {}
+            }
         }
 
 
