@@ -5,12 +5,15 @@ import com.cobblemon.mod.common.api.abilities.PotentialAbility;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +42,20 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public abstract class Utils {
+	public static RegistryOps<JsonElement> getOps() {
+		if (ops == null) {
+			try {
+				var registryManager = Gts.server.registryAccess();
+				ops = RegistryOps.create(JsonOps.INSTANCE, registryManager);
+			} catch (Exception e) {
+				Gts.LOGGER.error("Error initializing RegistryOps");
+				e.printStackTrace();
+			}
+		}
+		return ops;
+	}
+
+	private static RegistryOps<JsonElement> ops;
 	/**
 	 * Method to write some data to file.
 	 * @param filePath the directory to write the file to
