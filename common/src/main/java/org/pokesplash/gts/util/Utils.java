@@ -201,13 +201,13 @@ public abstract class Utils {
 		try {
 			Scanner reader = new Scanner(file);
 
-			String data = "";
+			StringBuilder data = new StringBuilder();
 
 			while (reader.hasNextLine()) {
-				data += reader.nextLine();
+				data.append(reader.nextLine());
 			}
 			reader.close();
-			callback.accept(data);
+			callback.accept(data.toString());
 			return true;
 		} catch (Exception e) {
 			Gts.LOGGER.fatal("Unable to read file " + file.getName() + " for " + Gts.MOD_ID + ".\nStack Trace: ");
@@ -229,12 +229,17 @@ public abstract class Utils {
 		return dir;
 	}
 
-	/**
+	private static Gson gson = null;
+
+		/**
 	 * Method to create a new gson builder.
 	 * @return Gson instance.
 	 */
 	public static Gson newGson() {
-		return new GsonBuilder().setPrettyPrinting().create();
+		if (gson == null){
+			gson = new GsonBuilder().setPrettyPrinting().create();
+		}
+		return gson;
 	}
 
 	/**
@@ -317,19 +322,19 @@ public abstract class Utils {
 			return message;
 		}
 
-		String output = message.trim().replaceAll("\\[|\\]", "");
+		StringBuilder output = new StringBuilder(message.trim().replaceAll("\\[|\\]", ""));
 
-		String[] messages = output.split("_| ");
+		String[] messages = output.toString().split("_| ");
 
 		if (messages.length > 1) {
-			output = "";
+			output = new StringBuilder();
 			for (String msg : messages) {
-				output += capitaliseFirst(msg) + " ";
+				output.append(capitaliseFirst(msg)).append(" ");
 			}
-			return output;
+			return output.toString();
 		}
 
-		return output.trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase(Locale.ROOT);
+		return output.toString().trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase(Locale.ROOT);
 	}
 
 	/**
