@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.util.Utils;
 
 import java.util.UUID;
 
@@ -27,15 +28,13 @@ public class ItemListing extends Listing<ItemStack> {
 	 */
 	public ItemListing(UUID sellerUuid, String sellerName, double price, ItemStack item) {
 		super(sellerUuid, sellerName, price, false);
-		this.item = ItemStack.CODEC.encodeStart(
-				Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE), item).getOrThrow();
+		this.item = ItemStack.CODEC.encodeStart(Utils.getOps(), item).getOrThrow();
 	}
 
 	public ItemListing(ItemListing other) {
 		super(UUID.fromString(other.getSellerUuid().toString()),
 				String.copyValueOf(other.getSellerName().toCharArray()), other.getPrice(), false);
-		this.item = ItemStack.CODEC.encodeStart(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
-				other.getListing()).getOrThrow();
+		this.item = ItemStack.CODEC.encodeStart(Utils.getOps(), other.getListing()).getOrThrow();
 		super.id = UUID.fromString(other.getId().toString());
 		super.version = String.copyValueOf(other.getVersion().toCharArray());
 		super.setEndTime(other.getEndTime());
@@ -44,9 +43,7 @@ public class ItemListing extends Listing<ItemStack> {
 	@Override
 	public ItemStack getListing() {
 		try {
-			ItemStack itemStack = ItemStack.CODEC.decode(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
-					item).getOrThrow().getFirst();
-			return itemStack;
+      return ItemStack.CODEC.decode(Utils.getOps(), item).getOrThrow().getFirst();
 		} catch (IllegalStateException e) {
 			Gts.LOGGER.fatal("Failed to parse item for " + item);
 			Gts.LOGGER.fatal("Stacktrace: ");

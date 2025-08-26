@@ -8,6 +8,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import org.pokesplash.gts.Listing.PokemonListing;
+import org.pokesplash.gts.util.Utils;
 
 /**
  * Class that is used to save sold Pokemon.
@@ -27,7 +28,7 @@ public class PokemonHistoryItem extends HistoryItem<Pokemon> {
      */
     @Override
     public Pokemon getListing() {
-        return Pokemon.getCODEC().decode(JsonOps.INSTANCE, pokemon).getOrThrow().getFirst();
+        return Pokemon.getCODEC().decode(Utils.getOps(), pokemon).getOrThrow().getFirst();
     }
 
     @Override

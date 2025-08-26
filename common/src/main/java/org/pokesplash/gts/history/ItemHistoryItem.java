@@ -9,18 +9,19 @@ import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
+import org.pokesplash.gts.util.Utils;
 
 /**
  * Class that is used to save sold Items.
  */
 public class ItemHistoryItem extends HistoryItem<ItemStack> {
 
-    private JsonElement item;
+    private final JsonElement item;
 
     public ItemHistoryItem(ItemListing listing, String buyerName) {
         super(listing.isPokemon(), listing.getSellerUuid(), listing.getSellerName(), listing.getPrice(), buyerName);
         this.item = ItemStack.CODEC.encodeStart(
-                Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
+          Utils.getOps(),
                 listing.getListing()).getOrThrow();
     }
 
@@ -31,7 +32,7 @@ public class ItemHistoryItem extends HistoryItem<ItemStack> {
     @Override
     public ItemStack getListing() {
         try {
-            ItemStack itemStack = ItemStack.CODEC.decode(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
+            ItemStack itemStack = ItemStack.CODEC.decode(Utils.getOps(),
                     item).getOrThrow().getFirst();
             return itemStack;
         } catch (IllegalStateException e) {
