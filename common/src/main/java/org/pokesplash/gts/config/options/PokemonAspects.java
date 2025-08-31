@@ -1,4 +1,4 @@
-package org.pokesplash.gts.config;
+package org.pokesplash.gts.config.options;
 
 import com.cobblemon.mod.common.pokemon.Pokemon;
 

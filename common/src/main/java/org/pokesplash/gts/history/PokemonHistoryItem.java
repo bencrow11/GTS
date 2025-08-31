@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
+import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.PokemonListing;
 
 /**
@@ -45,7 +46,7 @@ public class PokemonHistoryItem extends HistoryItem<Pokemon> {
         Style white = base.withColor(TextColor.parseColor("white").getOrThrow());
         Pokemon pokemon = this.getListing();
         boolean isShiny = pokemon.getShiny();
-        MutableComponent displayName = pokemon.getDisplayName().setStyle(isShiny ? yellow : dark_aqua);
+        MutableComponent displayName = pokemon.getDisplayName(Gts.showPokemonDisplayName).setStyle(isShiny ? yellow : dark_aqua);
         if (isShiny) {
             displayName.append(Component.literal("★").setStyle(red));
         }

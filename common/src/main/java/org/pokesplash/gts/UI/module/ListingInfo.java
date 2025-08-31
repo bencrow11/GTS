@@ -57,7 +57,7 @@ public abstract class ListingInfo {
 //                    }
 //                }
 //            }
-            List<String> blockedItemDescriptions = Arrays.asList("travelersbackpack", "simpletms");
+            List<String> blockedItemDescriptions = Gts.config.getRemovedModDescriptions();
 
             boolean isItemBlocked = false;
 

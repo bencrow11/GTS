@@ -6,7 +6,9 @@ import org.pokesplash.gts.api.provider.HistoryProviderAPI;
 import org.pokesplash.gts.api.provider.ListingsProviderAPI;
 import org.pokesplash.gts.command.basecommand.GtsCommand;
 import org.pokesplash.gts.config.Config;
+import org.pokesplash.gts.config.ConfigManager;
 import org.pokesplash.gts.config.Lang;
+import org.pokesplash.gts.config.LangManager;
 import org.pokesplash.gts.history.HistoryProvider;
 import org.pokesplash.gts.moderation.TimeoutProvider;
 import org.pokesplash.gts.permission.PermissionProvider;
@@ -17,8 +19,8 @@ public class Gts
 {
 	public static final String MOD_ID = "gts";
 	public static final String LISTING_FILE_PATH = "/config/gts/listings";
-	public static final String CONFIG_FILE_VERSION = "2.2";
-	public static final String LANG_FILE_VERSION = "2.6";
+	public static final int CONFIG_FILE_VERSION = 3;
+	public static final int LANG_FILE_VERSION = 3;
 	public static final String LISTING_FILE_VERSION = "2.0";
 	public static final String HISTORY_FILE_VERSION = "2.0";
 	public static boolean isDebugMode = false;
@@ -32,6 +34,7 @@ public class Gts
 	public static final GtsLogger LOGGER = new GtsLogger();
 	public static Lang language;
 	public static MinecraftServer server;
+    public static boolean showPokemonDisplayName = true;
 
 	public static void init() {
 		CommandsRegistry.addCommand(new GtsCommand());
@@ -54,9 +57,7 @@ public class Gts
 	}
 
 	public static void reloadSensitive() {
-		config = new Config();
-		config.init();
-		language = new Lang();
-		language.init();
+		config = new ConfigManager().loadConfig();
+		language = new LangManager().loadLangFile();
 	}
  }

@@ -4,7 +4,6 @@ import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.provider.HistoryAPI;
-import org.pokesplash.gts.oldVersion.PlayerHistoryOld;
 import org.pokesplash.gts.util.Utils;
 
 import java.io.IOException;
@@ -43,29 +42,6 @@ public class PlayerHistory implements History {
 	public PlayerHistory(UUID player, ArrayList<HistoryItem> items) {
 		this.player = player;
 		listings = items;
-	}
-
-	/**
-	 * Used to update an old player history to a new one.
-	 * @param playerHistoryOld The old player history object to convert.
-	 */
-	public PlayerHistory(PlayerHistoryOld playerHistoryOld) {
-		player = playerHistoryOld.getPlayer();
-		listings = new ArrayList<>();
-
-		for (PokemonListing listing : playerHistoryOld.getPokemonListings()) {
-			listing.update(true);
-			PokemonHistoryItem item = new PokemonHistoryItem(listing, "Unknown");
-			item.write();
-			listings.add(item);
-		}
-
-		for (ItemListing listing : playerHistoryOld.getItemListings()) {
-			listing.update(false);
-			ItemHistoryItem item = new ItemHistoryItem(listing, "Unknown");
-			item.write();
-			listings.add(item);
-		}
 	}
 
 	/**

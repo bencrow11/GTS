@@ -23,9 +23,9 @@ import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.Listing.PokemonListing;
 import org.pokesplash.gts.api.GtsAPI;
 import org.pokesplash.gts.command.superclass.Subcommand;
-import org.pokesplash.gts.config.ItemPrices;
-import org.pokesplash.gts.config.PokemonAspects;
-import org.pokesplash.gts.config.PokemonPrices;
+import org.pokesplash.gts.config.options.ItemPrices;
+import org.pokesplash.gts.config.options.PokemonAspects;
+import org.pokesplash.gts.config.options.PokemonPrices;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
@@ -274,14 +274,14 @@ public class List extends Subcommand {
 		// If less than min price, cancel the command.
 		if (price < minPrice) {
 			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMinimumListingPrice(),
-					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
+					minPrice, pokemon.getDisplayName(Gts.showPokemonDisplayName).getString(), player.getDisplayName().getString(), null)));
 			return 1;
 		}
 
 		// If the price is above the maximum price, cancel the command.
 		if (price > Gts.config.getMaximumPrice()) {
 			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getMaximumListingPrice(),
-					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
+					minPrice, pokemon.getDisplayName(Gts.showPokemonDisplayName).getString(), player.getDisplayName().getString(), null)));
 			return 1;
 		}
 
@@ -304,12 +304,12 @@ public class List extends Subcommand {
 
 		if (success) {
 			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingSuccess(),
-					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
+					minPrice, pokemon.getDisplayName(Gts.showPokemonDisplayName).getString(), player.getDisplayName().getString(), null)));
 
 
 		} else {
 			context.getSource().sendSystemMessage(Component.literal(Utils.formatPlaceholders(Gts.language.getListingFail(),
-					minPrice, pokemon.getDisplayName().getString(), player.getDisplayName().getString(), null)));
+					minPrice, pokemon.getDisplayName(Gts.showPokemonDisplayName).getString(), player.getDisplayName().getString(), null)));
 
 
 		}

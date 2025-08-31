@@ -7,7 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.Listing;
 import org.pokesplash.gts.api.provider.HistoryAPI;
-import org.pokesplash.gts.oldVersion.PlayerHistoryOld;
 import org.pokesplash.gts.util.Deserializer;
 import org.pokesplash.gts.util.Utils;
 
@@ -144,74 +143,55 @@ public class HistoryProvider {
 
 		for (File file : files) {
 
-			// If it is a file, see if it's an old history file and convert it.
-			// TODO Remove this in a later update.
-			if (file.isFile()) {
-				Utils.readFileAsync(filePath, file.getName(), el -> {
-					Gson gson = new Gson();
-					try {
-						PlayerHistoryOld oldPlayer = gson.fromJson(el, PlayerHistoryOld.class); // Load from old class.
-						PlayerHistory newPlayer = new PlayerHistory(oldPlayer);
-						Utils.deleteFile(filePath, file.getName()); // Delete the old file.
-						putHistory(newPlayer.getPlayer(), newPlayer);
-					} catch (Exception e) {
-						Gts.LOGGER.error("Could not convert file " + file.getName() + " to a GTS Player History");
-						e.printStackTrace();
-					}
-				});
-			}
-			// Otherwise, read the directory and store the files in memory.
-			else {
-				File[] playerFiles = file.listFiles();
-				// A list of the players history.
-				ArrayList<HistoryItem> items = new ArrayList<>();
-				UUID playerId = UUID.fromString(file.getName());
+            File[] playerFiles = file.listFiles();
+            // A list of the players history.
+            ArrayList<HistoryItem> items = new ArrayList<>();
+            UUID playerId = UUID.fromString(file.getName());
 
-				// For each file in the players directory
-				for (File playerFile : playerFiles) {
-					// If it is a file, try read it.
-					if (playerFile.isFile()) {
-						Utils.readFileAsync(filePath + file.getName() + "/",
-								playerFile.getName(), el -> {
-							GsonBuilder builder = new GsonBuilder();
-							// Type adapters help gson deserialize the listings interface.
-							builder.registerTypeAdapter(HistoryItem.class, new Deserializer(PokemonHistoryItem.class));
-							builder.registerTypeAdapter(HistoryItem.class, new Deserializer(ItemHistoryItem.class));
-							Gson gson = builder.setPrettyPrinting().create();
+            // For each file in the players directory
+            for (File playerFile : playerFiles) {
+                // If it is a file, try read it.
+                if (playerFile.isFile()) {
+                    Utils.readFileAsync(filePath + file.getName() + "/",
+                            playerFile.getName(), el -> {
+                                GsonBuilder builder = new GsonBuilder();
+                                // Type adapters help gson deserialize the listings interface.
+                                builder.registerTypeAdapter(HistoryItem.class, new Deserializer(PokemonHistoryItem.class));
+                                builder.registerTypeAdapter(HistoryItem.class, new Deserializer(ItemHistoryItem.class));
+                                Gson gson = builder.setPrettyPrinting().create();
 
-							// Try parse the file to a history item.
-							try {
-								HistoryItem item = gson.fromJson(el, HistoryItem.class);
+                                // Try parse the file to a history item.
+                                try {
+                                    HistoryItem item = gson.fromJson(el, HistoryItem.class);
 
-								item = item.isPokemon() ? gson.fromJson(el, PokemonHistoryItem.class) :
-										gson.fromJson(el, ItemHistoryItem.class);
+                                    item = item.isPokemon() ? gson.fromJson(el, PokemonHistoryItem.class) :
+                                            gson.fromJson(el, ItemHistoryItem.class);
 
-								if (!item.isHistoryItemValid()) {
-									System.out.println("[GTS] Invalid file: " + playerFile.getName() + " has been removed.");
-									Utils.writeFileAsync(brokeFilesPath, playerFile.getName(),
-											gson.toJson(item));
-									Utils.deleteFile(filePath + file.getName() + "/", playerFile.getName());
-									return;
-								}
+                                    if (!item.isHistoryItemValid()) {
+                                        System.out.println("[GTS] Invalid file: " + playerFile.getName() + " has been removed.");
+                                        Utils.writeFileAsync(brokeFilesPath, playerFile.getName(),
+                                                gson.toJson(item));
+                                        Utils.deleteFile(filePath + file.getName() + "/", playerFile.getName());
+                                        return;
+                                    }
 
-								// If the file version isn't the same as the version needed, update it.
-								if (!item.getVersion().equals(Gts.HISTORY_FILE_VERSION)) {
-									// TODO update file (Future)
-								}
+                                    // If the file version isn't the same as the version needed, update it.
+                                    if (!item.getVersion().equals(Gts.HISTORY_FILE_VERSION)) {
+                                        // TODO update file (Future)
+                                    }
 
-								items.add(item);
+                                    items.add(item);
 
-							} catch (Exception e) {
-								Gts.LOGGER.error("Could not read player GTS History file for " + file.getName());
-								e.printStackTrace();
-							}
-						});
-					}
-				}
+                                } catch (Exception e) {
+                                    Gts.LOGGER.error("Could not read player GTS History file for " + file.getName());
+                                    e.printStackTrace();
+                                }
+                            });
+                }
+            }
 
-				// Adds the player history to memory.
-				putHistory(playerId, new PlayerHistory(playerId, items));
-			}
+            // Adds the player history to memory.
+            putHistory(playerId, new PlayerHistory(playerId, items));
 		}
 	}
 }

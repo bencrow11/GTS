@@ -6,14 +6,12 @@ import com.google.gson.JsonElement;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.api.file.Versioned;
-import org.pokesplash.gts.oldVersion.LangOld;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.concurrent.CompletableFuture;
 
-public class Lang extends Versioned {
+public class Lang {
 	// placeholders
 	// {listing}
 	// {seller}
@@ -21,6 +19,9 @@ public class Lang extends Versioned {
 	// {max_listings}
 	// {min_price}
 	// {max_price}
+
+    private int version;
+
 	/**
 	 * Titles
 	 */
@@ -117,7 +118,7 @@ public class Lang extends Versioned {
 	 * Constructor to generate a file if one doesn't exist.
 	 */
 	public Lang() {
-		super(Gts.LANG_FILE_VERSION);
+        version = Gts.LANG_FILE_VERSION;
 		title = "§3Gts";
 		expiredListingsTitle = "§3Gts - Expired";
 		itemTitle = "§3Gts - Item";
@@ -186,9 +187,14 @@ public class Lang extends Versioned {
 		pokemonBall = "§2Ball: ";
 	}
 
-	/**
+
+
+    /**
 	 * Bunch of getters for the fields.
 	 */
+    public int getVersion() {
+        return version;
+    }
 	public String getPurchaseMessageBuyer() {
 		return purchaseMessageBuyer;
 	}
@@ -384,115 +390,9 @@ public class Lang extends Versioned {
 		return pokemonBall;
 	}
 
-	/**
-	 * Method to initialize the config.
-	 */
-	public void init() {
-
-		CompletableFuture<Boolean> futureRead = read();
-
-		if (!futureRead.join()) {
-			Gts.LOGGER.info("No lang.json file found for GTS. Attempting to generate one.");
-
-			CompletableFuture<Boolean> futureWrite = write();
-
-			if (!futureWrite.join()) {
-				Gts.LOGGER.fatal("Could not write lang.json for GTS.");
-			}
-			return;
-		}
-		Gts.LOGGER.info("GTS lang file read successfully.");
-	}
-
-	private CompletableFuture<Boolean> write() {
+	public CompletableFuture<Boolean> write() {
 		Gson gson = Utils.newGson();
 		String data = gson.toJson(this);
 		return Utils.writeFileAsync("/config/gts/", "lang.json", data);
-	}
-
-	private CompletableFuture<Boolean> read() {
-		return Utils.readFileAsync("/config/gts/", "lang.json",
-				el -> {
-					Gson gson = Utils.newGson();
-
-					Versioned versioned = gson.fromJson(el, Versioned.class);
-
-					Lang lang = gson.fromJson(el, Lang.class);
-
-					title = lang.getTitle();
-					itemTitle = lang.getItemTitle();
-					expiredListingsTitle = lang.getExpiredListingsTitle();
-					pokemonTitle = lang.getPokemonTitle();
-					filteredListingsTitle = lang.getFilteredListingsTitle();
-					historyTitle = lang.getHistoryTitle();
-					itemListingsTitle = lang.getItemListingsTitle();
-					manageTitle = lang.getManageTitle();
-					pokemonListingsTitle = lang.getPokemonListingsTitle();
-					purchaseMessageBuyer = lang.getPurchaseMessageBuyer();
-					cancelListing = lang.getCancelListing();
-					relistExpiredButtonLabel = lang.getRelistExpiredButtonLabel();
-					returnListingSuccess = lang.getReturnListingSuccess();
-					returnListingFail = lang.getReturnListingFail();
-					maximumListings = lang.getMaximumListings();
-					minimumListingPrice = lang.getMinimumListingPrice();
-					maximumListingPrice = lang.getMaximumListingPrice();
-					listingSuccess = lang.getListingSuccess();
-					listingFail = lang.getListingFail();
-					noPokemonInSlot = lang.getNoPokemonInSlot();
-					noItemInHand = lang.getNoItemInHand();
-					bannedItem = lang.getBannedItem();
-					bannedPokemon = lang.getBannedPokemon();
-					insufficientItems = lang.getInsufficientItems();
-					itemIdNotFound = lang.getItemIdNotFound();
-					zeroItemAmount = lang.getZeroItemAmount();
-					reloadMessage = lang.getReloadMessage();
-					insufficientFunds = lang.getInsufficientFunds();
-					listingBought = lang.getListingBought();
-					newListingBroadcast = lang.getNewListingBroadcast();
-					seller = lang.getSeller();
-					price = lang.getPrice();
-					remainingTime = lang.getRemainingTime();
-					confirmPurchaseButtonLabel = lang.getConfirmPurchaseButtonLabel();
-					cancelPurchaseButtonLabel = lang.getCancelPurchaseButtonLabel();
-					removeListingButtonLabel = lang.getRemoveListingButtonLabel();
-					itemListingsButtonLabel = lang.getItemListingsButtonLabel();
-					pokemonListingsButtonLabel = lang.getPokemonListingsButtonLabel();
-					manageListingsButtonLabel = lang.getManageListingsButtonLabel();
-					nextPageButtonLabel = lang.getNextPageButtonLabel();
-					previousPageButtonLabel = lang.getPreviousPageButtonLabel();
-					sortByPriceButtonLabel = lang.getSortByPriceButtonLabel();
-					sortByNewestButtonLabel = lang.getSortByNewestButtonLabel();
-					sortByPokemonButtonLabel = lang.getSortByPokemonButtonLabel();
-					sortByNameButtonLabel = lang.getSortByNameButtonLabel();
-					receiveListingButtonLabel = lang.getReceiveListingButtonLabel();
-					sold_date = lang.getSold_date();
-					buyer = lang.getBuyer();
-					insufficientInventorySpace = lang.getInsufficientInventorySpace();
-					onlyOnePokemonInParty = lang.getOnlyOnePokemonInParty();
-					itemListingsButtonItem = CodecUtils.encodeItem(lang.getItemListingsButtonItem());
-					pokemonListingsButtonItem = CodecUtils.encodeItem(lang.getPokemonListingsButtonItem());
-					manageListingsButtonItem = CodecUtils.encodeItem(lang.getManageListingsButtonItem());
-					nextPageButtonItems = CodecUtils.encodeItem(lang.getNextPageButtonItems());
-					previousPageButtonItems = CodecUtils.encodeItem(lang.getPreviousPageButtonItems());
-					fillerItem = CodecUtils.encodeItem(lang.getFillerItem());
-					purchaseButtonItem = CodecUtils.encodeItem(lang.getPurchaseButtonItem());
-					cancelButtonItem = CodecUtils.encodeItem(lang.getCancelButtonItem());
-					sortByPriceButtonItem = CodecUtils.encodeItem(lang.getSortByPriceButtonItem());
-					sortByNewestButtonItem = CodecUtils.encodeItem(lang.getSortByNewestButtonItem());
-					sortByNameButtonItem = CodecUtils.encodeItem(lang.getSortByNameButtonItem());
-					expiredListingsButtonItem = CodecUtils.encodeItem(lang.getExpiredListingsButtonItem());
-					removeListingButtonItem = CodecUtils.encodeItem(lang.getRemoveListingButtonItem());
-					relistExpiredButtonItem = CodecUtils.encodeItem(lang.getRelistExpiredButtonItem());
-
-					// If the lang version isn't correct, update the file.
-					if (!versioned.getVersion().equals(Gts.LANG_FILE_VERSION)) {
-						LangOld oldLang = gson.fromJson(el, LangOld.class);
-						write();
-						read();
-					} else {
-						expiredListingButtonLabel = lang.getExpiredListingButtonLabel();
-						pokemonBall = lang.getPokemonBall();
-					}
-				});
 	}
 }

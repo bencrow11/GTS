@@ -5,9 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
-import org.pokesplash.gts.api.file.Versioned;
-import org.pokesplash.gts.oldVersion.ConfigOld;
-import org.pokesplash.gts.oldVersion.ItemPricesOld;
+import org.pokesplash.gts.config.options.ItemPrices;
+import org.pokesplash.gts.config.options.PokemonAspects;
+import org.pokesplash.gts.config.options.PokemonPrices;
+import org.pokesplash.gts.config.options.Webhook;
 import org.pokesplash.gts.util.CodecUtils;
 import org.pokesplash.gts.util.Utils;
 
@@ -19,7 +20,8 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Config file.
  */
-public class Config extends Versioned {
+public class Config {
+    private int version;
 	private boolean enablePokemonSales; // Allows players to sell Pokemon on GTS.
 	private boolean enableItemSales; // Allows players to sell Items on GTS.
 	private boolean enableAsyncSearches; // Should the /gts command query be run asynchronously.
@@ -44,12 +46,13 @@ public class Config extends Versioned {
 	private List<JsonElement> bannedItems; // A list of items that can not be sold
 	private List<PokemonPrices> customPokemonPrices; // A list of Pokemon with minimum prices.
 	private List<PokemonAspects> bannedPokemon; // A list of pokemon that can not be sold.
+    private List<String> removedModDescriptions;
 
 	/**
 	 * Constructor to create a default config file.
 	 */
 	public Config() {
-		super(Gts.CONFIG_FILE_VERSION);
+		version = Gts.CONFIG_FILE_VERSION;
 		enablePokemonSales = true;
 		enableItemSales = true;
 		enableAsyncSearches = false;
@@ -78,98 +81,8 @@ public class Config extends Versioned {
 		bannedPokemon.add(new PokemonAspects());
 		discord = new Webhook();
 		showBreedable = false;
-	}
-
-	/**
-	 * Method to initialize the config.
-	 */
-	public void init() {
-		CompletableFuture<Boolean> futureRead = Utils.readFileAsync("/config/gts/", "config.json",
-				el -> {
-					Gson gson = Utils.newGson();
-
-					Versioned version = gson.fromJson(el, Versioned.class);
-
-					// If the config version isn't correct, update the file.
-					if (!version.getVersion().equals(Gts.CONFIG_FILE_VERSION)) {
-						Gts.LOGGER.info("GTS Config outdated, updating config...");
-
-						ConfigOld cfgOld = gson.fromJson(el, ConfigOld.class);
-
-						bannedItems.clear();
-						for (String item : cfgOld.getBannedItems()) {
-							ItemStack newBannedItem = Utils.parseItemId(item);
-							bannedItems.add(CodecUtils.encodeItem(newBannedItem));
-						}
-
-						customItemPrices.clear();
-						for (ItemPricesOld old : cfgOld.getCustomItemPrices()) {
-							customItemPrices.add(new ItemPrices(old));
-						}
-
-						bannedPokemon.clear();
-						for (String pokemon : cfgOld.getBannedPokemon()) {
-							bannedPokemon.add(new PokemonAspects(pokemon));
-						}
-
-						broadcastListings = cfgOld.isBroadcastListings();
-						maxListingsPerPlayer = cfgOld.getMaxListingsPerPlayer();
-						listingDuration = cfgOld.getListingDuration();
-						minPrice1IV = cfgOld.getMinPrice1IV();
-						minPrice2IV = cfgOld.getMinPrice2IV();
-						minPrice3IV = cfgOld.getMinPrice3IV();
-						minPrice4IV = cfgOld.getMinPrice4IV();
-						minPrice5IV = cfgOld.getMinPrice5IV();
-						minPrice6IV = cfgOld.getMinPrice6IV();
-						minPriceHA = cfgOld.getMinPriceHA();
-						minPriceLegendary = cfgOld.getMinPriceLegendary();
-						minPriceUltrabeast = cfgOld.getMinPriceUltrabeast();
-						maximumPrice = cfgOld.getMaximumPrice();
-						enablePermissionNodes = cfgOld.isEnablePermissionNodes();
-						discord = cfgOld.getDiscord() == null ? new Webhook() : cfgOld.getDiscord();
-						showBreedable = cfgOld.isShowBreedable();
-
-						write();
-						Gts.LOGGER.info("Config successfully updated for GTS!");
-					} else {
-						Config cfg = gson.fromJson(el, Config.class);
-						enablePokemonSales = cfg.isEnablePokemonSales();
-						enableItemSales = cfg.isEnableItemSales();
-						enableAsyncSearches = cfg.isEnableAsyncSearches();
-						broadcastListings = cfg.isBroadcastListings();
-						maxListingsPerPlayer = cfg.getMaxListingsPerPlayer();
-						listingDuration = cfg.getListingDuration();
-						taxRate = cfg.getTaxRate();
-						minPrice1IV = cfg.getMinPrice1IV();
-						minPrice2IV = cfg.getMinPrice2IV();
-						minPrice3IV = cfg.getMinPrice3IV();
-						minPrice4IV = cfg.getMinPrice4IV();
-						minPrice5IV = cfg.getMinPrice5IV();
-						minPrice6IV = cfg.getMinPrice6IV();
-						minPriceHA = cfg.getMinPriceHA();
-						minPriceLegendary = cfg.getMinPriceLegendary();
-						minPriceUltrabeast = cfg.getMinPriceUltrabeast();
-						maximumPrice = cfg.getMaximumPrice();
-						enablePermissionNodes = cfg.isEnablePermissionNodes();
-						discord = cfg.getDiscord() == null ? new Webhook() : cfg.getDiscord();
-						showBreedable = cfg.isShowBreedable();
-						bannedItems = cfg.getBannedItems();
-						customItemPrices = cfg.getCustomItemPrices();
-						customPokemonPrices = cfg.getCustomPokemonPrices();
-						bannedPokemon = cfg.getBannedPokemon();
-					}
-				});
-
-		if (!futureRead.join()) {
-			Gts.LOGGER.info("No config.json file found for GTS. Attempting to generate one.");
-			CompletableFuture<Boolean> futureWrite = write();
-
-			if (!futureWrite.join()) {
-				Gts.LOGGER.fatal("Could not write config for GTS.");
-			}
-			return;
-		}
-		Gts.LOGGER.info("GTS config file read successfully.");
+        removedModDescriptions = new ArrayList<>();
+        removedModDescriptions.add("simpletms");
 	}
 
 	/**
@@ -182,122 +95,66 @@ public class Config extends Versioned {
 		return Utils.writeFileAsync("/config/gts/", "config.json", data);
 	}
 
-	/**
-	 * Method to determine if new listings should be broadcasted to all online players.
-	 * @return True if listings should be broadcasted.
-	 */
+    public int getVersion() {
+        return version;
+    }
+
 	public boolean isBroadcastListings() {
 		return broadcastListings;
 	}
 
-	/**
-	 * Getter for the maximum listings per player.
-	 * @return maximum listings as an int.
-	 */
 	public int getMaxListingsPerPlayer() {
 		return maxListingsPerPlayer;
 	}
 
-	/**
-	 * Getter for the duration each listing should be up for, in hours.
-	 * @return hours per listing as an int.
-	 */
 	public int getListingDuration() {
 		return listingDuration;
 	}
 
-	/**
-	 * Getter for the min price for a pokemon with 1 full stat (31 IVs)
-	 * @return minimum price as a double.
-	 */
 	public double getMinPrice1IV() {
 		return minPrice1IV;
 	}
 
-	/**
-	 * Getter for the min price for a pokemon with 2 full stats (31 IVs)
-	 * @return minimum price as a double.
-	 */
 	public double getMinPrice2IV() {
 		return minPrice2IV;
 	}
 
-	/**
-	 * Getter for the min price for a pokemon with 3 full stats (31 IVs)
-	 * @return minimum price as a double.
-	 */
 	public double getMinPrice3IV() {
 		return minPrice3IV;
 	}
 
-	/**
-	 * Getter for the min price for a pokemon with 4 full stats (31 IVs)
-	 * @return minimum price as a double.
-	 */
 	public double getMinPrice4IV() {
 		return minPrice4IV;
 	}
 
-	/**
-	 * Getter for the min price for a pokemon with 5 full stats (31 IVs)
-	 * @return minimum price as a double.
-	 */
 	public double getMinPrice5IV() {
 		return minPrice5IV;
 	}
 
-	/**
-	 * Getter for the min price for a pokemon with 6 full stats (31 IVs)
-	 * @return minimum price as a double.
-	 */
 	public double getMinPrice6IV() {
 		return minPrice6IV;
 	}
 
-	/**
-	 * Getter for the min price for a pokemon with a hidden ability.
-	 * @return minimum price as a double.
-	 */
 	public double getMinPriceHA() {
 		return minPriceHA;
 	}
 
-	/**
-	 * Getter for the maximum price of a listing.
-	 * @return the maximum price as a double.
-	 */
 	public double getMaximumPrice() {
 		return maximumPrice;
 	}
 
-	/**
-	 * Getter for the list of items that have minimum prices.
-	 * @return list of ItemPrices.
-	 */
 	public List<ItemPrices> getCustomItemPrices() {
 		return customItemPrices;
 	}
 
-	/**
-	 * Getter for the banned items that can not be listed.
-	 * @return List of banned items as strings.
-	 */
 	public List<JsonElement> getBannedItems() {
 		return bannedItems;
 	}
 
-	/**
-	 * If permission nodes are enabled.
-	 * @return true if permission nodes are enabled.
-	 */
 	public boolean isEnablePermissionNodes() {
 		return enablePermissionNodes;
 	}
 
-	/**
-	 * Gets a set of all Pokemon prices.
-	 * @return HashSet of all pokemon prices.
-	 */
 	public HashSet<Double> getAllPokemonPrices() {
 		HashSet<Double> prices = new HashSet<>();
 
@@ -312,34 +169,18 @@ public class Config extends Versioned {
 		return prices;
 	}
 
-	/**
-	 * Gets a list of all Pokemon that can not be sold.
-	 * @return A list of Pokemon names.
-	 */
 	public List<PokemonAspects> getBannedPokemon() {
 		return bannedPokemon;
 	}
 
-	/**
-	 * Gets the minimum price of a legendary.
-	 * @return The minimum price of a legendary.
-	 */
 	public double getMinPriceLegendary() {
 		return minPriceLegendary;
 	}
 
-	/**
-	 * Gets the minimum price of an ultrabeast.
-	 * @return The minimum price of a legendary.
-	 */
 	public double getMinPriceUltrabeast() {
 		return minPriceUltrabeast;
 	}
 
-	/**
-	 * Gets the discord webhook configs.
-	 * @return The webhook config settings.
-	 */
 	public Webhook getDiscord() {
 		return discord;
 	}
@@ -367,4 +208,8 @@ public class Config extends Versioned {
 	public boolean isEnableAsyncSearches() {
 		return enableAsyncSearches;
 	}
+
+    public List<String> getRemovedModDescriptions() {
+        return removedModDescriptions;
+    }
 }

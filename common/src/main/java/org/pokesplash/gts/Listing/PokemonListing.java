@@ -66,7 +66,7 @@ public class PokemonListing extends Listing<Pokemon> {
 		Style white = base.withColor(TextColor.parseColor("white").getOrThrow());
 		Pokemon pokemon = this.getListing();
 		boolean isShiny = pokemon.getShiny();
-		MutableComponent displayName = pokemon.getDisplayName().setStyle(isShiny ? yellow : dark_aqua);
+		MutableComponent displayName = pokemon.getDisplayName(Gts.showPokemonDisplayName).setStyle(isShiny ? yellow : dark_aqua);
 		if (isShiny) {
 			displayName.append(Component.literal("★").setStyle(red));
 		}

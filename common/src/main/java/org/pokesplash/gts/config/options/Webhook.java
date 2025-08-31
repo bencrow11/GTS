@@ -1,4 +1,4 @@
-package org.pokesplash.gts.config;
+package org.pokesplash.gts.config.options;
 
 public class Webhook {
     private boolean useWebhooks;
