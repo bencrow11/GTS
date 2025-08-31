@@ -20,7 +20,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 
-    implementation(include("ca.landonjw.gooeylibs:api:${rootProject.gooeylibs_version}"))
+    implementation(include("ca.landonjw.gooeylibs:neoforge:${rootProject.gooeylibs_version}"))
 }
 
 processResources {
