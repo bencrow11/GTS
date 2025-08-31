@@ -29,7 +29,7 @@ public class GtsCommand extends BaseCommand {
 				"base",
 				Arrays.asList(new Manage(), new Expired(), new List(), new History(),
 						new Reload(), new Open(), new Debug(), new Search(), new GetPrice(), new Timeout(),
-						new SaveItem()));
+						new SaveItem(), new ItemDescription()));
 	}
 
 	// Runs when the base command is run with no subcommands.

@@ -25,6 +25,7 @@ public abstract class PermissionProvider {
         permissions.put("search", new GtsPermission("search", "gts.user.search", 0));
         permissions.put("timeout", new GtsPermission("timeout", "gts.moderation.timeout", 2));
         permissions.put("remove", new GtsPermission("remove", "gts.moderation.remove", 2));
+        permissions.put("itemdesc", new GtsPermission("itemdesc", "gts.admin.itemdesc", 3));
     }
 
     public HashMap<String, GtsPermission> getPermissions() {
