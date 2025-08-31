@@ -13,6 +13,7 @@ import org.pokesplash.gts.util.ColorUtil;
 import org.pokesplash.gts.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,7 +57,18 @@ public abstract class ListingInfo {
 //                    }
 //                }
 //            }
-            if (!itemListing.getListing().getItem().getDescriptionId().contains("travelersbackpack")) {
+            List<String> blockedItemDescriptions = Arrays.asList("travelersbackpack", "simpletms");
+
+            boolean isItemBlocked = false;
+
+            for (String blockedItemId  : blockedItemDescriptions) {
+                if (itemListing.getListing().getItem().getDescriptionId().contains(blockedItemId)) {
+                    isItemBlocked = true;
+                    break;
+                }
+            }
+
+            if (!isItemBlocked) {
                 try {
                     List<Component> itemTooltips = itemListing.getListing()
                             .getTooltipLines(Item.TooltipContext.EMPTY, null, TooltipFlag.NORMAL);
