@@ -16,8 +16,7 @@ public abstract class CodecUtils {
      * @return The encoded ItemStack, as a JsonElement.
      */
     public static JsonElement encodeItem(ItemStack stack) {
-        return ItemStack.CODEC.encodeStart(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
-                stack).getOrThrow();
+        return ItemStack.CODEC.encodeStart(Utils.getOps(), stack).getOrThrow();
     }
 
     /**
@@ -26,7 +25,6 @@ public abstract class CodecUtils {
      * @return The decoded JsonElement as an ItemStack.
      */
     public static ItemStack decodeItem(JsonElement json) {
-        return ItemStack.CODEC.decode(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
-                json).getOrThrow().getFirst();
+        return ItemStack.CODEC.decode(Utils.getOps(), json).getOrThrow().getFirst();
     }
 }

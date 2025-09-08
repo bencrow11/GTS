@@ -64,7 +64,7 @@ public class SaveItem extends Subcommand {
 				return 1;
 			}
 
-			JsonElement jsonElement = ItemStack.CODEC.encodeStart(Gts.server.registryAccess().createSerializationContext(JsonOps.INSTANCE),
+			JsonElement jsonElement = ItemStack.CODEC.encodeStart(Utils.getOps(),
 					item).getOrThrow();
 			String data = Utils.newGson().toJson(jsonElement);
 			CompletableFuture<Boolean> result = Utils.writeFileAsync("/config/gts/", "item.json", data);

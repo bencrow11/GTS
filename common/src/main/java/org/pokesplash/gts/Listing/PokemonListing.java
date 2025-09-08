@@ -10,6 +10,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
 import org.pokesplash.gts.Gts;
+import org.pokesplash.gts.util.Utils;
 
 import java.util.UUID;
 
@@ -29,14 +30,14 @@ public class PokemonListing extends Listing<Pokemon> {
 	 */
 	public PokemonListing(UUID sellerUuid, String sellerName, double price, Pokemon pokemon) {
 		super(sellerUuid, sellerName, price, true);
-		this.pokemon = Pokemon.getCODEC().encodeStart(JsonOps.INSTANCE, pokemon).getOrThrow();
+		this.pokemon = Pokemon.getCODEC().encodeStart(Utils.getOps(), pokemon).getOrThrow();
 	}
 
 	public PokemonListing(PokemonListing other) {
 		super(UUID.fromString(other.getSellerUuid().toString()),
 				String.copyValueOf(other.getSellerName().toCharArray()),
 				other.getPrice(), true);
-		this.pokemon = Pokemon.getCODEC().encodeStart(JsonOps.INSTANCE, other.getListing()).getOrThrow();
+		this.pokemon = Pokemon.getCODEC().encodeStart(Utils.getOps(), other.getListing()).getOrThrow();
 		super.id = UUID.fromString(other.getId().toString());
 		super.version = String.copyValueOf(other.getVersion().toCharArray());
 		super.setEndTime(other.getEndTime());
@@ -44,7 +45,7 @@ public class PokemonListing extends Listing<Pokemon> {
 
 	@Override
 	public Pokemon getListing() {
-		return Pokemon.getCODEC().decode(JsonOps.INSTANCE, pokemon).getOrThrow().getFirst();
+		return Pokemon.getCODEC().decode(Utils.getOps(), pokemon).getOrThrow().getFirst();
 	}
 
 	@Override
