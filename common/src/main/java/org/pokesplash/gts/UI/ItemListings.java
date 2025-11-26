@@ -13,6 +13,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.component.ItemLore;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.Listing.ItemListing;
 import org.pokesplash.gts.UI.button.ManageListings;
@@ -34,7 +36,7 @@ public class ItemListings {
 	 * Method that returns the page.
 	 * @return Item Listings page.
 	 */
-	public Page getPage(Sort sort) {
+	public Page getPage(@NotNull Sort sort) {
 
 		List<ItemListing> itmListings = Gts.listings.getItemListings();
 

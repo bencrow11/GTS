@@ -3,6 +3,7 @@ package org.pokesplash.gts.command.subcommand;
 import com.cobblemon.mod.common.Cobblemon;
 import com.cobblemon.mod.common.api.battles.model.PokemonBattle;
 import com.cobblemon.mod.common.api.storage.party.PlayerPartyStore;
+import com.cobblemon.mod.common.battles.BattleRegistry;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.JsonElement;
 import com.mojang.brigadier.arguments.FloatArgumentType;
@@ -147,7 +148,7 @@ public class List extends Subcommand {
 
 		try {
 			PokemonBattle battle =
-					Cobblemon.INSTANCE.getBattleRegistry().getBattleByParticipatingPlayer(context.getSource().getPlayer());
+					BattleRegistry.getBattleByParticipatingPlayer(context.getSource().getPlayer());
 
 			if (battle != null) {
 				context.getSource().sendSystemMessage(Component.literal(
