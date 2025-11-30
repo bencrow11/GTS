@@ -5,12 +5,15 @@ import com.cobblemon.mod.common.api.abilities.PotentialAbility;
 import com.cobblemon.mod.common.pokemon.Pokemon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -39,6 +42,20 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public abstract class Utils {
+	public static RegistryOps<JsonElement> getOps() {
+		if (ops == null) {
+			try {
+				var registryManager = Gts.server.registryAccess();
+				ops = RegistryOps.create(JsonOps.INSTANCE, registryManager);
+			} catch (Exception e) {
+				Gts.LOGGER.error("Error initializing RegistryOps");
+				e.printStackTrace();
+			}
+		}
+		return ops;
+	}
+
+	private static RegistryOps<JsonElement> ops;
 	/**
 	 * Method to write some data to file.
 	 * @param filePath the directory to write the file to
@@ -184,13 +201,13 @@ public abstract class Utils {
 		try {
 			Scanner reader = new Scanner(file);
 
-			String data = "";
+			StringBuilder data = new StringBuilder();
 
 			while (reader.hasNextLine()) {
-				data += reader.nextLine();
+				data.append(reader.nextLine());
 			}
 			reader.close();
-			callback.accept(data);
+			callback.accept(data.toString());
 			return true;
 		} catch (Exception e) {
 			Gts.LOGGER.fatal("Unable to read file " + file.getName() + " for " + Gts.MOD_ID + ".\nStack Trace: ");
@@ -212,12 +229,17 @@ public abstract class Utils {
 		return dir;
 	}
 
-	/**
+	private static Gson gson = null;
+
+		/**
 	 * Method to create a new gson builder.
 	 * @return Gson instance.
 	 */
 	public static Gson newGson() {
-		return new GsonBuilder().setPrettyPrinting().create();
+		if (gson == null){
+			gson = new GsonBuilder().setPrettyPrinting().create();
+		}
+		return gson;
 	}
 
 	/**
@@ -300,19 +322,19 @@ public abstract class Utils {
 			return message;
 		}
 
-		String output = message.trim().replaceAll("\\[|\\]", "");
+		StringBuilder output = new StringBuilder(message.trim().replaceAll("\\[|\\]", ""));
 
-		String[] messages = output.split("_| ");
+		String[] messages = output.toString().split("_| ");
 
 		if (messages.length > 1) {
-			output = "";
+			output = new StringBuilder();
 			for (String msg : messages) {
-				output += capitaliseFirst(msg) + " ";
+				output.append(capitaliseFirst(msg)).append(" ");
 			}
-			return output;
+			return output.toString();
 		}
 
-		return output.trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase(Locale.ROOT);
+		return output.toString().trim().substring(0, 1).toUpperCase() + output.substring(1).toLowerCase(Locale.ROOT);
 	}
 
 	/**
