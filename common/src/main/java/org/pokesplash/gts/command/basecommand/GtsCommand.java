@@ -37,7 +37,7 @@ public class GtsCommand extends BaseCommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 
 		if (!context.getSource().isPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerOnlyCommand()));
 			return 1;
 		}
 
@@ -60,14 +60,13 @@ public class GtsCommand extends BaseCommand {
 			UIManager.openUIForcefully(player, page);
 		} catch (Exception e) {
 			e.printStackTrace();
-			player.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
-					"to check the console."));
+			player.sendSystemMessage(Component.literal(Gts.language.getGenericError()));
 		}
 	}
 
 	public void runAsync(ServerPlayer player) {
 
-		player.sendSystemMessage(Component.literal("§2Loading GTS Listings."));
+		player.sendSystemMessage(Component.literal(Gts.language.getLoadingListings()));
 
 		ASYNC_EXEC.submit(() -> {
 			try {
@@ -78,8 +77,7 @@ public class GtsCommand extends BaseCommand {
 				});
 			} catch (Exception e) {
 				e.printStackTrace();
-				player.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
-						"to check the console."));
+				player.sendSystemMessage(Component.literal(Gts.language.getGenericError()));
 			}
 		});
 	}

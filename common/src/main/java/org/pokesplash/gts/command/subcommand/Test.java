@@ -1,5 +1,6 @@
 package org.pokesplash.gts.command.subcommand;
 
+import org.pokesplash.gts.Gts;
 import com.cobblemon.mod.common.api.pokemon.PokemonSpecies;
 import com.cobblemon.mod.common.pokemon.Species;
 import com.mojang.brigadier.context.CommandContext;
@@ -18,7 +19,7 @@ import java.util.List;
 public class Test extends Subcommand {
 
 	public Test() {
-		super("§9Usage:\n§3- gts test");
+		super(() -> Gts.language.getUsageTest());
 	}
 
 	/**

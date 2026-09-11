@@ -1,5 +1,6 @@
 package org.pokesplash.gts.discord;
 
+import com.cobblemon.mod.common.api.pokemon.stats.Stat;
 import com.cobblemon.mod.common.api.pokemon.stats.Stats;
 import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.Gts;
@@ -15,212 +16,121 @@ import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class Webhook {
-    private static final long newColour = 4042994;
-    private static final long soldColour = 3468102;
 
-    private static final String pokemonBody = "{\n" +
-            "    \"username\": \"GTS\",\n" +
-            "    \"embeds\": [\n" +
-            "        {\n" +
-            "            \"title\": \"%title%\",\n" +
-            "            \"color\": %colour%,\n" +
-            "            \"thumbnail\": {\n" +
-            "                \"url\": \"https://img.pokemondb.net/sprites/home/%shiny%/%dex%%form%.png\"\n" +
-            "            },\n" +
-            "            \"fields\": [\n" +
-            "                {\n" +
-            "                    \"name\": \"\",\n" +
-            "                    \"value\": \"**Pokemon:** %pokemon%\\n**Seller:** %seller%\\n**Price:** %price%\\n**Types:** %types%\\n**Nature:** %nature%**\\nAbility:** %ability%\"\n" +
-            "                },\n" +
-            "                {\n" +
-            "                    \"name\": \"IVs\",\n" +
-            "                    \"value\": \"**HP:** %hp_iv%\\n**Atk:** %atk_iv%\\n**Def:** %def_iv%\\n**SpA:** %spa_iv%\\n**SpD:** %spd_iv%\\n**Spe:** %spe_iv%\"\n" +
-            "                },\n" +
-            "                {\n" +
-            "                    \"name\": \"EVs\",\n" +
-            "                    \"value\": \"**HP:** %hp_ev%\\n**Atk:** %atk_ev%\\n**Def:** %def_ev%\\n**SpA:** %spa_ev%\\n**SpD:** %spd_ev%\\n**Spe:** %spe_ev%\"\n" +
-            "                },\n" +
-            "                {\n" +
-            "                    \"name\": \"Moves\",\n" +
-            "                    \"value\": \"%moves%\"" +
-            "                }\n" +
-            "            ],\n" +
-            "            \"author\": {\n" +
-            "                \"name\": \"GTS\"\n" +
-            "            }\n" +
-            "        }\n" +
-            "    ]\n" +
-            "}";
-
-    private static final String itemBody = "{\n" +
-            "    \"username\": \"GTS\",\n" +
-            "    \"embeds\": [\n" +
-            "        {\n" +
-            "            \"title\": \"%title%\",\n" +
-            "            \"color\": %colour%,\n" +
-            "            \"fields\": [\n" +
-            "                {\n" +
-            "                    \"name\": \"\",\n" +
-            "                    \"value\": \"**Item:** %item%\\n**Seller:** %seller%\\n**Price:** %price%\\n**Amount:** %amount%\"\n" +
-            "                }\n" +
-            "            ],\n" +
-            "            \"author\": {\n" +
-            "                \"name\": \"GTS\"\n" +
-            "            }\n" +
-            "        }\n" +
-            "    ]\n" +
-            "}";
-
-
-
+    /**
+     * Announces a listing that was just added.
+     * @param listing the new listing.
+     */
     public static void newListing(Listing listing) {
-
-        if (listing.isPokemon()) {
-
-
-            PokemonListing pokemonListing = (PokemonListing) listing;
-
-            StringBuilder types = new StringBuilder();
-
-            pokemonListing.getListing().getTypes().forEach(e -> {
-                types.append(e.getDisplayName().getString()).append(" ");
-            });
-
-            StringBuilder moves = new StringBuilder();
-
-            pokemonListing.getListing().getMoveSet().getMoves().forEach(e -> {
-                moves.append(e.getDisplayName().getString()).append(", ");
-            });
-            moves.replace(moves.length() - 2, moves.length(), "");
-
-            sendPost(pokemonBody
-                    .replaceAll("%title%", "New Listing")
-                    .replaceAll("%colour%", String.valueOf(newColour))
-                    .replaceAll("%dex%", pokemonListing.getListing().getSpecies().getTranslatedName().getString().toLowerCase(Locale.ROOT))
-                    .replaceAll("%shiny%", pokemonListing.getListing().getShiny() ? "shiny" : "normal")
-                    .replaceAll("%form%", FormParser.parseForm(pokemonListing.getListing().getForm().getName()))
-                    .replaceAll("%pokemon%", pokemonListing.getListing().getSpecies().getTranslatedName().getString())
-                    .replaceAll("%seller%", pokemonListing.getSellerName())
-                    .replaceAll("%price%", pokemonListing.getPriceAsString())
-                    .replaceAll("%types%", types.toString().trim())
-                    .replaceAll("%nature%", Component.translatable(pokemonListing.getListing().getNature().getDisplayName()).getString())
-                    .replaceAll("%ability%", Component.translatable(pokemonListing.getListing().getAbility().getDisplayName()).getString())
-                    .replaceAll("%hp_iv%", pokemonListing.getListing().getIvs().get(Stats.HP) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.HP).toString())
-                    .replaceAll("%atk_iv%", pokemonListing.getListing().getIvs().get(Stats.ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.ATTACK).toString())
-                    .replaceAll("%def_iv%", pokemonListing.getListing().getIvs().get(Stats.DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.DEFENCE).toString())
-                    .replaceAll("%spa_iv%", pokemonListing.getListing().getIvs().get(Stats.SPECIAL_ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.SPECIAL_ATTACK).toString())
-                    .replaceAll("%spd_iv%", pokemonListing.getListing().getIvs().get(Stats.SPECIAL_DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.SPECIAL_DEFENCE).toString())
-                    .replaceAll("%spe_iv%", pokemonListing.getListing().getIvs().get(Stats.SPEED) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.SPEED).toString())
-                    .replaceAll("%hp_ev%", pokemonListing.getListing().getEvs().get(Stats.HP) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.HP).toString())
-                    .replaceAll("%atk_ev%", pokemonListing.getListing().getEvs().get(Stats.ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.ATTACK).toString())
-                    .replaceAll("%def_ev%", pokemonListing.getListing().getEvs().get(Stats.DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.DEFENCE).toString())
-                    .replaceAll("%spa_ev%", pokemonListing.getListing().getEvs().get(Stats.SPECIAL_ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.SPECIAL_ATTACK).toString())
-                    .replaceAll("%spd_ev%", pokemonListing.getListing().getEvs().get(Stats.SPECIAL_DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.SPECIAL_DEFENCE).toString())
-                    .replaceAll("%spe_ev%", pokemonListing.getListing().getEvs().get(Stats.SPEED) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.SPEED).toString())
-                    .replaceAll("%moves%", moves.toString().trim())
-            );
-        } else {
-
-            ItemListing itemListing = (ItemListing) listing;
-
-            sendPost(itemBody
-                    .replaceAll("%title%", "New Listing")
-                    .replaceAll("%colour%", String.valueOf(newColour))
-                    .replaceAll("%item%", itemListing.getListing().getDisplayName().getString()
-                            .replaceAll("\\[", "")
-                            .replaceAll("\\]", ""))
-                    .replaceAll("%seller%", itemListing.getSellerName())
-                    .replaceAll("%price%", itemListing.getPriceAsString())
-                    .replaceAll("%amount%", String.valueOf(itemListing.getListing().getCount()))
-            );
-        }
+        org.pokesplash.gts.config.options.Webhook config = Gts.config.getDiscord();
+        send(listing, config.getNewListingTitle(), config.getNewListingColour());
     }
 
+    /**
+     * Announces a listing that was just bought.
+     * @param listing the sold listing.
+     */
     public static void soldListing(Listing listing) {
+        org.pokesplash.gts.config.options.Webhook config = Gts.config.getDiscord();
+        send(listing, config.getSoldListingTitle(), config.getSoldListingColour());
+    }
+
+    /**
+     * Fills the configured embed for this listing and posts it.
+     *
+     * Both events produce the same embed with a different title and colour,
+     * which is why they share this method rather than repeating the field list.
+     *
+     * @param listing the listing to announce.
+     * @param title   the embed title.
+     * @param colour  the embed colour, in the decimal form Discord expects.
+     */
+    private static void send(Listing listing, String title, long colour) {
+        org.pokesplash.gts.config.options.Webhook config = Gts.config.getDiscord();
+
+        // replace and not replaceAll: these are literal substitutions, and a
+        // value carrying a $ or a \ would otherwise be read as a group reference.
+        String body = (listing.isPokemon() ? config.getPokemonBody() : config.getItemBody())
+                .replace("%username%", config.getUsername())
+                .replace("%author%", config.getAuthorName())
+                .replace("%title%", title)
+                .replace("%colour%", String.valueOf(colour))
+                .replace("%seller%", listing.getSellerName())
+                .replace("%price%", listing.getPriceAsString());
 
         if (listing.isPokemon()) {
-
-
             PokemonListing pokemonListing = (PokemonListing) listing;
 
             StringBuilder types = new StringBuilder();
-
-            pokemonListing.getListing().getTypes().forEach(e -> {
-                types.append(e.getDisplayName().getString()).append(" ");
-            });
+            pokemonListing.getListing().getTypes().forEach(e -> types.append(e.getDisplayName().getString()).append(" "));
 
             StringBuilder moves = new StringBuilder();
+            pokemonListing.getListing().getMoveSet().getMoves()
+                    .forEach(e -> moves.append(e.getDisplayName().getString()).append(", "));
+            if (moves.length() >= 2) {
+                moves.replace(moves.length() - 2, moves.length(), "");
+            }
 
-            pokemonListing.getListing().getMoveSet().getMoves().forEach(e -> {
-                moves.append(e.getDisplayName().getString()).append(", ");
-            });
-            moves.replace(moves.length() - 2, moves.length(), "");
+            String sprite = config.getPokemonSpriteUrl()
+                    .replace("%dex%", pokemonListing.getListing().getSpecies().getTranslatedName()
+                            .getString().toLowerCase(Locale.ROOT))
+                    .replace("%shiny%", pokemonListing.getListing().getShiny() ? "shiny" : "normal")
+                    .replace("%form%", FormParser.parseForm(pokemonListing.getListing().getForm().getName()));
 
-            sendPost(pokemonBody
-                    .replaceAll("%title%", "Sold Listing")
-                    .replaceAll("%colour%", String.valueOf(soldColour))
-                    .replaceAll("%dex%", pokemonListing.getListing().getSpecies().getTranslatedName().getString().toLowerCase(Locale.ROOT))
-                    .replaceAll("%shiny%", pokemonListing.getListing().getShiny() ? "shiny" : "normal")
-                    .replaceAll("%form%", FormParser.parseForm(pokemonListing.getListing().getForm().getName()))
-                    .replaceAll("%pokemon%", pokemonListing.getListing().getSpecies().getTranslatedName().getString())
-                    .replaceAll("%seller%", pokemonListing.getSellerName())
-                    .replaceAll("%price%", pokemonListing.getPriceAsString())
-                    .replaceAll("%types%", types.toString().trim())
-                    .replaceAll("%nature%", Component.translatable(pokemonListing.getListing().getNature().getDisplayName()).getString())
-                    .replaceAll("%ability%", Component.translatable(pokemonListing.getListing().getAbility().getDisplayName()).getString())
-                    .replaceAll("%hp_iv%", pokemonListing.getListing().getIvs().get(Stats.HP) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.HP).toString())
-                    .replaceAll("%atk_iv%", pokemonListing.getListing().getIvs().get(Stats.ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.ATTACK).toString())
-                    .replaceAll("%def_iv%", pokemonListing.getListing().getIvs().get(Stats.DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.DEFENCE).toString())
-                    .replaceAll("%spa_iv%", pokemonListing.getListing().getIvs().get(Stats.SPECIAL_ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.SPECIAL_ATTACK).toString())
-                    .replaceAll("%spd_iv%", pokemonListing.getListing().getIvs().get(Stats.SPECIAL_DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.SPECIAL_DEFENCE).toString())
-                    .replaceAll("%spe_iv%", pokemonListing.getListing().getIvs().get(Stats.SPEED) == null ? "0" :
-                            pokemonListing.getListing().getIvs().get(Stats.SPEED).toString())
-                    .replaceAll("%hp_ev%", pokemonListing.getListing().getEvs().get(Stats.HP) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.HP).toString())
-                    .replaceAll("%atk_ev%", pokemonListing.getListing().getEvs().get(Stats.ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.ATTACK).toString())
-                    .replaceAll("%def_ev%", pokemonListing.getListing().getEvs().get(Stats.DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.DEFENCE).toString())
-                    .replaceAll("%spa_ev%", pokemonListing.getListing().getEvs().get(Stats.SPECIAL_ATTACK) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.SPECIAL_ATTACK).toString())
-                    .replaceAll("%spd_ev%", pokemonListing.getListing().getEvs().get(Stats.SPECIAL_DEFENCE) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.SPECIAL_DEFENCE).toString())
-                    .replaceAll("%spe_ev%", pokemonListing.getListing().getEvs().get(Stats.SPEED) == null ? "0" :
-                            pokemonListing.getListing().getEvs().get(Stats.SPEED).toString())
-                    .replaceAll("%moves%", moves.toString().trim())
-            );
+            body = body
+                    .replace("%sprite%", sprite)
+                    .replace("%pokemon%", pokemonListing.getListing().getSpecies().getTranslatedName().getString())
+                    .replace("%types%", types.toString().trim())
+                    .replace("%nature%", Component.translatable(
+                            pokemonListing.getListing().getNature().getDisplayName()).getString())
+                    .replace("%ability%", Component.translatable(
+                            pokemonListing.getListing().getAbility().getDisplayName()).getString())
+                    .replace("%moves%", moves.toString().trim())
+                    .replace("%hp_iv%", iv(pokemonListing, Stats.HP))
+                    .replace("%atk_iv%", iv(pokemonListing, Stats.ATTACK))
+                    .replace("%def_iv%", iv(pokemonListing, Stats.DEFENCE))
+                    .replace("%spa_iv%", iv(pokemonListing, Stats.SPECIAL_ATTACK))
+                    .replace("%spd_iv%", iv(pokemonListing, Stats.SPECIAL_DEFENCE))
+                    .replace("%spe_iv%", iv(pokemonListing, Stats.SPEED))
+                    .replace("%hp_ev%", ev(pokemonListing, Stats.HP))
+                    .replace("%atk_ev%", ev(pokemonListing, Stats.ATTACK))
+                    .replace("%def_ev%", ev(pokemonListing, Stats.DEFENCE))
+                    .replace("%spa_ev%", ev(pokemonListing, Stats.SPECIAL_ATTACK))
+                    .replace("%spd_ev%", ev(pokemonListing, Stats.SPECIAL_DEFENCE))
+                    .replace("%spe_ev%", ev(pokemonListing, Stats.SPEED));
         } else {
-
             ItemListing itemListing = (ItemListing) listing;
 
-            sendPost(itemBody
-                    .replaceAll("%title%", "Sold Listing")
-                    .replaceAll("%colour%", String.valueOf(soldColour))
-                    .replaceAll("%item%", itemListing.getListing().getDisplayName().getString()
-                            .replaceAll("\\[", "")
-                            .replaceAll("\\]", ""))
-                    .replaceAll("%seller%", itemListing.getSellerName())
-                    .replaceAll("%price%", itemListing.getPriceAsString())
-                    .replaceAll("%amount%", String.valueOf(itemListing.getListing().getCount()))
-            );
+            body = body
+                    .replace("%item%", itemListing.getListing().getDisplayName().getString()
+                            .replace("[", "")
+                            .replace("]", ""))
+                    .replace("%amount%", String.valueOf(itemListing.getListing().getCount()));
         }
+
+        sendPost(body);
+    }
+
+    /**
+     * Reads an IV, treating an absent one as zero.
+     * @param listing the listing the Pokemon belongs to.
+     * @param stat    the stat to read.
+     * @return the value as a String.
+     */
+    private static String iv(PokemonListing listing, Stat stat) {
+        Integer value = listing.getListing().getIvs().get(stat);
+        return value == null ? "0" : value.toString();
+    }
+
+    /**
+     * Reads an EV, treating an absent one as zero.
+     * @param listing the listing the Pokemon belongs to.
+     * @param stat    the stat to read.
+     * @return the value as a String.
+     */
+    private static String ev(PokemonListing listing, Stat stat) {
+        Integer value = listing.getListing().getEvs().get(stat);
+        return value == null ? "0" : value.toString();
     }
 
     private static void sendPost(String body) {

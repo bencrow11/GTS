@@ -15,7 +15,7 @@ import org.pokesplash.gts.command.superclass.Subcommand;
 public class Expired extends Subcommand {
 
 	public Expired() {
-		super("§9Usage:\n§3- gts expired");
+		super(() -> Gts.language.getUsageExpired());
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class Expired extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 
 		if (!context.getSource().isPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerOnlyCommand()));
 			return 1;
 		}
 

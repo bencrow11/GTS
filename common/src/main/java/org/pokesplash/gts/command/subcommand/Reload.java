@@ -12,7 +12,7 @@ import org.pokesplash.gts.util.Utils;
 public class Reload extends Subcommand {
 
 	public Reload() {
-		super("§9Usage:\n§3- gts reload");
+		super(() -> Gts.language.getUsageReload());
 	}
 
 	/**

@@ -18,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 public class SaveItem extends Subcommand {
 
 	public SaveItem() {
-		super("§9Usage:\n§3- gts saveitem");
+		super(() -> Gts.language.getUsageSaveItem());
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class SaveItem extends Subcommand {
 
 		if (!context.getSource().isPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"This command must be ran by a player."
+					Gts.language.getPlayerOnlyCommand()
 			));
 			return 1;
 		}
@@ -60,7 +60,7 @@ public class SaveItem extends Subcommand {
 
 			// If they aren't holding an item. Message them
 			if (item.getItem().equals(Items.AIR)) {
-				context.getSource().sendSystemMessage(Component.literal("§cYou must be holding an item."));
+				context.getSource().sendSystemMessage(Component.literal(Gts.language.getNotHoldingItem()));
 				return 1;
 			}
 
@@ -70,9 +70,9 @@ public class SaveItem extends Subcommand {
 			CompletableFuture<Boolean> result = Utils.writeFileAsync("/config/gts/", "item.json", data);
 
 			if (result.join()) {
-				context.getSource().sendSystemMessage(Component.literal("§2Item successfully saved."));
+				context.getSource().sendSystemMessage(Component.literal(Gts.language.getSaveItemSuccess()));
 			} else {
-				context.getSource().sendSystemMessage(Component.literal("§cUnable to save item!."));
+				context.getSource().sendSystemMessage(Component.literal(Gts.language.getSaveItemFail()));
 			}
 		} catch (Exception e) {
 			context.getSource().sendSystemMessage(Component.literal(e.getMessage()));

@@ -15,7 +15,7 @@ import org.pokesplash.gts.command.superclass.Subcommand;
 public class Manage extends Subcommand {
 
 	public Manage() {
-		super("§9Usage:\n§3- gts manage");
+		super(() -> Gts.language.getUsageManage());
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class Manage extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 
 		if (!context.getSource().isPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerOnlyCommand()));
 			return 1;
 		}
 

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.pokesplash.gts.Gts;
 import org.pokesplash.gts.config.updaters.config.V2to3;
+import org.pokesplash.gts.config.updaters.config.V3to4;
 import org.pokesplash.gts.util.JsonFileUpdater;
 import org.pokesplash.gts.util.Utils;
 
@@ -36,7 +37,10 @@ public class ConfigManager {
                         json.addProperty("version", version);
                     }
 
-                    if (!json.has("version") ||  version < 3 ) {
+                    // Against the constant, not a literal: with a hardcoded number this
+                    // stops migrating the moment the version is bumped again, and the
+                    // new fields silently deserialise to null.
+                    if (!json.has("version") || version < Gts.CONFIG_FILE_VERSION) {
                          try {
                              json = updateConfig(json);
                              requiresWrite.set(true);
@@ -72,6 +76,7 @@ public class ConfigManager {
 
         HashMap<Integer, JsonFileUpdater> versions = new HashMap<>();
         versions.put(2, new V2to3());
+        versions.put(3, new V3to4());
 
         JsonObject out = json;
         int currentVersion = out.get("version").getAsInt();

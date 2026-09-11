@@ -19,8 +19,8 @@ public class Gts
 {
 	public static final String MOD_ID = "gts";
 	public static final String LISTING_FILE_PATH = "/config/gts/listings";
-	public static final int CONFIG_FILE_VERSION = 3;
-	public static final int LANG_FILE_VERSION = 3;
+	public static final int CONFIG_FILE_VERSION = 4;
+	public static final int LANG_FILE_VERSION = 4;
 	public static final String LISTING_FILE_VERSION = "2.0";
 	public static final String HISTORY_FILE_VERSION = "2.0";
 	public static boolean isDebugMode = false;
