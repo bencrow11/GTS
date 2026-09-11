@@ -22,7 +22,7 @@ import java.util.UUID;
 public class OpenItems extends Subcommand {
 
 	public OpenItems() {
-		super("§9Usage:\n§3- gts item");
+		super(() -> Gts.language.getUsageItems());
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class OpenItems extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 
 		if (!context.getSource().isPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerOnlyCommand()));
 			return 1;
 		}
 

@@ -14,7 +14,7 @@ import org.pokesplash.gts.util.Utils;
 public class ItemDescription extends Subcommand {
 
 	public ItemDescription() {
-		super("§9Usage:\n§3- gts itemdesc");
+		super(() -> Gts.language.getUsageItemDesc());
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class ItemDescription extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 
         if (!context.getSource().isPlayer()) {
-            context.getSource().sendSystemMessage(Component.literal("This command can only be used by a player."));
+            context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerOnlyCommand()));
             return 1;
         }
 
@@ -53,7 +53,7 @@ public class ItemDescription extends Subcommand {
 
         if (handItem.is(Items.AIR)) {
             context.getSource().sendSystemMessage(Component.literal(
-                    "§cYou must be holding an item to use this command"
+                    Gts.language.getNotHoldingItem()
             ));
             return 1;
         }

@@ -14,7 +14,7 @@ import org.pokesplash.gts.command.superclass.Subcommand;
 public class History extends Subcommand {
 
 	public History() {
-		super("§9Usage:\n§3- gts history");
+		super(() -> Gts.language.getUsageHistory());
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class History extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 
 		if (!context.getSource().isPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerOnlyCommand()));
 			return 1;
 		}
 
@@ -57,8 +57,7 @@ public class History extends Subcommand {
 			UIManager.openUIForcefully(sender, page);
 		} catch (Exception e) {
 			e.printStackTrace();
-			sender.sendSystemMessage(Component.literal("§cSomething went wrong, please tell an admin " +
-					"to check the console."));
+			sender.sendSystemMessage(Component.literal(Gts.language.getGenericError()));
 		}
 
 		return 1;

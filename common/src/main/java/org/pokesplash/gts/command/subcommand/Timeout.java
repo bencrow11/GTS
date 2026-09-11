@@ -17,7 +17,7 @@ import java.util.Date;
 public class Timeout extends Subcommand {
 
 	public Timeout() {
-		super("§9Usage:\n§3- gts timeout <player> <time> <amount>");
+		super(() -> Gts.language.getUsageTimeout());
 	}
 
 	/**
@@ -80,8 +80,7 @@ public class Timeout extends Subcommand {
 		ServerPlayer player = Gts.server.getPlayerList().getPlayerByName(playerName);
 
 		if (player == null) {
-			context.getSource().sendSystemMessage(Component.literal("§cCould not find player with name: "
-					+ playerName));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerNotFound().replace("{player}", playerName)));
 			return 1;
 		}
 
@@ -94,21 +93,20 @@ public class Timeout extends Subcommand {
 		try {
 			endTime = parseTime(time, amount);
 		} catch (Exception e) {
-			context.getSource().sendSystemMessage(Component.literal("§cCould not parse time "
-					+ time));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getInvalidTime().replace("{time}", time)));
 			return 1;
         }
 
 		if (!Gts.timeouts.hasTimeoutExpired(player.getUUID())) {
 			Gts.timeouts.removeTimeout(player.getUUID());
-			context.getSource().sendSystemMessage(Component.literal("§cRemoved timeout for " + playerName));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getTimeoutRemoved().replace("{player}", playerName)));
 			return 1;
 		}
 
 		Gts.timeouts.addTimeout(player.getUUID(), endTime);
 
-		context.getSource().sendSystemMessage(Component.literal("§b" + playerName +
-				" has been timed out for " + Utils.parseLongDate(endTime - new Date().getTime())));
+		context.getSource().sendSystemMessage(Component.literal(Gts.language.getTimeoutAdded().replace("{player}", playerName)
+				.replace("{time}", Utils.parseLongDate(endTime - new Date().getTime()))));
 
         return 1;
 	}

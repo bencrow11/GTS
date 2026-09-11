@@ -55,7 +55,7 @@ public class SingleListing {
 					// Checks that the listing still exists.
 					if (Gts.listings.getActiveListingById(listing.getId()) == null) {
 						action.getPlayer().sendSystemMessage(Component.literal(
-								"§cThis listing is no longer available."
+								Gts.language.getListingUnavailable()
 						));
 						UIManager.closeUI(action.getPlayer());
 						return;

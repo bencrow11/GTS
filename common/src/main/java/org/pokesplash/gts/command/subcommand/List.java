@@ -37,7 +37,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class List extends Subcommand {
 
 	public List() {
-		super("§9Usage:\n§3- gts sell <pokemon/item>");
+		super(() -> Gts.language.getUsageList());
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class List extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 		if (!context.getSource().isPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"This command must be ran by a player."
+					Gts.language.getPlayerOnlyCommand()
 			));
 			return 1;
 		}
@@ -140,8 +140,7 @@ public class List extends Subcommand {
 			long endTime = Gts.timeouts.getTimeout(context.getSource().getPlayer().getUUID());
 
 			context.getSource().sendSystemMessage(Component.literal(
-					"§cYou have been timed out for " +
-							Utils.parseLongDate(endTime - new Date().getTime())
+					Gts.language.getTimedOut().replace("{time}", Utils.parseLongDate(endTime - new Date().getTime()))
 			));
 			return 1;
 		}
@@ -152,7 +151,7 @@ public class List extends Subcommand {
 
 			if (battle != null) {
 				context.getSource().sendSystemMessage(Component.literal(
-						"§cYou can not list to GTS while in a battle."
+						Gts.language.getInBattle()
 				));
 				return 1;
 			}
@@ -180,7 +179,7 @@ public class List extends Subcommand {
 			}
 
 		} catch (Exception e) {
-			context.getSource().sendSystemMessage(Component.literal("§cSomething went wrong."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getGenericError()));
 			e.printStackTrace();
 		}
 
@@ -205,7 +204,7 @@ public class List extends Subcommand {
 
 		if (!pokemon.getTradeable()) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"§cThis Pokemon is not tradeable."));
+					Gts.language.getUntradeablePokemon()));
 			return 1;
 		}
 
@@ -438,7 +437,7 @@ public class List extends Subcommand {
 
 			if (stackSize > amount || amount % stackSize != 0) {
 				context.getSource().sendSystemMessage(
-						Component.literal("The stack size can not be divided by amount."));
+						Component.literal(Gts.language.getInvalidStackAmount()));
 				return 1;
 			}
 

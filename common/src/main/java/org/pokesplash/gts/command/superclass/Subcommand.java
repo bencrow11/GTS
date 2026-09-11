@@ -6,20 +6,32 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import org.pokesplash.gts.util.Utils;
 
+import java.util.function.Supplier;
+
 /**
  * Class used to create subcommands.
  */
 public abstract class Subcommand {
 
-	// The usage message, as a String.
-	private String usage;
+	// Where the usage message comes from. A supplier rather than a String so the
+	// text is read when it is shown: subcommands are built once, but the language
+	// file can be reloaded, and a String would keep the wording from startup.
+	private final Supplier<String> usage;
 
 	/**
 	 * Constructor to create a new subcommand and generate a usage string.
 	 * @param usageString
 	 */
 	public Subcommand(String usageString) {
-		usage = usageString;
+		this(() -> usageString);
+	}
+
+	/**
+	 * Constructor for a usage string that is read from the language file.
+	 * @param usageSupplier supplies the usage text when it is needed.
+	 */
+	public Subcommand(Supplier<String> usageSupplier) {
+		usage = usageSupplier;
 	}
 
 	/**
@@ -28,7 +40,7 @@ public abstract class Subcommand {
 	 * @return integer to complete command.
 	 */
 	public int showUsage(CommandContext<CommandSourceStack> context) {
-		context.getSource().sendSystemMessage(Component.literal(Utils.formatMessage(usage, context.getSource().isPlayer())));
+		context.getSource().sendSystemMessage(Component.literal(Utils.formatMessage(usage.get(), context.getSource().isPlayer())));
 		return 1;
 	}
 

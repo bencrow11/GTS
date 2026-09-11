@@ -16,7 +16,7 @@ import org.pokesplash.gts.command.superclass.Subcommand;
 public class GetPrice extends Subcommand {
 
 	public GetPrice() {
-		super("§9Usage:\n§3- gts getprice [slot]");
+		super(() -> Gts.language.getUsageGetPrice());
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class GetPrice extends Subcommand {
 	public int runItem(CommandContext<CommandSourceStack> context) {
 		if (!context.getSource().isPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"This command must be ran by a player."
+					Gts.language.getPlayerOnlyCommand()
 			));
 			return 1;
 		}
@@ -60,7 +60,7 @@ public class GetPrice extends Subcommand {
 
 			if (item.isEmpty()) {
 				context.getSource().sendSystemMessage(Component.literal(
-						"§cYou are not holding an item."
+						Gts.language.getNotHoldingItem()
 				));
 				return 1;
 			}
@@ -69,11 +69,11 @@ public class GetPrice extends Subcommand {
 
 			if (price != 0) {
 				context.getSource().sendSystemMessage(Component.literal(
-						"§aAverage price is $" + price + "."
+						Gts.language.getAveragePrice().replace("{price}", String.valueOf(price))
 				));
 			} else {
 				context.getSource().sendSystemMessage(Component.literal(
-						"§cThis item has not been sold before."
+						Gts.language.getItemNeverSold()
 				));
 			}
 		} catch (Exception e) {
@@ -90,7 +90,7 @@ public class GetPrice extends Subcommand {
 	public int runPokemon(CommandContext<CommandSourceStack> context) {
 		if (!context.getSource().isPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"This command must be ran by a player."
+					Gts.language.getPlayerOnlyCommand()
 			));
 			return 1;
 		}
@@ -103,7 +103,7 @@ public class GetPrice extends Subcommand {
 
 		if (pokemon == null) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"§cNo Pokemon found in slot " + slot + "."
+					Gts.language.getNoPokemonFoundInSlot().replace("{slot}", String.valueOf(slot))
 			));
 			return 1;
 		}
@@ -112,12 +112,12 @@ public class GetPrice extends Subcommand {
 
 		if (price != 0) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"§aAverage price is $" + price + "."
+					Gts.language.getAveragePrice().replace("{price}", String.valueOf(price))
 			));
 			return 1;
 		} else {
 			context.getSource().sendSystemMessage(Component.literal(
-					"§cThis Pokemon has not been sold before."
+					Gts.language.getPokemonNeverSold()
 			));
 			return 1;
 		}

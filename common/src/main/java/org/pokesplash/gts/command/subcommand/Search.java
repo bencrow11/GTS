@@ -16,7 +16,7 @@ import org.pokesplash.gts.command.superclass.Subcommand;
 public class Search extends Subcommand {
 
 	public Search() {
-		super("§9Usage:\n§3- gts search pokemon/item");
+		super(() -> Gts.language.getUsageSearch());
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Search extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 		if (!context.getSource().isPlayer()) {
 			context.getSource().sendSystemMessage(Component.literal(
-					"This command must be ran by a player."
+					Gts.language.getPlayerOnlyCommand()
 			));
 			return 1;
 		}
@@ -64,7 +64,7 @@ public class Search extends Subcommand {
 			UIManager.openUIForcefully(sender, page);
 
 		} catch (Exception e) {
-			context.getSource().sendSystemMessage(Component.literal("§cSomething went wrong."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getGenericError()));
 			e.printStackTrace();
 		}
 		return 1;

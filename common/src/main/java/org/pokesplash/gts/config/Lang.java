@@ -62,6 +62,52 @@ public class Lang {
 	private String insufficientInventorySpace; // Message sent when a player doesn't have enough inventory space to receive a listing.
 	private String onlyOnePokemonInParty; // Message sent when a player tries to list a Pokemon when they only have one in their party.
 
+
+	// Prepended to every chat message below. Empty by default so nothing changes
+	// for existing servers; set it once here instead of in every single line.
+	private String prefix;
+
+	private String playerOnlyCommand; // Sent when a console-only source runs a player command.
+	private String genericError; // Generic failure, when the cause is only in the log.
+	private String loadingListings; // Shown while the listings are still loading.
+	private String listingUnavailable; // The listing was bought or removed while the UI was open.
+	private String inBattle; // Tried to list while battling.
+	private String untradeablePokemon; // The Pokemon is flagged as untradeable.
+	private String timedOut; // The player is under a moderation timeout.
+	private String invalidStackAmount; // The requested amount does not divide the held stack.
+	private String notHoldingItem; // The command needs an item in hand.
+	private String itemNeverSold; // No sale history for that item.
+	private String pokemonNeverSold; // No sale history for that Pokemon.
+	private String noPokemonFoundInSlot; // Empty party slot.
+	private String averagePrice; // Result of the getprice command.
+	private String saveItemSuccess; // The item was added to the price list.
+	private String saveItemFail; // The item could not be saved.
+	private String playerNotFound; // No player matched the given name.
+	private String invalidTime; // The time argument could not be read.
+	private String timeoutRemoved; // A moderation timeout was lifted.
+	private String timeoutAdded; // A moderation timeout was applied.
+	private String debugMode; // Feedback for the debug command.
+
+	/**
+	 * Command usage
+	 */
+
+	private String usageExpired; // Usage line for that subcommand.
+	private String usageHistory; // Usage line for that subcommand.
+	private String usageGetPrice; // Usage line for that subcommand.
+	private String usageDebug; // Usage line for that subcommand.
+	private String usageOpen; // Usage line for that subcommand.
+	private String usageList; // Usage line for that subcommand.
+	private String usageManage; // Usage line for that subcommand.
+	private String usageSaveItem; // Usage line for that subcommand.
+	private String usageItemDesc; // Usage line for that subcommand.
+	private String usagePokemon; // Usage line for that subcommand.
+	private String usageItems; // Usage line for that subcommand.
+	private String usageReload; // Usage line for that subcommand.
+	private String usageSearch; // Usage line for that subcommand.
+	private String usageTest; // Usage line for that subcommand.
+	private String usageTimeout; // Usage line for that subcommand.
+
 	/**
 	 *  Button Labels
 	 */
@@ -183,6 +229,42 @@ public class Lang {
 		receiveListingButtonLabel = "§2Receive Listing";
 		insufficientInventorySpace = "§cYou do not have enough inventory space to receive this listing.";
 		onlyOnePokemonInParty = "§cYou can not list a Pokemon to GTS if you only have less than 2 Pokemon in your party.";
+		prefix = "";
+		playerOnlyCommand = "§cThis command must be ran by a player.";
+		genericError = "§cSomething went wrong, please tell an admin to check the console.";
+		loadingListings = "§2Loading GTS Listings.";
+		listingUnavailable = "§cThis listing is no longer available.";
+		inBattle = "§cYou can not list to GTS while in a battle.";
+		untradeablePokemon = "§cThis Pokemon is not tradeable.";
+		timedOut = "§cYou have been timed out for {time}";
+		invalidStackAmount = "§cThe stack size can not be divided by amount.";
+		notHoldingItem = "§cYou are not holding an item.";
+		itemNeverSold = "§cThis item has not been sold before.";
+		pokemonNeverSold = "§cThis Pokemon has not been sold before.";
+		noPokemonFoundInSlot = "§cNo Pokemon found in slot {slot}.";
+		averagePrice = "§aAverage price is ${price}.";
+		saveItemSuccess = "§2Item successfully saved.";
+		saveItemFail = "§cUnable to save item!";
+		playerNotFound = "§cCould not find player with name: {player}";
+		invalidTime = "§cCould not parse time {time}";
+		timeoutRemoved = "§cRemoved timeout for {player}";
+		timeoutAdded = "§b{player} has been timed out for {time}";
+		debugMode = "Set Debug mode to {value}";
+		usageExpired = "§9Usage:\n§3- gts expired";
+		usageHistory = "§9Usage:\n§3- gts history";
+		usageGetPrice = "§9Usage:\n§3- gts getprice [slot]";
+		usageDebug = "§9Usage:\n§3- gts debug";
+		usageOpen = "§9Usage:\n§3- gts <listing id>";
+		usageList = "§9Usage:\n§3- gts sell <pokemon/item>";
+		usageManage = "§9Usage:\n§3- gts manage";
+		usageSaveItem = "§9Usage:\n§3- gts saveitem";
+		usageItemDesc = "§9Usage:\n§3- gts itemdesc";
+		usagePokemon = "§9Usage:\n§3- gts pokemon";
+		usageItems = "§9Usage:\n§3- gts item";
+		usageReload = "§9Usage:\n§3- gts reload";
+		usageSearch = "§9Usage:\n§3- gts search pokemon/item";
+		usageTest = "§9Usage:\n§3- gts test";
+		usageTimeout = "§9Usage:\n§3- gts timeout <player> <time> <amount>";
 		expiredListingButtonLabel = "§cExpired Listings";
 		pokemonBall = "§2Ball: ";
 	}
@@ -196,61 +278,61 @@ public class Lang {
         return version;
     }
 	public String getPurchaseMessageBuyer() {
-		return purchaseMessageBuyer;
+		return prefix + purchaseMessageBuyer;
 	}
 	public String getTitle() {
 		return title;
 	}
 	public String getCancelListing() {
-		return cancelListing;
+		return prefix + cancelListing;
 	}
 	public String getReturnListingSuccess() {
-		return returnListingSuccess;
+		return prefix + returnListingSuccess;
 	}
 	public String getReturnListingFail() {
-		return returnListingFail;
+		return prefix + returnListingFail;
 	}
 	public String getMaximumListings() {
-		return maximumListings;
+		return prefix + maximumListings;
 	}
 	public String getMinimumListingPrice() {
-		return minimumListingPrice;
+		return prefix + minimumListingPrice;
 	}
 	public String getMaximumListingPrice() {
-		return maximumListingPrice;
+		return prefix + maximumListingPrice;
 	}
 	public String getListingSuccess() {
-		return listingSuccess;
+		return prefix + listingSuccess;
 	}
 	public String getListingFail() {
-		return listingFail;
+		return prefix + listingFail;
 	}
 	public String getNoPokemonInSlot() {
-		return noPokemonInSlot;
+		return prefix + noPokemonInSlot;
 	}
 	public String getNoItemInHand() {
-		return noItemInHand;
+		return prefix + noItemInHand;
 	}
 	public String getBannedItem() {
-		return bannedItem;
+		return prefix + bannedItem;
 	}
 	public String getInsufficientItems() {
-		return insufficientItems;
+		return prefix + insufficientItems;
 	}
 	public String getItemIdNotFound() {
-		return itemIdNotFound;
+		return prefix + itemIdNotFound;
 	}
 	public String getZeroItemAmount() {
-		return zeroItemAmount;
+		return prefix + zeroItemAmount;
 	}
 	public String getReloadMessage() {
-		return reloadMessage;
+		return prefix + reloadMessage;
 	}
 	public String getInsufficientFunds() {
-		return insufficientFunds;
+		return prefix + insufficientFunds;
 	}
 	public String getListingBought() {
-		return listingBought;
+		return prefix + listingBought;
 	}
 	public ItemStack getItemListingsButtonItem() {
 		return CodecUtils.decodeItem(itemListingsButtonItem);
@@ -295,9 +377,9 @@ public class Lang {
 		return CodecUtils.decodeItem(relistExpiredButtonItem);
 	}
 	public String getNewListingBroadcast() {
-		return newListingBroadcast;
+		return prefix + newListingBroadcast;
 	}
-	public String getInsufficientInventorySpace() { return insufficientInventorySpace;	}
+	public String getInsufficientInventorySpace() { return prefix + insufficientInventorySpace; }
 	public String getSeller() {
 		return seller;
 	}
@@ -353,7 +435,7 @@ public class Lang {
 		return buyer;
 	}
 	public String getBannedPokemon() {
-		return bannedPokemon;
+		return prefix + bannedPokemon;
 	}
 	public String getRelistExpiredButtonLabel() {
 		return relistExpiredButtonLabel;
@@ -382,7 +464,7 @@ public class Lang {
 	public String getPokemonListingsTitle() {
 		return pokemonListingsTitle;
 	}
-	public String getOnlyOnePokemonInParty() { return onlyOnePokemonInParty; }
+	public String getOnlyOnePokemonInParty() { return prefix + onlyOnePokemonInParty; }
 	public String getExpiredListingButtonLabel() {
 		return expiredListingButtonLabel;
 	}
@@ -394,5 +476,149 @@ public class Lang {
 		Gson gson = Utils.newGson();
 		String data = gson.toJson(this);
 		return Utils.writeFileAsync("/config/gts/", "lang.json", data);
+	}
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public String getPlayerOnlyCommand() {
+		return prefix + playerOnlyCommand;
+	}
+
+	public String getGenericError() {
+		return prefix + genericError;
+	}
+
+	public String getLoadingListings() {
+		return prefix + loadingListings;
+	}
+
+	public String getListingUnavailable() {
+		return prefix + listingUnavailable;
+	}
+
+	public String getInBattle() {
+		return prefix + inBattle;
+	}
+
+	public String getUntradeablePokemon() {
+		return prefix + untradeablePokemon;
+	}
+
+	public String getTimedOut() {
+		return prefix + timedOut;
+	}
+
+	public String getInvalidStackAmount() {
+		return prefix + invalidStackAmount;
+	}
+
+	public String getNotHoldingItem() {
+		return prefix + notHoldingItem;
+	}
+
+	public String getItemNeverSold() {
+		return prefix + itemNeverSold;
+	}
+
+	public String getPokemonNeverSold() {
+		return prefix + pokemonNeverSold;
+	}
+
+	public String getNoPokemonFoundInSlot() {
+		return prefix + noPokemonFoundInSlot;
+	}
+
+	public String getAveragePrice() {
+		return prefix + averagePrice;
+	}
+
+	public String getSaveItemSuccess() {
+		return prefix + saveItemSuccess;
+	}
+
+	public String getSaveItemFail() {
+		return prefix + saveItemFail;
+	}
+
+	public String getPlayerNotFound() {
+		return prefix + playerNotFound;
+	}
+
+	public String getInvalidTime() {
+		return prefix + invalidTime;
+	}
+
+	public String getTimeoutRemoved() {
+		return prefix + timeoutRemoved;
+	}
+
+	public String getTimeoutAdded() {
+		return prefix + timeoutAdded;
+	}
+
+	public String getDebugMode() {
+		return prefix + debugMode;
+	}
+
+	public String getUsageExpired() {
+		return usageExpired;
+	}
+
+	public String getUsageHistory() {
+		return usageHistory;
+	}
+
+	public String getUsageGetPrice() {
+		return usageGetPrice;
+	}
+
+	public String getUsageDebug() {
+		return usageDebug;
+	}
+
+	public String getUsageOpen() {
+		return usageOpen;
+	}
+
+	public String getUsageList() {
+		return usageList;
+	}
+
+	public String getUsageManage() {
+		return usageManage;
+	}
+
+	public String getUsageSaveItem() {
+		return usageSaveItem;
+	}
+
+	public String getUsageItemDesc() {
+		return usageItemDesc;
+	}
+
+	public String getUsagePokemon() {
+		return usagePokemon;
+	}
+
+	public String getUsageItems() {
+		return usageItems;
+	}
+
+	public String getUsageReload() {
+		return usageReload;
+	}
+
+	public String getUsageSearch() {
+		return usageSearch;
+	}
+
+	public String getUsageTest() {
+		return usageTest;
+	}
+
+	public String getUsageTimeout() {
+		return usageTimeout;
 	}
 }

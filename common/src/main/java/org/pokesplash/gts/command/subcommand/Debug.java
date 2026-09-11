@@ -11,7 +11,7 @@ import org.pokesplash.gts.command.superclass.Subcommand;
 public class Debug extends Subcommand {
 
 	public Debug() {
-		super("§9Usage:\n§3- gts debug");
+		super(() -> Gts.language.getUsageDebug());
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class Debug extends Subcommand {
 
 		Gts.isDebugMode = !Gts.isDebugMode;
 
-		context.getSource().sendSystemMessage(Component.literal("Set Debug mode to " + Gts.isDebugMode));
+		context.getSource().sendSystemMessage(Component.literal(Gts.language.getDebugMode().replace("{value}", String.valueOf(Gts.isDebugMode))));
 
 		return 1;
 	}

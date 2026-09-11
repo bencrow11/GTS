@@ -17,7 +17,7 @@ import org.pokesplash.gts.enumeration.Sort;
 public class OpenPokemon extends Subcommand {
 
 	public OpenPokemon() {
-		super("§9Usage:\n§3- gts pokemon");
+		super(() -> Gts.language.getUsagePokemon());
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class OpenPokemon extends Subcommand {
 	public int run(CommandContext<CommandSourceStack> context) {
 
 		if (!context.getSource().isPlayer()) {
-			context.getSource().sendSystemMessage(Component.literal("This command must be ran by a player."));
+			context.getSource().sendSystemMessage(Component.literal(Gts.language.getPlayerOnlyCommand()));
 			return 1;
 		}
 
