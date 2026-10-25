@@ -25,7 +25,7 @@ dependencies {
     modImplementation(include("ca.landonjw.gooeylibs:fabric-api-repack:${rootProject.gooeylibs_version}"))
     include(modImplementation('me.lucko:fabric-permissions-api:0.3.1'))
 
-    modImplementation include("net.kyori:adventure-platform-fabric:5.14.1")
+//    modImplementation include("net.kyori:adventure-platform-fabric:5.14.1")
 }
 
 processResources {

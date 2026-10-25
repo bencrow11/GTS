@@ -1,5 +1,6 @@
 package org.pokesplash.gts;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import org.pokesplash.gts.Listing.ListingsProvider;
 import org.pokesplash.gts.api.provider.HistoryProviderAPI;
@@ -18,6 +19,7 @@ import org.pokesplash.gts.util.GtsLogger;
 public class Gts
 {
 	public static final String MOD_ID = "gts";
+	public static String version;
 	public static final String LISTING_FILE_PATH = "/config/gts/listings";
 	public static final int CONFIG_FILE_VERSION = 3;
 	public static final int LANG_FILE_VERSION = 3;
@@ -54,6 +56,7 @@ public class Gts
 		listings.init();
 		history.init();
 		timeouts.read();
+		version = FabricLoader.getInstance().getModContainer("gts").orElseThrow().getMetadata().getVersion().getFriendlyString();
 	}
 
 	public static void reloadSensitive() {
